@@ -21,12 +21,12 @@ public interface Player {
      * Returns the current score of the user.
      * @return the current score of the user.
      */
-    String getCurrentScore();
+    int getCurrentScore();
 
     /**
      * Returns the high score of the user.
      * @return the high score of the user.
      */
-    String getHighScore();
+    int getHighScore();
 
 }

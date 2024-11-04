@@ -28,13 +28,15 @@ public class GuestPlayer implements Player {
     }
 
     @Override
-    public String getCurrentScore() {
+    public int getCurrentScore() {
         return "The current score of " + this.username + "is " + this.currentScore + ".";
     }
 
     @Override
-    public String getHighScore() {
-        return "Guest players do not have a high score.";
+    public int getHighScore() {
+        System.out.print("Guest players do not have a high score.");
+        return 0;
+
     }
 
 }
