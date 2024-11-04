@@ -74,7 +74,7 @@ a fork of it or copy the subset of code you want into a completely new repositor
       - int currentScore
 
 
-## Names and Github Usernames
+## Team Members
 
 Liam Huynh liam.huynh  
 Aakaash Rohra aakrohra  
