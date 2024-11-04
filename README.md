@@ -34,3 +34,50 @@ also use the lab 5 code — or start from an empty repo if your team prefers.
 
 If you choose to use one of the repositories we have provided, you can either make
 a fork of it or copy the subset of code you want into a completely new repository.
+
+## Entities  
+
+  - Question  
+    - Instance Variables:    
+        - String questionText  
+        - List<String> answerOptions  
+        - String correctAnswer  
+        - String category  
+        - String difficultyLevel
+
+
+  - Player  
+    - Instance Variables:  
+      - String username  
+      - String password  
+      - List<String> createdQuestionsKeys  
+      - int currentScore  
+        - set to 0 every new session  
+      - int highScore
+  
+
+- GameSession
+  - Instance Variables:  
+    - Quiz currentQuiz  
+    - Question currentQuestion  
+    - Queue whosTurnIsIt  
+      - created after every question is asked  
+    - Player currentPlayer  
+      - determined by who last answered or default (first question) is player 1  
+
+
+  - Quiz  
+    - Instance Variables:  
+      - Player currentPlayer  
+      - List<Question> setOfQuestions  
+      - String uniqueKey (for user-generated questions)  
+      - int currentScore
+
+
+## Names and Github Usernames
+
+Liam Huynh liam.huynh  
+Aakaash Rohra aakrohra  
+Aref Malekanian Aref-Mal  
+Albert Jun Albert-Jun  
+Tin Chak Justin Yuen palteofdough  
