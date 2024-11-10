@@ -29,7 +29,7 @@ public class GuestPlayer implements Player {
 
     @Override
     public int getCurrentScore() {
-        return "The current score of " + this.username + "is " + this.currentScore + ".";
+        return this.currentScore;
     }
 
     @Override
