@@ -1,11 +1,19 @@
 package app;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Font;
 
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+
+/**
+ * The {@code Quiz90} class creates a simple quiz interface extending {@link JFrame}.
+ * It includes a question label and four answer buttons.
+ */
 public class Quiz90 extends JFrame {
 
-    JLabel question;
+    private JLabel question;
     private JButton button1;
     private JButton button2;
     private JButton button3;
@@ -61,13 +69,14 @@ public class Quiz90 extends JFrame {
 
     private JButton createButton(String text) {
         final JButton button = new JButton(text);
-        button.setFont(new Font("Calibri", Font.BOLD, Constants.FONTSIZE * 2 / 3));
+        button.setFont(new Font("Calibri", Font.BOLD, Constants.BUTTONFONTSIZE));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
         return button;
     }
-
+    /*
     public static void main(String[] args) {
         new Quiz90();
-    }
+    }*/
+
 }
