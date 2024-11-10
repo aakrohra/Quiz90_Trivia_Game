@@ -11,8 +11,8 @@ public class RegisteredPlayer implements Player {
 
     private final String username;
     private final String password;
-    private final String currentScore;
-    private final String highScore;
+    private final int currentScore;
+    private final int highScore;
     // Note that keys are not the entire question as one line.
     private final List<String> createdQuestionsKeys;
 
@@ -22,8 +22,8 @@ public class RegisteredPlayer implements Player {
         this.username = username;
         this.password = password;
         this.createdQuestionsKeys = new ArrayList<>();
-        this.currentScore = "0";
-        this.highScore = "0";
+        this.currentScore = 0;
+        this.highScore = 0;
     }
 
     @Override
@@ -37,14 +37,14 @@ public class RegisteredPlayer implements Player {
     }
 
     @Override
-    public String getCurrentScore() {
-        return "The current score of " + this.username + "is " + this.currentScore + ".";
+    public int getCurrentScore() {
+        return this.currentScore;
     }
 
     // TODO need to pull high score from API database that's storing it -> json file notImplemented yet
     @Override
-    public String getHighScore() {
-        return this.username + "'s high score is: " + this.highScore;
+    public int getHighScore() {
+        return this.highScore;
     }
 
     // TODO should we return just the keys or also the questions that were created with said keys? Confused if i even
