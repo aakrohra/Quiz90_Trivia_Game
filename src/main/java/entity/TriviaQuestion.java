@@ -2,6 +2,9 @@ package entity;
 
 import java.util.List;
 
+/**
+ * Represents a trivia question with its correct and incorrect answers.
+ */
 public class TriviaQuestion {
     private String question;
     private String correctAnswer;

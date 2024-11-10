@@ -2,6 +2,9 @@ package entity;
 
 import java.util.List;
 
+/**
+ * Represents a response containing a list of trivia questions.
+ */
 public class TriviaResponse {
     private List<TriviaQuestion> questions;
 
