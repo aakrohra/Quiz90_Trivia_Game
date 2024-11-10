@@ -5,24 +5,28 @@ import java.awt.*;
 
 public class Quiz90 extends JFrame {
 
-    int frameHeight = 800;
-    int frameWidth = 1000;
-    int fontSize = frameHeight/20;
-
     JLabel question;
-    JButton button1, button2, button3, button4;
+    private JButton button1;
+    private JButton button2;
+    private JButton button3;
+    private JButton button4;
 
     public Quiz90() {
         setTitle("Quiz90");
-        setSize(frameWidth, frameHeight);
-        setLocationRelativeTo(null);  // This puts the screen in the middle
+        setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
+
+        // This puts the screen in the middle
+        setLocationRelativeTo(null);
+
         setLayout(null);
         setVisible(true);
 
         // TODO "Question" Label should be replaced with the actual question
         question = new JLabel("Question");
-        question.setFont(new Font("Calibri", Font.BOLD, fontSize));
-        question.setBounds(frameWidth/20, frameHeight/20, frameWidth, 50);
+        question.setFont(new Font("Calibri", Font.BOLD, Constants.FONTSIZE));
+        question.setBounds(Constants.FRAMEWIDTH / Constants.QUESTIONMARGINDIVISOR,
+                Constants.FRAMEHEIGHT / Constants.QUESTIONMARGINDIVISOR,
+                Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT / Constants.QUESTIONMARGINDIVISOR);
 
         // TODO Not entirely sure if there'll always be 4 options, also replace "Options" with answers
         button1 = createButton("Option 1");
@@ -30,17 +34,20 @@ public class Quiz90 extends JFrame {
         button3 = createButton("Option 3");
         button4 = createButton("Option 4");
 
-        int buttonWidth = 400;
-        int buttonHeight = 100;
-        int buttonMargin = 20;
-        int xPos = (frameWidth - buttonWidth * 2) / 3; // Center the buttons horizontally with 2 per row
-        int yPosTop = 200; // Position for the first row
-        int yPosBottom = yPosTop + buttonHeight + buttonMargin; // Position for the second row
+        // Center the buttons horizontally with 2 per row
+        final int xPos = (Constants.FRAMEWIDTH - Constants.BUTTONWIDTH * 2) / 3;
 
-        button1.setBounds(xPos, yPosTop, buttonWidth, buttonHeight);
-        button2.setBounds(xPos + buttonWidth + buttonMargin, yPosTop, buttonWidth, buttonHeight);
-        button3.setBounds(xPos, yPosBottom, buttonWidth, buttonHeight);
-        button4.setBounds(xPos + buttonWidth + buttonMargin, yPosBottom, buttonWidth, buttonHeight);
+        // Position for the first row
+        final int yPosTop = 200;
+        // Position for the second row
+        final int yPosBottom = yPosTop + Constants.BUTTONHEIGHT + Constants.BUTTONMARGIN;
+
+        button1.setBounds(xPos, yPosTop, Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
+        button2.setBounds(xPos + Constants.BUTTONWIDTH + Constants.BUTTONMARGIN, yPosTop,
+                Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
+        button3.setBounds(xPos, yPosBottom, Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
+        button4.setBounds(xPos + Constants.BUTTONWIDTH + Constants.BUTTONMARGIN, yPosBottom,
+                Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
 
         // Add everything to the frame
 
@@ -53,8 +60,8 @@ public class Quiz90 extends JFrame {
     }
 
     private JButton createButton(String text) {
-        JButton button = new JButton(text);
-        button.setFont(new Font("Calibri", Font.BOLD, fontSize * 2 / 3));
+        final JButton button = new JButton(text);
+        button.setFont(new Font("Calibri", Font.BOLD, Constants.FONTSIZE * 2 / 3));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
         return button;
