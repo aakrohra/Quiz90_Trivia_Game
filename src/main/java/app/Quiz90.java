@@ -74,8 +74,9 @@ public class Quiz90 extends JFrame {
         button.setForeground(Color.BLACK);
         return button;
     }
+    /*
     public static void main(String[] args) {
         new Quiz90();
-    }
+    }*/
 
 }
