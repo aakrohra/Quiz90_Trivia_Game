@@ -8,26 +8,26 @@ import java.util.Queue;
  * Representation of the current game session of the program.
  */
 public class GameSession {
-    private final Player lastPlayed;
-    private final List<Player> players;
+    private final User lastPlayed;
+    private final List<User> users;
     private final Quiz currentQuiz;
     private final Question currentQuestion;
     private final Queue turnBasedQueue;
 
-    public GameSession(List<Player> players, Quiz currentQuiz, Question currentQuestion) {
-        this.players = players;
-        this.lastPlayed = this.players.get(0);
+    public GameSession(List<User> users, Quiz currentQuiz, Question currentQuestion) {
+        this.users = users;
+        this.lastPlayed = this.users.get(0);
         this.currentQuiz = currentQuiz;
         this.currentQuestion = currentQuestion;
         this.turnBasedQueue = new LinkedList<>();
     }
 
-    public Player getLastPlayed() {
+    public User getLastPlayed() {
         return this.lastPlayed;
     }
 
-    public List<Player> getPlayers() {
-        return this.players;
+    public List<User> getUsers() {
+        return this.users;
     }
 
     public Quiz getCurrentQuiz() {
