@@ -103,10 +103,15 @@ public class DBUserDataAccessObject implements SignupUserDataAccessInterface,
                 .method("POST", body)
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
+
+        System.out.println(request);
+
         try {
             final Response response = client.newCall(request).execute();
 
             final JSONObject responseBody = new JSONObject(response.body().string());
+
+            System.out.println(responseBody);
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
                 // success!
