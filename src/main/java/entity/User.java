@@ -17,4 +17,16 @@ public interface User {
      */
     String getPassword();
 
+    /**
+     * Returns the current score of the user.
+     * @return the current score of the user.
+     */
+    int getCurrentScore();
+
+    /**
+     * Returns the high score of the user.
+     * @return the high score of the user.
+     */
+    int getHighScore();
+
 }

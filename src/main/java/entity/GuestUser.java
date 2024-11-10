@@ -2,29 +2,28 @@ package entity;
 
 /**
  * An implementation of the Player interface.
- * Entity that represents a Guest player.
+ * Entity that represents a Guest user.
  */
-public class GuestPlayer implements Player {
-
+public class GuestUser implements User {
     private final String username;
     // TODO Change this line depending on implementation of Guest user?
     //      Idk how it works with login API -> Albert look at probably
     // private final String password = null;
     private final int currentScore;
 
-    public GuestPlayer() {
+    public GuestUser() {
         this.username = "Guest";
         this.currentScore = 0;
     }
 
     @Override
-    public String getUsername() {
-        return "This is a Guest account";
+    public String getName() {
+        return username;
     }
 
     @Override
     public String getPassword() {
-        return "This is a guest player, it does not have a password.";
+        return "none";
     }
 
     @Override
@@ -40,4 +39,3 @@ public class GuestPlayer implements Player {
     }
 
 }
-
