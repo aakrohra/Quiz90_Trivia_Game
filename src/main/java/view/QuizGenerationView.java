@@ -30,26 +30,26 @@ public class QuizGenerationView extends JPanel {
         // Labels and ComboBox boxes
         // Categories
         final Font optionFont = new Font("Arial", Font.BOLD, 14);
-        final Dimension ComboBoxSize = new Dimension(200, 25);
+        final Dimension comboBoxSize = new Dimension(200, 25);
         // Create and add category label and ComboBox
-        categoryComboBox = createComboBox(Constants.CATEGORIES, ComboBoxSize);
+        categoryComboBox = createComboBox(Constants.CATEGORIES, comboBoxSize);
         addComponent(createLabel("Select Category:", optionFont, SwingConstants.LEFT),
                 0, 1, 1, GridBagConstraints.WEST, gbc);
         addComponent(categoryComboBox, 1, 1, 1, GridBagConstraints.WEST, gbc);
 
         // Number of questions
-        questionComboBox = createComboBox(Constants.NUM_QUESTION, ComboBoxSize);
+        questionComboBox = createComboBox(Constants.NUM_QUESTION, comboBoxSize);
         addComponent(createLabel("Number of Questions:", optionFont, SwingConstants.LEFT),
                 0, 2, 1, GridBagConstraints.WEST, gbc);
         addComponent(questionComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
 
         // Difficulties
-        difficultyComboBox = createComboBox(Constants.DIFFICULTIES, ComboBoxSize);
+        difficultyComboBox = createComboBox(Constants.DIFFICULTIES, comboBoxSize);
         addComponent(createLabel("Select Difficulty:", optionFont, SwingConstants.LEFT),
                 0, 3, 1, GridBagConstraints.WEST, gbc);
         addComponent(difficultyComboBox, 1, 3, 1, GridBagConstraints.WEST, gbc);
 
-        // Create and add buttons
+        // Play and Cancel buttons
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         playButton = new JButton("Play");
         cancelButton = new JButton("Cancel");
@@ -92,8 +92,6 @@ public class QuizGenerationView extends JPanel {
         gbc.anchor = anchor;
         this.add(comp, gbc);
     }
-
-
 
     // TODO: The createLabel and createComboBox methods are useful to other views.
     // TODO: Refactor the code to make them accessible to all views.
