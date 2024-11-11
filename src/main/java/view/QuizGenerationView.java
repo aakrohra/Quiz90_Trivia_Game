@@ -1,104 +1,130 @@
 package view;
 
+import app.Constants;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 /**
  * The view for quiz generation, allowing users to select quiz parameters
- * such as category, number of questions, and difficulty.
+ * such as category, number of question, and difficulty.
  */
 public class QuizGenerationView extends JPanel {
 
     private final String viewName = "quiz generation";
-    private final JComboBox<String> categoryDropdown;
-    private final JComboBox<Integer> questionsDropdown;
-    private final JComboBox<String> difficultyDropdown;
+    private final JComboBox<?> categoryComboBox;
+    private final JComboBox<?> questionComboBox;
+    private final JComboBox<?> difficultyComboBox;
     private final JButton playButton;
     private final JButton cancelButton;
 
     public QuizGenerationView() {
-        // Set up labels and dropdowns for quiz options
-        final JLabel title = new JLabel("Quiz Generation Screen");
-        title.setAlignmentX(Component.LEFT_ALIGNMENT);
+        this.setLayout(new GridBagLayout());
+        final GridBagConstraints gbc = createGbc();
 
-        final JLabel categoryLabel = new JLabel("Select Category:");
-        final String[] categories = {"General Knowledge", "Science", "History", "Sports", "Entertainment"};
-        categoryDropdown = new JComboBox<>(categories);
-        categoryDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Title
+        final JLabel title = createLabel("Quiz Generation Screen", new Font("Arial", Font.BOLD, 18),
+                SwingConstants.CENTER);
+        addComponent(title, 0, 0, 2, GridBagConstraints.CENTER, gbc);
 
-        final JLabel questionsLabel = new JLabel("Number of Questions:");
-        final Integer[] questionOptions = {5, 10, 15, 20};
-        questionsDropdown = new JComboBox<>(questionOptions);
-        questionsDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Labels and ComboBox boxes
+        // Categories
+        final Font optionFont = new Font("Arial", Font.BOLD, 14);
+        final Dimension ComboBoxSize = new Dimension(200, 25);
+        // Create and add category label and ComboBox
+        categoryComboBox = createComboBox(Constants.CATEGORIES, ComboBoxSize);
+        addComponent(createLabel("Select Category:", optionFont, SwingConstants.LEFT),
+                0, 1, 1, GridBagConstraints.WEST, gbc);
+        addComponent(categoryComboBox, 1, 1, 1, GridBagConstraints.WEST, gbc);
 
-        final JLabel difficultyLabel = new JLabel("Select Difficulty:");
-        final String[] difficulties = {"Easy", "Medium", "Hard"};
-        difficultyDropdown = new JComboBox<>(difficulties);
-        difficultyDropdown.setAlignmentX(Component.CENTER_ALIGNMENT);
+        // Number of questions
+        questionComboBox = createComboBox(Constants.NUM_QUESTION, ComboBoxSize);
+        addComponent(createLabel("Number of Questions:", optionFont, SwingConstants.LEFT),
+                0, 2, 1, GridBagConstraints.WEST, gbc);
+        addComponent(questionComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
 
-        // Set fixed size for dropdown boxes
-        Dimension fixedSize = new Dimension(200, 25);
-        categoryDropdown.setPreferredSize(fixedSize);
-        categoryDropdown.setMaximumSize(fixedSize);
-        questionsDropdown.setPreferredSize(fixedSize);
-        questionsDropdown.setMaximumSize(fixedSize);
-        difficultyDropdown.setPreferredSize(fixedSize);
-        difficultyDropdown.setMaximumSize(fixedSize);
+        // Difficulties
+        difficultyComboBox = createComboBox(Constants.DIFFICULTIES, ComboBoxSize);
+        addComponent(createLabel("Select Difficulty:", optionFont, SwingConstants.LEFT),
+                0, 3, 1, GridBagConstraints.WEST, gbc);
+        addComponent(difficultyComboBox, 1, 3, 1, GridBagConstraints.WEST, gbc);
 
-        // Set up buttons with preferred sizes and align horizontally
+        // Create and add buttons
+        final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
         playButton = new JButton("Play");
         cancelButton = new JButton("Cancel");
+        buttonPanel.add(playButton);
+        buttonPanel.add(cancelButton);
+        addComponent(buttonPanel, 0, 4, 2, GridBagConstraints.CENTER, gbc);
 
-        // Add action listeners to print selected options and button clicks
-        categoryDropdown.addActionListener(evt -> System.out.println("Category selected: " + categoryDropdown.getSelectedItem()));
-        questionsDropdown.addActionListener(evt -> System.out.println("Number of questions selected: " + questionsDropdown.getSelectedItem()));
-        difficultyDropdown.addActionListener(evt -> System.out.println("Difficulty selected: " + difficultyDropdown.getSelectedItem()));
+        // Action Listeners
+        categoryComboBox.addActionListener(evt -> {
+            System.out.println("Category selected: " + categoryComboBox.getSelectedItem());
+        });
+        questionComboBox.addActionListener(evt -> {
+            System.out.println("Number of questions selected: " + questionComboBox.getSelectedItem());
+        });
+        difficultyComboBox.addActionListener(evt -> {
+            System.out.println("Difficulty selected: " + difficultyComboBox.getSelectedItem());
+        });
 
-        playButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent evt) {
-                System.out.println("Play button clicked");
-                System.out.println("Quiz Settings - Category: " + categoryDropdown.getSelectedItem()
-                        + ", Questions: " + questionsDropdown.getSelectedItem()
-                        + ", Difficulty: " + difficultyDropdown.getSelectedItem());
-            }
+        playButton.addActionListener(evt -> {
+            System.out.println("Play button clicked");
+            System.out.println("Quiz Settings - Category: " + categoryComboBox.getSelectedItem()
+                    + ", Questions: " + questionComboBox.getSelectedItem()
+                    + ", Difficulty: " + difficultyComboBox.getSelectedItem());
         });
 
         cancelButton.addActionListener(evt -> System.out.println("Cancel button clicked"));
+    }
 
-        // Layout settings for the view
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+    private GridBagConstraints createGbc() {
+        final GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        return gbc;
+    }
 
-        this.add(title);
+    private void addComponent(Component comp, int x_axis, int y_axis, int width, int anchor, GridBagConstraints gbc) {
+        gbc.gridx = x_axis;
+        gbc.gridy = y_axis;
+        gbc.gridwidth = width;
+        gbc.anchor = anchor;
+        this.add(comp, gbc);
+    }
 
-        // Arrange dropdowns with labels and spacing
-        this.add(categoryLabel);
-        this.add(categoryDropdown);
 
-        this.add(questionsLabel);
-        this.add(questionsDropdown);
 
-        this.add(difficultyLabel);
-        this.add(difficultyDropdown);
+    // TODO: The createLabel and createComboBox methods are useful to other views.
+    // TODO: Refactor the code to make them accessible to all views.
 
-        final JPanel buttons = new JPanel();
-        buttons.add(playButton);
-        buttons.add(cancelButton);
-        buttons.setAlignmentX(Component.CENTER_ALIGNMENT);
-        this.add(buttons);
+    // Helper method for creating a JLabel with custom font size and alignment
+    private JLabel createLabel(String text, Font font, int alignment) {
+        final JLabel label = new JLabel(text, alignment);
+        label.setFont(font);
+        return label;
+    }
+
+    // Helper method for creating a JComboBox with custom dimension
+    private JComboBox<?> createComboBox(Object[] items, Dimension dimension) {
+        final JComboBox<?> comboBox = new JComboBox<>(items);
+        comboBox.setPreferredSize(dimension);
+        return comboBox;
     }
 
     public String getViewName() {
         return viewName;
     }
 
+    // Main method to run and test the QuizGenerationView in a JFrame
     public static void main(String[] args) {
-        final JFrame frame = new JFrame("Quiz Generation Test");
+        JFrame frame = new JFrame("Quiz Generation");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
-        frame.add(new QuizGenerationView());
+        frame.setSize(700, 700);
+        frame.setLocationRelativeTo(null);
+
+        QuizGenerationView quizGenerationView = new QuizGenerationView();
+        frame.add(quizGenerationView);
         frame.setVisible(true);
     }
 
