@@ -13,4 +13,6 @@ public class Constants {
     public static final int BUTTONHEIGHT = 100;
     public static final int BUTTONMARGIN = 20;
     public static final int BUTTONFONTSIZE = FONTSIZE * 2 / 3;
+
+    public static final int RANDOMKEYSIZE = 10;
 }
