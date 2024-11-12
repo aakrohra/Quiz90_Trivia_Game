@@ -1,5 +1,7 @@
 package use_case.access_quiz;
 
+import org.json.JSONObject;
+
 /**
  * DAO for the Access Quiz Use Case.
  */
@@ -13,10 +15,9 @@ public interface AccessQuizUserDataAccessInterface {
     boolean existsByKey(String key);
 
     /**
-     * Returns the quiz data from the given key as an Object.
+     * Returns the quiz data from the given key as a JSONObject.
      * @param key the given key
-     * @return the quiz associated with the key as an Object
+     * @return the quiz associated with the key as a JSONObject
      */
-    // should this be the implemented TriviaQuiz instead?
-    Object getQuizFromKey(String key);
+    JSONObject getQuizFromKey(String key);
 }

@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.Constants;
+import entity.Quiz;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -66,13 +67,8 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         }
     }
 
-    /**
-     * Gets the quiz associated with the key from the database and returns it as an Object.
-     * @param key the given key
-     * @return the quiz data as an Object
-     * @throws RuntimeException if there is an issue
-     */
-    public Object getQuizFromKey(String key) {
+    @Override
+    public JSONObject getQuizFromKey(String key) {
         final String keyUser = this.getKeyUser(key);
 
         // checks if user keyUser exists
@@ -82,13 +78,13 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
-        // checks if data exists within key "key" in "info" part of database for keyUser
         try {
             final Response response = client.newCall(request).execute();
             final JSONObject responseBody = new JSONObject(response.body().string());
             final JSONObject userJSONObject = responseBody.getJSONObject("user");
             final JSONObject data = userJSONObject.getJSONObject("info");
-            return data.get(key);
+
+            return data.getJSONObject(key);
         }
         catch (final IOException | JSONException ex) {
             throw new RuntimeException(ex);
