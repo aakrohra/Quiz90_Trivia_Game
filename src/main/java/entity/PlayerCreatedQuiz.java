@@ -1,5 +1,7 @@
 package entity;
 
+import app.Constants;
+
 import java.util.List;
 import java.util.Random;
 
@@ -18,11 +20,11 @@ public class PlayerCreatedQuiz {
         this.username = user.getName();
         this.listOfQuestions = listOfQuestionsMaker();
         this.category = category;
-        this.uniqueKey = username + "_" + this.randomKey();
+        this.uniqueKey = this.randomKey() + username;
     }
 
     private String randomKey() {
-        final int keyLength = 10;
+        final int keyLength = Constants.RANDOMKEYSIZE;
         final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
         final StringBuilder key = new StringBuilder();
         final Random random = new Random();
