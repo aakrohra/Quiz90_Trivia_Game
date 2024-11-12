@@ -18,4 +18,6 @@ public class Constants {
     public static final String[] CATEGORIES = {"General Knowledge", "Science", "History", "Sports", "Entertainment"};
     public static final String[] DIFFICULTIES = {"Easy", "Medium", "Hard"};
     public static final Integer[] NUM_QUESTION = {5, 10, 20};
+
+    public static final int RANDOMKEYSIZE = 10;
 }
