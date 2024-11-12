@@ -1,17 +1,38 @@
 package entity;
 
 import java.util.List;
+import java.util.Random;
+
+import app.Constants;
 
 /**
  * Representation of a player created quiz.
  */
 public class PlayerCreatedQuiz implements Quiz {
-    private final String title;
     private final List<PlayerCreatedQuestion> listOfQuestions;
+    private String uniqueKey = "";
+    private final User user;
+    private final String username;
+    private final String title;
 
-    public PlayerCreatedQuiz(String title, List<PlayerCreatedQuestion> listOfQuestions) {
+    public PlayerCreatedQuiz(User user, String title, List<PlayerCreatedQuestion> listOfQuestions) {
+        this.user = user;
+        this.username = user.getName();
+        this.uniqueKey = this.randomKey() + username;
         this.title = title;
         this.listOfQuestions = listOfQuestions;
+    }
+
+    private String randomKey() {
+        final int keyLength = Constants.RANDOMKEYSIZE;
+        final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        final StringBuilder key = new StringBuilder();
+        final Random random = new Random();
+        for (int i = 0; i < keyLength; i++) {
+            final int index = random.nextInt(chars.length());
+            key.append(chars.charAt(index));
+        }
+        return key.toString();
     }
 
     /**
