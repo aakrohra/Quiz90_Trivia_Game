@@ -1,5 +1,6 @@
 package view;
 
+import app.Constants;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
@@ -15,7 +16,7 @@ import java.beans.PropertyChangeListener;
 /**
  * The View for when the user is logged into the program.
  */
-public class LoggedInView extends JPanel implements PropertyChangeListener {
+public class LoggedInMainMenuView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
@@ -30,25 +31,23 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
 
-    public LoggedInView(LoggedInViewModel loggedInViewModel) {
+    public LoggedInMainMenuView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-        final JLabel title = new JLabel("Logged In Screen");
+        final JPanel currentPlayerPanel = new JPanel();
+        final Box currentPlayerBox = Box.createHorizontalBox();
+        final JLabel title = new JLabel("Current Player: ");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
-
-        final LabelTextPanel passwordInfo = new LabelTextPanel(
-                new JLabel("Password"), passwordInputField);
-
-        final JLabel usernameInfo = new JLabel("Currently logged in: ");
+        currentPlayerPanel.add(currentPlayerBox);
+        currentPlayerBox.add(title);
         username = new JLabel();
 
         final JPanel buttons = new JPanel();
-        logOut = new JButton("Log Out");
-        buttons.add(logOut);
-
         changePassword = new JButton("Change Password");
         buttons.add(changePassword);
+        logOut = new JButton("Log Out");
+        buttons.add(logOut);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
@@ -102,14 +101,18 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                     }
                 }
         );
+        currentPlayerPanel.setBackground(new Color(0, 71, 171));
+        currentPlayerBox.setOpaque(true);
+        currentPlayerBox.setBackground(Color.WHITE);
+        currentPlayerBox.setBorder(BorderFactory.createEmptyBorder(10, 35, 10, 35));
+        this.add(currentPlayerPanel);
+        currentPlayerBox.add(username);
 
-        this.add(title);
-        this.add(usernameInfo);
-        this.add(username);
+        this.setBackground(new Color(0, 71, 171));
 
-        this.add(passwordInfo);
         this.add(passwordErrorField);
         this.add(buttons);
+        buttons.setBackground(new Color(0, 71, 171));
     }
 
     @Override
