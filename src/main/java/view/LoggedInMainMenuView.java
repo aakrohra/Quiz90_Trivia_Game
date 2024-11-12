@@ -42,7 +42,6 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         currentPlayerPanel.add(currentPlayerBox);
         currentPlayerBox.add(title);
         username = new JLabel();
-        usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         final JPanel buttons = new JPanel();
         changePassword = new JButton("Change Password");
