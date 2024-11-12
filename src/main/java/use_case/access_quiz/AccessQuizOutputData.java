@@ -1,5 +1,6 @@
 package use_case.access_quiz;
 
+import app.Constants;
 import entity.PlayerCreatedQuiz;
 
 /**
@@ -21,6 +22,10 @@ public class AccessQuizOutputData {
 
     public int getNumQuestions() {
         return quizObject.getNumQuestions();
+    }
+
+    public String getAuthor() {
+        return quizObject.getAuthor();
     }
 
     public PlayerCreatedQuiz getQuizObject() {

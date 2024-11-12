@@ -29,6 +29,7 @@ public class AccessQuizPresenter implements AccessQuizOutputBoundary {
         accessedQuizInfoState.setQuizObject(response.getQuizObject());
         accessedQuizInfoState.setQuizName(response.getQuizName());
         accessedQuizInfoState.setNumQuestions(response.getNumQuestions());
+        accessedQuizInfoState.setAuthor(response.getAuthor());
 
         this.accessedQuizInfoViewModel.setState(accessedQuizInfoState);
         this.accessedQuizInfoViewModel.firePropertyChanged();

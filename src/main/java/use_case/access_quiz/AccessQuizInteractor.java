@@ -28,7 +28,7 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
         if (customQuizDataAccessObject.existsByKey(key)) {
             final PlayerCreatedQuizFactory quizFactory = new PlayerCreatedQuizFactory();
             final JSONObject quizData = customQuizDataAccessObject.getQuizFromKey(key);
-            final PlayerCreatedQuiz quizObject = quizFactory.create(quizData);
+            final PlayerCreatedQuiz quizObject = quizFactory.create(quizData, key);
 
             final AccessQuizOutputData accessQuizOutputData = new AccessQuizOutputData(
                     false, quizObject);
