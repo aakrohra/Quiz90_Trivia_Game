@@ -27,7 +27,7 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
+import view.LoggedInMainMenuView;
 import view.LoginView;
 import view.SignupView;
 import view.ViewManager;
@@ -61,7 +61,7 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
-    private LoggedInView loggedInView;
+    private LoggedInMainMenuView loggedInMainMenuView;
     private LoginView loginView;
 
     public AppBuilder() {
@@ -96,8 +96,8 @@ public class AppBuilder {
      */
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
-        cardPanel.add(loggedInView, loggedInView.getViewName());
+        loggedInMainMenuView = new LoggedInMainMenuView(loggedInViewModel);
+        cardPanel.add(loggedInMainMenuView, loggedInMainMenuView.getViewName());
         return this;
     }
 
@@ -144,7 +144,7 @@ public class AppBuilder {
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
+        loggedInMainMenuView.setChangePasswordController(changePasswordController);
         return this;
     }
 
@@ -160,7 +160,7 @@ public class AppBuilder {
                 new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
+        loggedInMainMenuView.setLogoutController(logoutController);
         return this;
     }
 

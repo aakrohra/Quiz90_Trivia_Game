@@ -9,10 +9,15 @@ public class LoggedInState {
     private String password = "";
     private String passwordError;
 
+    private String key = "";
+    private String keyError;
+
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
         password = copy.password;
         passwordError = copy.passwordError;
+        this.key = copy.key;
+        keyError = copy.keyError;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -38,5 +43,17 @@ public class LoggedInState {
 
     public String getPassword() {
         return password;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setKeyError(String keyError) {
+        this.keyError = keyError;
     }
 }
