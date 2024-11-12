@@ -23,11 +23,4 @@ public class AccessQuizController {
 
         accessQuizUseCaseInteractor.execute(accessQuizInputData);
     }
-
-    /**
-     * Executes the switch to Accessed Quiz Info View use case.
-     */
-    public void switchToAccessedQuizInfoView() {
-        accessQuizUseCaseInteractor.switchToAccessedQuizInfoView();
-    }
 }

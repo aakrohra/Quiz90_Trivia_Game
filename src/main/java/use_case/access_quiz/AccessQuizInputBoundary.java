@@ -10,9 +10,4 @@ public interface AccessQuizInputBoundary {
      * @param accessQuizInputData the input data
      */
     void execute(AccessQuizInputData accessQuizInputData);
-
-    /**
-     * Executes the switch to accessed quiz info view.
-     */
-    void switchToAccessedQuizInfoView();
 }

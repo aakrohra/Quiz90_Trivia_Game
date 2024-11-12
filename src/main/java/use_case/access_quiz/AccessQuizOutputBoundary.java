@@ -16,9 +16,4 @@ public interface AccessQuizOutputBoundary {
      * @param errorMessage the message to display on error
      */
     void prepareFailView(String errorMessage);
-
-    /**
-     * Switches to the accessed quiz info view.
-     */
-    void switchToAccessedQuizInfoView();
 }
