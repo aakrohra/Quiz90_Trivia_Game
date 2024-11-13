@@ -32,6 +32,10 @@ public class PlayerCreatedQuestion implements Question {
         return result.toString();
     }
 
+    public List<String> getAnswerOptionsList() {
+        return this.answerOptions;
+    }
+
     @Override
     public String getCorrectAnswer() {
         return this.correctAnswer;
