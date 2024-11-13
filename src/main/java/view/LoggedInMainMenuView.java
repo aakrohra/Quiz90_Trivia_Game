@@ -1,6 +1,7 @@
 package view;
 
 import app.Constants;
+import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
@@ -22,6 +23,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
     private final LoggedInViewModel loggedInViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
+    private AccessQuizController accessQuizController;
     private LogoutController logoutController;
 
     private final JLabel username;
@@ -125,7 +127,6 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
         }
-
     }
 
     public String getViewName() {
@@ -138,5 +139,9 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
+    }
+
+    public void setAccessQuizController(AccessQuizController accessQuizController) {
+        this.accessQuizController = accessQuizController;
     }
 }

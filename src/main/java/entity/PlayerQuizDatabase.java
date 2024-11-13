@@ -1,3 +1,4 @@
+
 package entity;
 
 import java.util.HashMap;
@@ -82,3 +83,4 @@ public class PlayerQuizDatabase implements Database {
         return quizList.size();
     }
 }
+

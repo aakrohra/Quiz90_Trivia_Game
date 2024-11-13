@@ -5,6 +5,7 @@ import java.util.*;
 
 import entity.*;
 import okhttp3.*;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +23,14 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         CreateQuizUserDataAccessInterface {
 
     public static final String CORRECT = "correct";
+    public static final String OPTIONS = "options";
+    public static final String QUESTION_TEXT = "questionText";
+    public static final String TITLE = "title";
+    public static final String INFO1 = "info";
+    public static final String USER = "user";
+    public static final String QUESTIONS = "questions";
     public static final String PUT = "PUT";
+
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String STATUS_CODE_LABEL = "status_code";
@@ -31,12 +39,8 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     private static final String MESSAGE = "message";
     private static final String INFO = "info";
     private static final int SUCCESS_CODE = 200;
-    public static final String OPTIONS = "options";
-    public static final String QUESTION_TEXT = "questionText";
-    public static final String TITLE = "title";
-    public static final String INFO1 = "info";
-    public static final String USER = "user";
-    public static final String QUESTIONS = "questions";
+    private static final String API_INFO_CALL = "http://vm003.teach.cs.toronto.edu:20112/user?username=%s";
+    private static final String API_USER_EXISTS_CALL = "http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s";
 
     /**
      * Get the username of the user who created the quiz with the given key.
@@ -62,7 +66,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         // checks if user keyUser exists
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", keyUser))
+                .url(String.format(API_USER_EXISTS_CALL, keyUser))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
@@ -72,7 +76,15 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
             final JSONObject responseBody = new JSONObject(response.body().string());
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-                final JSONObject userJSONObject = responseBody.getJSONObject(USER);
+                final Request requestUser = new Request.Builder()
+                        .url(String.format(API_INFO_CALL, keyUser))
+                        .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                        .build();
+
+                final Response responseUser = client.newCall(requestUser).execute();
+                final JSONObject responseBodyUser = new JSONObject(responseUser.body().string());
+
+                final JSONObject userJSONObject = responseBodyUser.getJSONObject(USER);
                 final JSONObject data = userJSONObject.getJSONObject(INFO);
                 keyExists = data.has(key);
             }
@@ -83,13 +95,6 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         }
     }
 
-    /**
-     * Gets the quiz associated with the key from the database and returns it as an Object.
-     *
-     * @param key the given key
-     * @return the quiz data as an Object
-     * @throws RuntimeException if there is an issue
-     */
     @Override
     public JSONObject getQuizFromKey(String key) {
         final String keyUser = this.getKeyUser(key);
@@ -97,7 +102,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         // checks if user keyUser exists
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", keyUser))
+                .url(String.format(API_INFO_CALL, keyUser))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
@@ -178,7 +183,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         final String username = user.getName();
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/user?username=%s", username))
+                .url(String.format(API_INFO_CALL, username))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
         try {
@@ -220,7 +225,6 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
      *   ]
      * }
      */
-
     private JSONObject quizObjectToJSONObject(PlayerCreatedQuiz quiz) {
         final JSONObject quizJSONObject = new JSONObject();
         quizJSONObject.put(TITLE, quiz.getTitle());

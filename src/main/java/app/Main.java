@@ -22,6 +22,7 @@ public class Main {
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
+                                            .addAccessQuizUseCase()
                                             .build();
 
         application.pack();
