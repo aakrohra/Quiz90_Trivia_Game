@@ -1,6 +1,7 @@
 package entity;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Representation of a database in our program.
@@ -16,7 +17,7 @@ public interface Database<T> {
     /**
      * Creates a new item for the database.
      */
-    void create();
+    void createItem();
 
     /**
      * Returns an item given a unique key.
@@ -34,9 +35,10 @@ public interface Database<T> {
 
     /**
      * Returns all items in database.
+     *
      * @return list of items
      */
-    List<T> getAll();
+    Map<String, T> getAll();
 
     /**
      * Updates a given item given the unique key and the updated item.

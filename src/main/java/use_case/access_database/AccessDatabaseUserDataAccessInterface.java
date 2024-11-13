@@ -12,9 +12,9 @@ import org.json.JSONObject;
 public interface AccessDatabaseUserDataAccessInterface {
 
     /**
-     * Returns all quiz objects associated with the given user.
+     * Returns all quiz objects associated with the given user mapped to their key.
      * @param user the given user
-     * @return map of objects associated with user
+     * @return map with key, quiz pairing
      */
     Map<String, Quiz> getAllUserQuizzes(User user);
 
