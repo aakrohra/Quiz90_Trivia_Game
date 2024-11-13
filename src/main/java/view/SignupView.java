@@ -5,11 +5,14 @@ import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -33,11 +36,22 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         this.signupViewModel = signupViewModel;
         signupViewModel.addPropertyChangeListener(this);
 
+        final PanelBox titlePanelBox = new PanelBox(new JPanel(), Box.createHorizontalBox());
         final JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
+        titlePanelBox.add(title);
+
+        title.setBorder(new EmptyBorder(20, 0, 20, 0));
+        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 24));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        final JPanel usernamePanel = new JPanel();
+        final JTextField usernameField = new JTextField(15);
+        usernamePanel.add(usernameField);
+        usernameField.setText("Enter your username here...");
+        usernameField.setForeground(Color.GRAY);
         final LabelTextPanel usernameInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.USERNAME_LABEL), usernameInputField);
+
         final LabelTextPanel passwordInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.PASSWORD_LABEL), passwordInputField);
         final LabelTextPanel repeatPasswordInfo = new LabelTextPanel(
@@ -76,6 +90,27 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
                 }
         );
 
+        usernameField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (usernameField.getText().equals("Enter your username here...")) {
+                    usernameField.setText("");
+                    // Set text color when typing
+                    usernameField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Restore placeholder text if the field is empty
+                if (usernameField.getText().isEmpty()) {
+                    usernameField.setText("Enter your username here...");
+                    // Set placeholder text color
+                    usernameField.setForeground(Color.GRAY);
+                }
+            }
+        });
+
         cancel.addActionListener(this);
 
         addUsernameListener();
@@ -84,7 +119,9 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        this.add(title);
+        titlePanelBox.setBackground(new Color(0, 71, 171));
+        this.add(titlePanelBox);
+        this.add(usernamePanel);
         this.add(usernameInfo);
         this.add(passwordInfo);
         this.add(repeatPasswordInfo);
