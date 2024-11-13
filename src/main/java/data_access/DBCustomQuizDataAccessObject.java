@@ -115,17 +115,16 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     }
 
     /**
-     * Gets all quizzes associated with user from the database and returns as a list of quiz objects.
-     *
+     * Returns all quiz objects associated with the given user mapped to their key.
      * @param user the given user
-     * @return quizzes as list of quiz objects
+     * @return map with key, quiz pairing
      * @throws RuntimeException if there is an issue
      */
     @Override
     public Map<String, Quiz> getAllUserQuizzes(User user) throws RuntimeException {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", keyUser))
+                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", user.getName()))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 

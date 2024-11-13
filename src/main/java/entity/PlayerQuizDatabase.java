@@ -1,7 +1,8 @@
 package entity;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import data_access.DBCustomQuizDataAccessObject;
 
@@ -11,7 +12,7 @@ import data_access.DBCustomQuizDataAccessObject;
  */
 public class PlayerQuizDatabase implements Database {
     private User user;
-    private List<Quiz> quizList = new ArrayList<>();
+    private Map<String, Quiz> quizList = new HashMap<>();
 
     public PlayerQuizDatabase(User user) {
         this.user = user;
@@ -25,34 +26,36 @@ public class PlayerQuizDatabase implements Database {
     }
 
     @Override
-    public void create() {
+    public void createItem() {
 
     }
 
     @Override
-    public Object getByKey(String key) {
-        try {
-            final Quiz quiz = quizList.get
-        }
+    public Quiz getByKey(String key) {
+        final Quiz quiz = quizList.get(key);
+        return quiz;
     }
 
     private int getOrd(char chr) {
+        final int result;
         if (97 <= chr && chr <= 122) {
-            return chr - 97;
+            result = chr - 97;
         }
         else if (65 <= chr && chr <= 90) {
-            return chr - 65;
+            result = chr - 65;
         }
         else if (48 <= chr && chr <= 57) {
-            return chr - 22;
+            result = chr - 22;
         }
         else {
-            return 57-22;
+            result = 57 - 22;
         }
+        return result;
     }
 
     private Quiz binarySearch(String key, int keyIdx, int lowIdx, int highIdx) {
-    }
+        return quizList.get(key);
+        }
 
     @Override
     public List getByTitle(String title) {
@@ -60,8 +63,8 @@ public class PlayerQuizDatabase implements Database {
     }
 
     @Override
-    public List getAll() {
-        return List.of();
+    public Map<String, Quiz> getAll() {
+        return quizList;
     }
 
     @Override
