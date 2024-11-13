@@ -30,7 +30,7 @@ public class PlayerCreatedQuiz implements Quiz {
 
     public List<PlayerCreatedQuestion> getQuestions() {
         return listOfQuestions;
-    }>
+    }
 
     public String getTitle() {
         return title;
