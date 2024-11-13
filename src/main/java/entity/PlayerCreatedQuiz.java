@@ -28,6 +28,10 @@ public class PlayerCreatedQuiz implements Quiz {
         return result.toString();
     }
 
+    public List<PlayerCreatedQuestion> getQuestions() {
+        return listOfQuestions;
+    }>
+
     public String getTitle() {
         return title;
     }
