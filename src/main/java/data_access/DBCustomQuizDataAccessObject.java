@@ -85,11 +85,13 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
 
     /**
      * Gets the quiz associated with the key from the database and returns it as an Object.
+     *
      * @param key the given key
      * @return the quiz data as an Object
      * @throws RuntimeException if there is an issue
      */
-    public Object getQuizFromKey(String key) {
+    @Override
+    public JSONObject getQuizFromKey(String key) {
         final String keyUser = this.getKeyUser(key);
 
         // checks if user keyUser exists
@@ -105,7 +107,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
             final JSONObject responseBody = new JSONObject(response.body().string());
             final JSONObject userJSONObject = responseBody.getJSONObject(USER);
             final JSONObject data = userJSONObject.getJSONObject(INFO);
-            return data.get(key);
+            return data.getJSONObject(key);
         }
         catch (final IOException | JSONException ex) {
             throw new RuntimeException(ex);
@@ -221,8 +223,8 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
      */
 
     private JSONObject quizObjectToJSONObject(PlayerCreatedQuiz quiz) {
-        final JSONObject quizObject = new JSONObject();
-        quizObject.put(TITLE, quiz.getTitle());
+        final JSONObject quizJSONObject = new JSONObject();
+        quizJSONObject.put(TITLE, quiz.getTitle());
         final List<PlayerCreatedQuestion> questions = quiz.getQuestions();
         final JSONArray questionsArray = new JSONArray();
         for (final PlayerCreatedQuestion question : questions) {
@@ -233,8 +235,8 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
             questionObject.put(CORRECT, question.getCorrectAnswer());
             questionsArray.put(questionObject);
         }
-        quizObject.put(QUESTIONS, questionsArray);
-        return quizObject;
+        quizJSONObject.put(QUESTIONS, questionsArray);
+        return quizJSONObject;
     }
 
     /**
@@ -264,7 +266,6 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         final JSONObject currentUserInfo = getUserInfo(user);
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject requestJSONObject = new JSONObject();
         final JSONObject quizObject = quizObjectToJSONObject(quiz);
         String key;
         while (true) {
