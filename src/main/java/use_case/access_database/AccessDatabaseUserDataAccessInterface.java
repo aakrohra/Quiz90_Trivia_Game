@@ -1,6 +1,6 @@
 package use_case.access_database;
 
-import java.util.List;
+import java.util.Map;
 
 import entity.Quiz;
 import entity.User;
@@ -13,7 +13,7 @@ public interface AccessDatabaseUserDataAccessInterface {
     /**
      * Returns all quiz objects associated with the given user.
      * @param user the given user
-     * @return list of objects associated with user
+     * @return map of objects associated with user
      */
-    List<Quiz> getAllUserQuizzes(User user);
+    Map<String, Quiz> getAllUserQuizzes(User user);
 }

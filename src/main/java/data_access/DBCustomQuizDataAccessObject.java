@@ -1,12 +1,9 @@
 package data_access;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import entity.*;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -104,12 +101,13 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
 
     /**
      * Gets all quizzes associated with user from the database and returns as a list of quiz objects.
+     *
      * @param user the given user
      * @return quizzes as list of quiz objects
      * @throws RuntimeException if there is an issue
      */
     @Override
-    public List<Quiz> getAllUserQuizzes(User user) throws RuntimeException {
+    public Map<String, Quiz> getAllUserQuizzes(User user) throws RuntimeException {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
                 .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", keyUser))
@@ -121,14 +119,14 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
             final JSONObject responseBody = new JSONObject(response.body().string());
             final JSONObject userJSONObject = responseBody.getJSONObject("user");
             final JSONObject data = userJSONObject.getJSONObject("info");
-            final List<Quiz> userQuizzes = new ArrayList<>();
+            final Map<String, Quiz> userQuizzes = new HashMap<>();
             final PlayerCreatedQuizFactory playerCreatedQuizFactory = new PlayerCreatedQuizFactory();
             final Iterator<String> keys = data.keys();
             while (keys.hasNext()) {
                 final String key = keys.next();
                 final JSONObject quizData = data.getJSONObject(key);
                 final PlayerCreatedQuiz quiz = playerCreatedQuizFactory.create(quizData, key);
-                userQuizzes.add(quiz);
+                userQuizzes.put(key, quiz);
             }
             return userQuizzes;
         }
