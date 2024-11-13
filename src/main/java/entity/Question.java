@@ -21,16 +21,4 @@ public interface Question {
      * @return the correct answer to the question.
      */
     String getCorrectAnswer();
-
-    /**
-     * Returns the category of the question.
-     * @return the category of the question.
-     */
-    String getCategory();
-
-    /**
-     * Returns the difficulty of the question.
-     * @return the difficulty of the question.
-     */
-    String getDifficulty();
 }

@@ -1,6 +1,7 @@
 package use_case.access_quiz;
 
-import entity.Quiz;
+import app.Constants;
+import entity.PlayerCreatedQuiz;
 
 /**
  * Output data for the Access Quiz use case.
@@ -8,26 +9,26 @@ import entity.Quiz;
 public class AccessQuizOutputData {
 
     private final boolean useCaseFailed;
-    private final String quizName;
-    private final int numQuestions;
-    private final Quiz quizObject;
+    private final PlayerCreatedQuiz quizObject;
 
-    public AccessQuizOutputData(boolean useCaseFailed, String quizName, int numQuestions, Quiz quizObject) {
+    public AccessQuizOutputData(boolean useCaseFailed, PlayerCreatedQuiz quizObject) {
         this.useCaseFailed = useCaseFailed;
-        this.quizName = quizName;
-        this.numQuestions = numQuestions;
         this.quizObject = quizObject;
     }
 
     public String getQuizName() {
-        return quizName;
+        return quizObject.getTitle();
     }
 
     public int getNumQuestions() {
-        return numQuestions;
+        return quizObject.getNumQuestions();
     }
 
-    public Quiz getQuizObject() {
+    public String getAuthor() {
+        return quizObject.getAuthor();
+    }
+
+    public PlayerCreatedQuiz getQuizObject() {
         return quizObject;
     }
 }

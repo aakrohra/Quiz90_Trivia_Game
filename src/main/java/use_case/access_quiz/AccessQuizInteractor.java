@@ -1,5 +1,9 @@
 package use_case.access_quiz;
 
+import entity.PlayerCreatedQuiz;
+import entity.PlayerCreatedQuizFactory;
+import org.json.JSONObject;
+
 import entity.Quiz;
 
 /**
@@ -22,11 +26,13 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
         final String key = accessQuizInputData.getKey();
 
         if (customQuizDataAccessObject.existsByKey(key)) {
-            final Object customQuiz = customQuizDataAccessObject.getQuizFromKey(key);
-            // do something to turn Object customQuiz into a QuizObject.
-            final Quiz quizObject = (Quiz) customQuiz;
+            final PlayerCreatedQuizFactory quizFactory = new PlayerCreatedQuizFactory();
+            final JSONObject quizData = customQuizDataAccessObject.getQuizFromKey(key);
+            final PlayerCreatedQuiz quizObject = quizFactory.create(quizData, key);
+
             final AccessQuizOutputData accessQuizOutputData = new AccessQuizOutputData(
-                    false, "", 0, quizObject);
+                    false, quizObject);
+
             accessQuizPresenter.prepareSuccessView(accessQuizOutputData);
         }
         else {
