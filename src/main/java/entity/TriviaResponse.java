@@ -6,7 +6,7 @@ import java.util.List;
  * Represents a response containing a list of trivia questions.
  */
 public class TriviaResponse {
-    private List<TriviaQuestion> questions;
+    private final List<TriviaQuestion> questions;
 
     public TriviaResponse(List<TriviaQuestion> questions) {
         this.questions = questions;

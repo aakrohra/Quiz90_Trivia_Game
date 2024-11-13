@@ -6,9 +6,9 @@ import java.util.List;
  * Represents a trivia question with its correct and incorrect answers.
  */
 public class TriviaQuestion {
-    private String question;
-    private String correctAnswer;
-    private List<String> incorrectAnswers;
+    private final String question;
+    private final String correctAnswer;
+    private final List<String> incorrectAnswers;
 
     public TriviaQuestion(String question, String correctAnswer, List<String> incorrectAnswers) {
         this.question = question;
