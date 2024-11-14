@@ -7,12 +7,15 @@ public class LoggedInState {
     private String username = "";
 
     private String password = "";
-    private String passwordError;
+
+    private String quizKey = "";
+    private String quizKeyError;
 
     public LoggedInState(LoggedInState copy) {
         username = copy.username;
         password = copy.password;
-        passwordError = copy.passwordError;
+        this.quizKey = copy.quizKey;
+        quizKeyError = copy.quizKeyError;
     }
 
     // Because of the previous copy constructor, the default constructor must be explicit.
@@ -28,15 +31,19 @@ public class LoggedInState {
         this.username = username;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPasswordError(String passwordError) {
-        this.passwordError = passwordError;
-    }
-
     public String getPassword() {
         return password;
+    }
+
+    public String getQuizKey() {
+        return quizKey;
+    }
+
+    public void setQuizKey(String quizKey) {
+        this.quizKey = quizKey;
+    }
+
+    public void setQuizKeyError(String quizKeyError) {
+        this.quizKeyError = quizKeyError;
     }
 }

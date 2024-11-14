@@ -11,18 +11,11 @@ public class PlayerCreatedQuestion implements Question {
     private final String questionText;
     private final List<String> answerOptions = new ArrayList<>();
     private final String correctAnswer;
-    private final String category;
-    private final String difficulty;
-    private final String uniqueKey;
 
-    public PlayerCreatedQuestion(String questionText, List<String> answerOptions, String correctAnswer,
-                                 String category, String difficulty, String uniqueKey) {
+    public PlayerCreatedQuestion(String questionText, List<String> answerOptions, String correctAnswer) {
         this.questionText = questionText;
         this.answerOptions.addAll(answerOptions);
         this.correctAnswer = correctAnswer;
-        this.category = category;
-        this.difficulty = difficulty;
-        this.uniqueKey = uniqueKey;
     }
 
     @Override
@@ -39,22 +32,12 @@ public class PlayerCreatedQuestion implements Question {
         return result.toString();
     }
 
+    public List<String> getAnswerOptionsList() {
+        return this.answerOptions;
+    }
+
     @Override
     public String getCorrectAnswer() {
         return this.correctAnswer;
-    }
-
-    @Override
-    public String getCategory() {
-        return this.category;
-    }
-
-    @Override
-    public String getDifficulty() {
-        return this.difficulty;
-    }
-
-    public String getUniqueKey() {
-        return this.uniqueKey;
     }
 }

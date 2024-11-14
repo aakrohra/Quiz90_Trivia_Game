@@ -7,6 +7,8 @@ import interface_adapter.ViewModel;
  */
 public class LoggedInViewModel extends ViewModel<LoggedInState> {
 
+    public static final String TITLE_LABEL = "Main Menu";
+
     public LoggedInViewModel() {
         super("logged in");
         setState(new LoggedInState());

@@ -1,9 +1,13 @@
 package app;
 
+import data_access.DBCustomQuizDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.access_quiz.AccessQuizController;
+import interface_adapter.access_quiz.AccessQuizPresenter;
+import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
@@ -15,6 +19,9 @@ import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.access_quiz.AccessQuizInputBoundary;
+import use_case.access_quiz.AccessQuizInteractor;
+import use_case.access_quiz.AccessQuizOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
@@ -27,10 +34,7 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInMainMenuView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,13 +60,16 @@ public class AppBuilder {
 
     // thought question: is the hard dependency below a problem?
     private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    private final DBCustomQuizDataAccessObject customQuizDataAccessObject = new DBCustomQuizDataAccessObject();
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private AccessedQuizInfoViewModel accessedQuizInfoViewModel;
     private LoggedInMainMenuView loggedInMainMenuView;
     private LoginView loginView;
+    private AccessedQuizInfoView accessedQuizInfoView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -100,6 +107,12 @@ public class AppBuilder {
         cardPanel.add(loggedInMainMenuView, loggedInMainMenuView.getViewName());
         return this;
     }
+
+//    public AppBuilder addAccessedQuizInfoView() {
+//        accessedQuizInfoViewModel = new AccessedQuizInfoViewModel();
+//        accessedQuizInfoView = new AccessedQuizInfoView(accessedQuizInfoViewModel);
+//        cardPanel.add(accessedQuizInfoView, accessedQuizInfoView.getViewName());
+//    }
 
     /**
      * Adds the Signup Use Case to the application.
@@ -161,6 +174,24 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInMainMenuView.setLogoutController(logoutController);
+        return this;
+    }
+
+    /**
+     * Adds the Access Quiz Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addAccessQuizUseCase() {
+        final AccessQuizOutputBoundary accessQuizOutputBoundary = new AccessQuizPresenter(
+                viewManagerModel, loggedInViewModel, accessedQuizInfoViewModel
+        );
+
+        final AccessQuizInputBoundary accessQuizInteractor = new AccessQuizInteractor(
+                customQuizDataAccessObject, accessQuizOutputBoundary
+        );
+
+        final AccessQuizController accessQuizController = new AccessQuizController(accessQuizInteractor);
+        loggedInMainMenuView.setAccessQuizController(accessQuizController);
         return this;
     }
 

@@ -5,15 +5,15 @@ import java.util.List;
 /**
  * Representation of a player created quiz.
  */
-public class PlayerCreatedQuiz {
+public class PlayerCreatedQuiz implements Quiz {
     private final List<PlayerCreatedQuestion> listOfQuestions;
-    private final String category;
-    private final String uniqueKey = "";
+    private final String title;
+    private final String author;
 
-    public PlayerCreatedQuiz(String category) {
-        this.listOfQuestions = listOfQuestionsMaker();
-        this.category = category;
-        // TODO assign uniqueKey uniquely/randomly (?)
+    public PlayerCreatedQuiz(String title, List<PlayerCreatedQuestion> listOfQuestions, String author) {
+        this.title = title;
+        this.listOfQuestions = listOfQuestions;
+        this.author = author;
     }
 
     /**
@@ -28,16 +28,19 @@ public class PlayerCreatedQuiz {
         return result.toString();
     }
 
-    public String getCategory() {
-        return this.category;
+    public List<PlayerCreatedQuestion> getQuestions() {
+        return listOfQuestions;
     }
 
-    public String getUniqueKey() {
-        return this.uniqueKey;
+    public String getTitle() {
+        return title;
     }
 
-    private List<PlayerCreatedQuestion> listOfQuestionsMaker() {
-        // TODO this needs implementation based on API
-        return null;
+    public int getNumQuestions() {
+        return listOfQuestions.size();
+    }
+
+    public String getAuthor() {
+        return author;
     }
 }
