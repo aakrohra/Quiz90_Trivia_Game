@@ -12,10 +12,10 @@ import java.util.Map;
  */
 public class PlayerQuizDatabase implements Database {
     private User user;
-    private Map<String, Quiz> quizMap = new HashMap<>();
+    private Map<String, PlayerCreatedQuiz> quizMap = new HashMap<>();
     private Map<String, String> titleToKeyMap = new HashMap<>();
 
-    public PlayerQuizDatabase(User user, Map<String, Quiz> quizMap) {
+    public PlayerQuizDatabase(User user, Map<String, PlayerCreatedQuiz> quizMap) {
         this.user = user;
         this.quizMap = quizMap;
         this.titleToKeyMap = this.titleToKeyMapBuilder();
@@ -24,7 +24,7 @@ public class PlayerQuizDatabase implements Database {
     private Map<String, String> titleToKeyMapBuilder() {
         final Map<String, String> titleToKeyMap = new HashMap<>();
         final Iterator<String> keys = quizMap.keySet().iterator();
-        for (Quiz quiz : quizMap.values()) {
+        for (PlayerCreatedQuiz quiz : quizMap.values()) {
             titleToKeyMap.put(quiz.getTitle(), keys.next());
         }
         return titleToKeyMap;
@@ -60,10 +60,10 @@ public class PlayerQuizDatabase implements Database {
 //    }
 
     @Override
-    public Map<String, Quiz> getByTitle(String title) {
-        final Map<String, Quiz> quizzes = new HashMap<>();
+    public Map<String, PlayerCreatedQuiz> getByTitle(String title) {
+        final Map<String, PlayerCreatedQuiz> quizzes = new HashMap<>();
         final String str = title.toLowerCase().replaceAll("\\s+", "");
-        for (Quiz quiz : quizMap.values()) {
+        for (PlayerCreatedQuiz quiz : quizMap.values()) {
             final String quizTitle = quiz.getTitle().toLowerCase().replaceAll("\\s+", "");
             if (quizTitle.contains(str)) {
                 final String key = titleToKeyMap.get(quizTitle);
@@ -74,7 +74,7 @@ public class PlayerQuizDatabase implements Database {
     }
 
     @Override
-    public Map<String, Quiz> getAll() {
+    public Map<String, PlayerCreatedQuiz> getAll() {
         return quizMap;
     }
 

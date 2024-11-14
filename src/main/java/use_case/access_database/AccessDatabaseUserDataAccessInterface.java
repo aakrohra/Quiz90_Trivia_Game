@@ -2,6 +2,7 @@ package use_case.access_database;
 
 import java.util.Map;
 
+import entity.PlayerCreatedQuiz;
 import entity.Quiz;
 import entity.User;
 import org.json.JSONObject;
@@ -16,7 +17,7 @@ public interface AccessDatabaseUserDataAccessInterface {
      * @param user the given user
      * @return map with key, quiz pairing
      */
-    Map<String, Quiz> getAllUserQuizzes(User user);
+    Map<String, PlayerCreatedQuiz> getAllUserQuizzes(User user);
 
     /**
      * Gets user info including username, password, and quizzes and returns as a JSONObject.
@@ -25,4 +26,6 @@ public interface AccessDatabaseUserDataAccessInterface {
      * @throws RuntimeException if there is an issue
      */
     JSONObject getUserInfo(User user);
+
+    boolean existsByName(User user);
 }

@@ -96,6 +96,26 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     }
 
     @Override
+    public boolean existsByName(User user) {
+        final OkHttpClient client = new OkHttpClient().newBuilder()
+                .build();
+        final Request request = new Request.Builder()
+                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", user.getName()))
+                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+                .build();
+        try {
+            final Response response = client.newCall(request).execute();
+
+            final JSONObject responseBody = new JSONObject(response.body().string());
+
+            return responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE;
+        }
+        catch (IOException | JSONException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
+
+    @Override
     public JSONObject getQuizFromKey(String key) {
         final String keyUser = this.getKeyUser(key);
 
@@ -126,7 +146,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
      * @throws RuntimeException if there is an issue
      */
     @Override
-    public Map<String, Quiz> getAllUserQuizzes(User user) throws RuntimeException {
+    public Map<String, PlayerCreatedQuiz> getAllUserQuizzes(User user) throws RuntimeException {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
                 .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", user.getName()))
@@ -138,7 +158,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
             final JSONObject responseBody = new JSONObject(response.body().string());
             final JSONObject userJSONObject = responseBody.getJSONObject(USER);
             final JSONObject data = userJSONObject.getJSONObject(INFO);
-            final Map<String, Quiz> userQuizzes = new HashMap<>();
+            final Map<String, PlayerCreatedQuiz> userQuizzes = new HashMap<>();
             final PlayerCreatedQuizFactory playerCreatedQuizFactory = new PlayerCreatedQuizFactory();
             final Iterator<String> keys = data.keys();
             while (keys.hasNext()) {
@@ -297,6 +317,5 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         catch (IOException | JSONException ex) {
             throw new RuntimeException(ex);
         }
-
     }
 }
