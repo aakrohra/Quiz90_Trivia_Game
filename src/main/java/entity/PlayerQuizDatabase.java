@@ -2,10 +2,9 @@
 package entity;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import data_access.DBCustomQuizDataAccessObject;
 
 /**
  * An implementation of the Database interface.
@@ -13,13 +12,24 @@ import data_access.DBCustomQuizDataAccessObject;
  */
 public class PlayerQuizDatabase implements Database {
     private User user;
-    private Map<String, Quiz> quizList = new HashMap<>();
+    private Map<String, Quiz> quizMap = new HashMap<>();
+    private Map<String, String> titleToKeyMap = new HashMap<>();
 
-    public PlayerQuizDatabase(User user) {
+    public PlayerQuizDatabase(User user, Map<String, Quiz> quizMap) {
         this.user = user;
-        final DBCustomQuizDataAccessObject quizDataAccessObject = new DBCustomQuizDataAccessObject();
-        quizList = quizDataAccessObject.getAllUserQuizzes(user);
+        this.quizMap = quizMap;
+        this.titleToKeyMap = this.titleToKeyMapBuilder();
     }
+
+    private Map<String, String> titleToKeyMapBuilder() {
+        final Map<String, String> titleToKeyMap = new HashMap<>();
+        final Iterator<String> keys = quizMap.keySet().iterator();
+        for (Quiz quiz : quizMap.values()) {
+            titleToKeyMap.put(quiz.getTitle(), keys.next());
+        }
+        return titleToKeyMap;
+    }
+
 
     @Override
     public User getUser() {
@@ -27,60 +37,50 @@ public class PlayerQuizDatabase implements Database {
     }
 
     @Override
-    public void createItem() {
-
-    }
-
-    @Override
     public Quiz getByKey(String key) {
-        final Quiz quiz = quizList.get(key);
+        final Quiz quiz = quizMap.get(key);
         return quiz;
     }
 
-    private int getOrd(char chr) {
-        final int result;
-        if (97 <= chr && chr <= 122) {
-            result = chr - 97;
-        }
-        else if (65 <= chr && chr <= 90) {
-            result = chr - 65;
-        }
-        else if (48 <= chr && chr <= 57) {
-            result = chr - 22;
-        }
-        else {
-            result = 57 - 22;
-        }
-        return result;
-    }
-
-    private Quiz binarySearch(String key, int keyIdx, int lowIdx, int highIdx) {
-        return quizList.get(key);
-        }
+//    private int getOrd(char chr) {
+//        final int result;
+//        if (97 <= chr && chr <= 122) {
+//            result = chr - 97;
+//        }
+//        else if (65 <= chr && chr <= 90) {
+//            result = chr - 65;
+//        }
+//        else if (48 <= chr && chr <= 57) {
+//            result = chr - 22;
+//        }
+//        else {
+//            result = 57 - 22;
+//        }
+//        return result;
+//    }
 
     @Override
-    public List getByTitle(String title) {
-        return List.of();
+    public Map<String, Quiz> getByTitle(String title) {
+        final Map<String, Quiz> quizzes = new HashMap<>();
+        final String str = title.toLowerCase().replaceAll("\\s+", "");
+        for (Quiz quiz : quizMap.values()) {
+            final String quizTitle = quiz.getTitle().toLowerCase().replaceAll("\\s+", "");
+            if (quizTitle.contains(str)) {
+                final String key = titleToKeyMap.get(quizTitle);
+                quizzes.put(key, quiz);
+            }
+        }
+        return quizzes;
     }
 
     @Override
     public Map<String, Quiz> getAll() {
-        return quizList;
-    }
-
-    @Override
-    public void update(String key, Object updatedItem) {
-
-    }
-
-    @Override
-    public void delete(String key) {
-
+        return quizMap;
     }
 
     @Override
     public int getNumberOfItems() {
-        return quizList.size();
+        return quizMap.size();
     }
 }
 

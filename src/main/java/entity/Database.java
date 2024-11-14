@@ -1,6 +1,5 @@
 package entity;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,11 +14,6 @@ public interface Database<T> {
     User getUser();
 
     /**
-     * Creates a new item for the database.
-     */
-    void createItem();
-
-    /**
      * Returns an item given a unique key.
      * @param key of item
      * @return item
@@ -28,10 +22,11 @@ public interface Database<T> {
 
     /**
      * Returns a list of items that contain the given string in the title.
+     *
      * @param title of item
      * @return list of items
      */
-    List<T> getByTitle(String title);
+    Map<String, T> getByTitle(String title);
 
     /**
      * Returns all items in database.
@@ -39,19 +34,6 @@ public interface Database<T> {
      * @return list of items
      */
     Map<String, T> getAll();
-
-    /**
-     * Updates a given item given the unique key and the updated item.
-     * @param key of item to be updated
-     * @param updatedItem to update with
-     */
-    void update(String key, T updatedItem);
-
-    /**
-     * Deletes a given item given the unique key.
-     * @param key of item to be deleted
-     */
-    void delete(String key);
 
     /**
      * Returns number of items in database.
