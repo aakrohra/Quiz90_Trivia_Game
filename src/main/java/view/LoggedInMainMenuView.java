@@ -130,12 +130,12 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         buttons3.add(logOut);
         buttons3.add(Box.createHorizontalGlue());
 
-
         sharedQuizKeyField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
                 final LoggedInState currentState = loggedInViewModel.getState();
                 currentState.setQuizKey(sharedQuizKeyField.getText());
                 loggedInViewModel.setState(currentState);
+                System.out.println(currentState.getQuizKey());
             }
 
             @Override
@@ -174,6 +174,17 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
                 }
             }
         });
+
+        playSharedQuiz.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(playSharedQuiz)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+
+                        System.out.println(currentState.getQuizKey());
+                        this.accessQuizController.execute(currentState.getQuizKey());
+                    }
+                }
+        );
 
         localMultiplayer.addActionListener(
                 evt -> {

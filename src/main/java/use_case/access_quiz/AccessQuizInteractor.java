@@ -1,10 +1,9 @@
 package use_case.access_quiz;
 
-import entity.PlayerCreatedQuiz;
-import entity.PlayerCreatedQuizFactory;
 import org.json.JSONObject;
 
-import entity.Quiz;
+import entity.PlayerCreatedQuiz;
+import entity.PlayerCreatedQuizFactory;
 
 /**
  * The Access Quiz Interactor.
