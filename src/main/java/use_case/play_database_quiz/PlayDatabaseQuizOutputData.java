@@ -1,4 +1,4 @@
 package use_case.play_database_quiz;
 
-public class PlayDatabaseQuizOutputData e{
+public class PlayDatabaseQuizOutputData {
 }
