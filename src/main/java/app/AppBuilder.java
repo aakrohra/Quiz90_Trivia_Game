@@ -108,11 +108,16 @@ public class AppBuilder {
         return this;
     }
 
-//    public AppBuilder addAccessedQuizInfoView() {
-//        accessedQuizInfoViewModel = new AccessedQuizInfoViewModel();
-//        accessedQuizInfoView = new AccessedQuizInfoView(accessedQuizInfoViewModel);
-//        cardPanel.add(accessedQuizInfoView, accessedQuizInfoView.getViewName());
-//    }
+    /**
+     * Adds the AccessedQuizInfo View to the application.
+     * @return this builder
+     */
+    public AppBuilder addAccessedQuizInfoView() {
+        accessedQuizInfoViewModel = new AccessedQuizInfoViewModel();
+        accessedQuizInfoView = new AccessedQuizInfoView(accessedQuizInfoViewModel);
+        cardPanel.add(accessedQuizInfoView, accessedQuizInfoView.getViewName());
+        return this;
+    }
 
     /**
      * Adds the Signup Use Case to the application.
