@@ -3,6 +3,7 @@ package app;
 import interface_adapter.access_quiz.AccessQuizController;
 
 import javax.swing.JFrame;
+import java.awt.*;
 
 /**
  * The Main class of our application.
@@ -25,7 +26,7 @@ public class Main {
                                             .addAccessQuizUseCase()
                                             .build();
 
-        application.pack();
+        application.setSize(new Dimension(1200, 500));
         application.setVisible(true);
     }
 }

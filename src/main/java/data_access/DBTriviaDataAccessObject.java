@@ -2,7 +2,9 @@ package data_access;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -23,6 +25,16 @@ public class DBTriviaDataAccessObject {
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String STATUS_CODE_LABEL = "response_code";
     private static final String MESSAGE = "message";
+    private static final Map<String, String> HTMLENTITIES = new HashMap<>();
+
+    static {
+        HTMLENTITIES.put("&lt;", "<");
+        HTMLENTITIES.put("&gt;", ">");
+        HTMLENTITIES.put("&quot;", "\"");
+        HTMLENTITIES.put("&apos;", "'");
+        HTMLENTITIES.put("&#039;", "'");
+        // Add more entities if there are any more that you find
+    }
 
     /**
      * Retrieves a list of trivia questions from the external API.
@@ -63,15 +75,30 @@ public class DBTriviaDataAccessObject {
         }
     }
 
+    /**
+     * Decodes HTML entities in a string.
+     *
+     * @param encodedText The encoded text containing HTML entities.
+     * @return The decoded string.
+     */
+    public static String decoder(String encodedText) {
+        String decodedText = encodedText;
+        for (Map.Entry<String, String> entry : HTMLENTITIES.entrySet()) {
+            decodedText = decodedText.replace(entry.getKey(), entry.getValue());
+        }
+        return decodedText;
+    }
+
     private List<TriviaQuestion> parseTriviaQuestions(JSONArray results) throws JSONException {
         final List<TriviaQuestion> triviaQuestions = new ArrayList<>();
         for (int i = 0; i < results.length(); i++) {
             final JSONObject questionObj = results.getJSONObject(i);
 
-            final String questionText = questionObj.getString("question");
-            final String correctAnswer = questionObj.getString("correct_answer");
+            final String questionText = decoder(questionObj.getString("question"));
+            final String correctAnswer = decoder(questionObj.getString("correct_answer"));
 
-            final List<String> incorrectAnswers = parseIncorrectAnswers(questionObj.getJSONArray("incorrect_answers"));
+            final List<String> incorrectAnswers =
+                    parseIncorrectAnswers(questionObj.getJSONArray("incorrect_answers"));
 
             // Create a TriviaQuestion object and add it to the list
             final TriviaQuestion triviaQuestion = new TriviaQuestion(questionText, correctAnswer, incorrectAnswers);
@@ -84,7 +111,7 @@ public class DBTriviaDataAccessObject {
         // Converts the incorrect answers JSON array into a List of Strings
         final List<String> incorrectAnswers = new ArrayList<>();
         for (int i = 0; i < incorrectAnswersArray.length(); i++) {
-            incorrectAnswers.add(incorrectAnswersArray.getString(i));
+            incorrectAnswers.add(decoder(incorrectAnswersArray.getString(i)));
         }
         return incorrectAnswers;
     }
