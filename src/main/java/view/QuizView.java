@@ -1,4 +1,6 @@
-package app;
+package view;
+
+import app.Constants;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -8,10 +10,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 /**
- * The {@code Quiz90} class creates a simple quiz interface extending {@link JFrame}.
+ * The {@code QuizView} class creates a simple quiz interface extending {@link JFrame}.
  * It includes a question label and four answer buttons.
  */
-public class Quiz90 extends JFrame {
+public class QuizView extends JFrame {
 
     private JLabel question;
     private JButton button1;
@@ -19,9 +21,10 @@ public class Quiz90 extends JFrame {
     private JButton button3;
     private JButton button4;
 
-    public Quiz90() {
+    public QuizView() {
         setTitle("Quiz90");
         setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
+        setBackground(Color.BLUE);
 
         // This puts the screen in the middle
         setLocationRelativeTo(null);
@@ -57,13 +60,17 @@ public class Quiz90 extends JFrame {
         button4.setBounds(xPos + Constants.BUTTONWIDTH + Constants.BUTTONMARGIN, yPosBottom,
                 Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
 
-        // Add everything to the frame
+        // Add ActionListeners to buttons
+        button1.addActionListener(evt -> System.out.println("Button 1 pressed"));
+        button2.addActionListener(evt -> System.out.println("Button 2 pressed"));
+        button3.addActionListener(evt -> System.out.println("Button 3 pressed"));
+        button4.addActionListener(evt -> System.out.println("Button 4 pressed"));
 
+        // Add everything to the frame
         add(button1);
         add(button2);
         add(button3);
         add(button4);
-
         add(question);
     }
 
@@ -76,7 +83,7 @@ public class Quiz90 extends JFrame {
     }
 
     public static void main(String[] args) {
-        new Quiz90();
+        new QuizView();
     }
 
 }
