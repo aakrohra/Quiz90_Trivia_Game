@@ -1,13 +1,13 @@
 package view;
 
-import app.Constants;
-
 import java.awt.Color;
 import java.awt.Font;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import app.Constants;
 
 /**
  * The {@code QuizView} class creates a simple quiz interface extending {@link JFrame}.
@@ -24,7 +24,6 @@ public class QuizView extends JFrame {
     public QuizView() {
         setTitle("Quiz90");
         setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
-        setBackground(Color.BLUE);
 
         // This puts the screen in the middle
         setLocationRelativeTo(null);
