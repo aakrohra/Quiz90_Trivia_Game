@@ -1,9 +1,10 @@
 package app;
 
-import interface_adapter.access_quiz.AccessQuizController;
+import java.awt.*;
 
 import javax.swing.JFrame;
-import java.awt.*;
+
+import interface_adapter.access_quiz.AccessQuizController;
 
 /**
  * The Main class of our application.

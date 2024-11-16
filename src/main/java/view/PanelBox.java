@@ -1,7 +1,8 @@
 package view;
 
-import javax.swing.*;
 import java.awt.*;
+
+import javax.swing.*;
 
 /**
  * A panel containing a box.

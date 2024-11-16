@@ -236,4 +236,15 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     public void setSignupController(SignupController controller) {
         this.signupController = controller;
     }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Sign up view");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(700, 700);
+        frame.setLocationRelativeTo(null);
+
+        SignupView signupView = new SignupView(new SignupViewModel());
+        frame.add(signupView);
+        frame.setVisible(true);
+    }
 }

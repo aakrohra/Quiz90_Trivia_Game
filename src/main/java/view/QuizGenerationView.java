@@ -74,14 +74,14 @@ public class QuizGenerationView extends JPanel {
         playButton.addActionListener(evt -> {
             try {
                 // Convert user inputs as strings/integers
-                String category = (String) categoryComboBox.getSelectedItem();
-                int numQuestions = (int) questionComboBox.getSelectedItem();
-                String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
-                String difficulty = difficultyUpper.toLowerCase();
+                final String category = (String) categoryComboBox.getSelectedItem();
+                final int numQuestions = (int) questionComboBox.getSelectedItem();
+                final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
+                final String difficulty = difficultyUpper.toLowerCase();
 
                 // Fetch trivia
-                TriviaApp triviaApp = new TriviaApp();
-                TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
+                final TriviaApp triviaApp = new TriviaApp();
+                final TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
 
                 for (TriviaQuestion question : trivia.getQuestions()) {
                     System.out.println("Question: " + question.getQuestion());
@@ -90,7 +90,8 @@ public class QuizGenerationView extends JPanel {
                     System.out.println();
                 }
 
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -141,7 +142,7 @@ public class QuizGenerationView extends JPanel {
         frame.setSize(700, 700);
         frame.setLocationRelativeTo(null);
 
-        QuizGenerationView quizGenerationView = new QuizGenerationView();
+        final QuizGenerationView quizGenerationView = new QuizGenerationView();
         frame.add(quizGenerationView);
         frame.setVisible(true);
     }

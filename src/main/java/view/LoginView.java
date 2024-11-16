@@ -159,23 +159,27 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
         });
 
         passwordField.setBackground(Color.WHITE);
-        passwordField.setEchoChar('\u2022'); // Default echo character
+        // Default echo character
+        passwordField.setEchoChar('\u2022');
 
         passwordField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
-                passwordField.repaint(); // Repaint to hide the placeholder when focused
+                // Repaint to hide the placeholder when focused
+                passwordField.repaint();
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                passwordField.repaint(); // Repaint to show the placeholder if empty
+                // Repaint to show the placeholder if empty
+                passwordField.repaint();
             }
         });
 
         // Custom paint component to display placeholder
         passwordField.setOpaque(true);
-        passwordField.setBackground(Color.WHITE); // Ensures consistent background color
+        // Ensures consistent background color
+        passwordField.setBackground(Color.WHITE);
 
         passwordField.setUI(new javax.swing.plaf.basic.BasicPasswordFieldUI() {
             @Override
@@ -183,8 +187,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
                 super.paintSafely(g);
                 if (passwordField.getPassword().length == 0 && !passwordField.hasFocus()) {
                     final Graphics2D g2 = (Graphics2D) g.create();
-                    g2.setColor(Color.GRAY); // Placeholder text color
-                    g2.drawString("Enter your password here...", 5, passwordField.getHeight() - 7); // Position the placeholder text
+                    // Placeholder text color
+                    g2.setColor(Color.GRAY);
+                    // Position the placeholder text
+                    g2.drawString("Enter your password here...", 5, passwordField.getHeight() - 7);
                     g2.dispose();
                 }
             }

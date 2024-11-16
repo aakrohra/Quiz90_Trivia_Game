@@ -3,14 +3,13 @@ package data_access;
 import java.io.IOException;
 import java.util.*;
 
-import entity.*;
-import okhttp3.*;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.Constants;
+import entity.*;
+import okhttp3.*;
 import use_case.access_database.AccessDatabaseUserDataAccessInterface;
 import use_case.access_quiz.AccessQuizUserDataAccessInterface;
 import use_case.create_quiz.CreateQuizUserDataAccessInterface;
@@ -40,7 +39,8 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     private static final String INFO = "info";
     private static final int SUCCESS_CODE = 200;
     private static final String API_INFO_CALL = "http://vm003.teach.cs.toronto.edu:20112/user?username=%s";
-    private static final String API_USER_EXISTS_CALL = "http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s";
+    private static final String API_USER_EXISTS_CALL =
+            "http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s";
 
     /**
      * Get the username of the user who created the quiz with the given key.
@@ -100,7 +100,8 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", user.getName()))
+                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s",
+                        user.getName()))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
         try {
@@ -149,7 +150,8 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     public Map<String, PlayerCreatedQuiz> getAllUserQuizzes(User user) throws RuntimeException {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s", user.getName()))
+                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s",
+                        user.getName()))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 
