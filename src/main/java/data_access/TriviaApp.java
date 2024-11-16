@@ -54,7 +54,7 @@ public class TriviaApp {
         final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
 
         // Get trivia questions from the API
-        final TriviaResponse trivia = triviaDao.getTrivia(10, getCategoryId("Entertainment: Books"), "medium");
+        final TriviaResponse trivia = triviaDao.getTrivia(10, getCategoryId("Sports"), "medium");
 
         // Print the trivia questions and answers
         for (TriviaQuestion question : trivia.getQuestions()) {

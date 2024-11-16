@@ -45,10 +45,11 @@ public class DBTriviaDataAccessObject {
      * @throws Exception If an error occurs during the API request or parsing the response.
      */
 
-    public TriviaResponse getTrivia(int amount, String difficulty) throws Exception {
+    public TriviaResponse getTrivia(int amount, int categoryID, String difficulty) throws Exception {
         // Construct URL with the given parameters
         final String urlString =
-                String.format("https://opentdb.com/api.php?amount=%d&difficulty=%s&type=multiple", amount, difficulty);
+                String.format("https://opentdb.com/api.php?amount=%d&category=%d&difficulty=%s&type=multiple",
+                        amount, categoryID, difficulty);
 
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
