@@ -1,7 +1,5 @@
 package app;
 
-import interface_adapter.access_quiz.AccessQuizController;
-
 import javax.swing.JFrame;
 import java.awt.*;
 

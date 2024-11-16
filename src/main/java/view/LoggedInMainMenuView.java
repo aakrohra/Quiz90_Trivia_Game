@@ -7,7 +7,7 @@ import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.quiz_generation.QuizGenerationPresenter;
+import interface_adapter.quiz_generation.QuizGenerationController;
 import use_case.myCreatedQuizzes.MyCreatedQuizzesController;
 
 import javax.swing.*;
@@ -33,7 +33,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
     private MyCreatedQuizzesController myCreatedQuizzesController;
     private AccessQuizController accessQuizController;
     private LogoutController logoutController;
-    private QuizGenerationPresenter quizGenerationPresenter;
+    private QuizGenerationController quizGenerationController;
 
     private final JLabel username;
 
@@ -238,7 +238,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
 
         normalPlay.addActionListener(evt -> {
             if (evt.getSource().equals(normalPlay)) {
-                quizGenerationPresenter.switchToQuizGenerationView();
+                quizGenerationController.switchToQuizGenerationView();
                 System.out.println("Normal play button clicked");
             }
         });
@@ -291,10 +291,13 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
-    public void setQuizGenerationPresenter(QuizGenerationPresenter quizGenerationPresenter) {this.quizGenerationPresenter = quizGenerationPresenter;}
 
     public void setAccessQuizController(AccessQuizController accessQuizController) {
         this.accessQuizController = accessQuizController;
+    }
+
+    public void setQuizGenerationController(QuizGenerationController quizGenerationController) {
+        this.quizGenerationController = quizGenerationController;
     }
 
     // Main method to run and test the MainMenuView in a JFrame
