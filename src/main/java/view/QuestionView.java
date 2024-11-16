@@ -10,10 +10,10 @@ import javax.swing.JLabel;
 import app.Constants;
 
 /**
- * The {@code QuizView} class creates a simple quiz interface extending {@link JFrame}.
+ * The {@code QuestionView} class creates a simple quiz interface extending {@link JFrame}.
  * It includes a question label and four answer buttons.
  */
-public class QuizView extends JFrame {
+public class QuestionView extends JFrame {
 
     private JLabel question;
     private JButton button1;
@@ -21,7 +21,7 @@ public class QuizView extends JFrame {
     private JButton button3;
     private JButton button4;
 
-    public QuizView() {
+    public QuestionView() {
         setTitle("Quiz90");
         setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
 
@@ -82,7 +82,7 @@ public class QuizView extends JFrame {
     }
 
     public static void main(String[] args) {
-        new QuizView();
+        new QuestionView();
     }
 
 }
