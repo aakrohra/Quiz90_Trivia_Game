@@ -1,9 +1,12 @@
 package view;
 
 import app.Constants;
+
 import data_access.TriviaApp;
 import entity.TriviaQuestion;
 import entity.TriviaResponse;
+
+import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +23,10 @@ public class QuizGenerationView extends JPanel {
     private final JComboBox<?> difficultyComboBox;
     private final JButton playButton;
     private final JButton cancelButton;
+    private final QuizGenerationViewModel quizGenerationViewModel;
 
-    public QuizGenerationView() {
+    public QuizGenerationView(QuizGenerationViewModel viewModel) {
+        this.quizGenerationViewModel = viewModel;
         this.setLayout(new GridBagLayout());
         final GridBagConstraints gbc = createGbc();
 
@@ -134,16 +139,16 @@ public class QuizGenerationView extends JPanel {
         return viewName;
     }
 
-    // Main method to run and test the QuizGenerationView in a JFrame
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quiz Generation");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 700);
-        frame.setLocationRelativeTo(null);
-
-        QuizGenerationView quizGenerationView = new QuizGenerationView();
-        frame.add(quizGenerationView);
-        frame.setVisible(true);
-    }
+//    // Main method to run and test the QuizGenerationView in a JFrame
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Quiz Generation");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(700, 700);
+//        frame.setLocationRelativeTo(null);
+//
+//        QuizGenerationView quizGenerationView = new QuizGenerationView();
+//        frame.add(quizGenerationView);
+//        frame.setVisible(true);
+//    }
 
 }
