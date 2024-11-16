@@ -1,9 +1,12 @@
 package view;
 
 import app.Constants;
+
 import data_access.TriviaApp;
 import entity.TriviaQuestion;
 import entity.TriviaResponse;
+
+import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +23,10 @@ public class QuizGenerationView extends JPanel {
     private final JComboBox<?> difficultyComboBox;
     private final JButton playButton;
     private final JButton cancelButton;
+    private final QuizGenerationViewModel quizGenerationViewModel;
 
-    public QuizGenerationView() {
+    public QuizGenerationView(QuizGenerationViewModel viewModel) {
+        this.quizGenerationViewModel = viewModel;
         this.setLayout(new GridBagLayout());
         final GridBagConstraints gbc = createGbc();
 
@@ -74,14 +79,14 @@ public class QuizGenerationView extends JPanel {
         playButton.addActionListener(evt -> {
             try {
                 // Convert user inputs as strings/integers
-                final String category = (String) categoryComboBox.getSelectedItem();
-                final int numQuestions = (int) questionComboBox.getSelectedItem();
-                final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
-                final String difficulty = difficultyUpper.toLowerCase();
+                String category = (String) categoryComboBox.getSelectedItem();
+                int numQuestions = (int) questionComboBox.getSelectedItem();
+                String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
+                String difficulty = difficultyUpper.toLowerCase();
 
                 // Fetch trivia
-                final TriviaApp triviaApp = new TriviaApp();
-                final TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
+                TriviaApp triviaApp = new TriviaApp();
+                TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
 
                 for (TriviaQuestion question : trivia.getQuestions()) {
                     System.out.println("Question: " + question.getQuestion());
@@ -90,8 +95,7 @@ public class QuizGenerationView extends JPanel {
                     System.out.println();
                 }
 
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         });
@@ -135,16 +139,16 @@ public class QuizGenerationView extends JPanel {
         return viewName;
     }
 
-    // Main method to run and test the QuizGenerationView in a JFrame
-    public static void main(String[] args) {
-        JFrame frame = new JFrame("Quiz Generation");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 700);
-        frame.setLocationRelativeTo(null);
-
-        final QuizGenerationView quizGenerationView = new QuizGenerationView();
-        frame.add(quizGenerationView);
-        frame.setVisible(true);
-    }
+//    // Main method to run and test the QuizGenerationView in a JFrame
+//    public static void main(String[] args) {
+//        JFrame frame = new JFrame("Quiz Generation");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(700, 700);
+//        frame.setLocationRelativeTo(null);
+//
+//        QuizGenerationView quizGenerationView = new QuizGenerationView();
+//        frame.add(quizGenerationView);
+//        frame.setVisible(true);
+//    }
 
 }

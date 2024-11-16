@@ -7,6 +7,7 @@ import javax.swing.*;
 import data_access.DBCustomQuizDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
+import entity.Quiz;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.access_quiz.AccessQuizController;
@@ -20,6 +21,9 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.quiz_generation.QuizGenerationController;
+import interface_adapter.quiz_generation.QuizGenerationPresenter;
+import interface_adapter.quiz_generation.QuizGenerationViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -35,6 +39,9 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.quiz_generation.QuizGenerationInputBoundary;
+import use_case.quiz_generation.QuizGenerationInteractor;
+import use_case.quiz_generation.QuizGenerationOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -71,6 +78,8 @@ public class AppBuilder {
     private LoggedInMainMenuView loggedInMainMenuView;
     private LoginView loginView;
     private AccessedQuizInfoView accessedQuizInfoView;
+    private QuizGenerationViewModel quizGenerationViewModel;
+    private QuizGenerationView quizGenerationView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -106,6 +115,26 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         loggedInMainMenuView = new LoggedInMainMenuView(loggedInViewModel);
         cardPanel.add(loggedInMainMenuView, loggedInMainMenuView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the QuizGeneration View to the application.
+     * @return this builder
+     */
+    public AppBuilder addQuizGenerationView() {
+        quizGenerationViewModel = new QuizGenerationViewModel();
+        quizGenerationView = new QuizGenerationView(quizGenerationViewModel);
+        cardPanel.add(quizGenerationView, quizGenerationView.getViewName());
+        final QuizGenerationOutputBoundary quizGenerationPresenter = new QuizGenerationPresenter(viewManagerModel,
+                quizGenerationViewModel);
+
+        final QuizGenerationInputBoundary quizGenerationInteractor =
+                new QuizGenerationInteractor(quizGenerationPresenter);
+
+        final QuizGenerationController quizGenerationController =
+                new QuizGenerationController(quizGenerationInteractor);
+        loggedInMainMenuView.setQuizGenerationController(quizGenerationController);
         return this;
     }
 
