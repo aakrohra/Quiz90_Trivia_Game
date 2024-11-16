@@ -1,13 +1,13 @@
 package view;
 
-import app.Constants;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.LoggedInState;
 import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
-import interface_adapter.login.LoginState;
 import interface_adapter.logout.LogoutController;
+import interface_adapter.quiz_generation.QuizGenerationPresenter;
 import use_case.myCreatedQuizzes.MyCreatedQuizzesController;
 
 import javax.swing.*;
@@ -33,6 +33,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
     private MyCreatedQuizzesController myCreatedQuizzesController;
     private AccessQuizController accessQuizController;
     private LogoutController logoutController;
+    private QuizGenerationPresenter quizGenerationPresenter;
 
     private final JLabel username;
 
@@ -234,6 +235,14 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
                     }
                 }
         );
+
+        normalPlay.addActionListener(evt -> {
+            if (evt.getSource().equals(normalPlay)) {
+                quizGenerationPresenter.switchToQuizGenerationView();
+                System.out.println("Normal play button clicked");
+            }
+        });
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(Box.createVerticalGlue());
@@ -282,6 +291,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
     }
+    public void setQuizGenerationPresenter(QuizGenerationPresenter quizGenerationPresenter) {this.quizGenerationPresenter = quizGenerationPresenter;}
 
     public void setAccessQuizController(AccessQuizController accessQuizController) {
         this.accessQuizController = accessQuizController;

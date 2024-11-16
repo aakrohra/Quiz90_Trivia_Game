@@ -1,4 +1,4 @@
-package use_case.generate_quiz;
+package use_case.quiz_generation;
 
 public class GenerateQuizInputData {
 }
