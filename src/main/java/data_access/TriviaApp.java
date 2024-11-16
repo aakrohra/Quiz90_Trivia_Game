@@ -10,7 +10,7 @@ import entity.TriviaResponse;
  * The main entry point of the Trivia application that retrieves trivia questions from the API
  * and prints them along with their correct and incorrect answers.
  */
-@SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:SuppressWarnings"})
+
 public class TriviaApp {
     private static final Map<String, Integer> CATEGORY_MAPPING = new HashMap<>();
 
@@ -50,18 +50,19 @@ public class TriviaApp {
         return CATEGORY_MAPPING.get(categoryName);
     }
 
-    public static void main(String[] args) throws Exception {
-        final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
+    public TriviaResponse fetchTrivia (int numQuestions, String category, String difficulty) throws Exception {
+        DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
 
         // Get trivia questions from the API
-        final TriviaResponse trivia = triviaDao.getTrivia(10, getCategoryId("Sports"), "medium");
-
-        // Print the trivia questions and answers
+        System.out.println("Fetching Trivia");
+        System.out.println(numQuestions + " " + category + " " + difficulty);
+        TriviaResponse trivia = triviaDao.getTrivia(numQuestions, getCategoryId(category), difficulty);
         for (TriviaQuestion question : trivia.getQuestions()) {
             System.out.println("Question: " + question.getQuestion());
             System.out.println("Correct Answer: " + question.getCorrectAnswer());
             System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
             System.out.println();
         }
+        return trivia;
     }
 }
