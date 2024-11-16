@@ -6,7 +6,7 @@ import java.awt.*;
  * Defines UI constants for frame and button dimensions and font sizes.
  */
 public class Constants {
-    public static final int FRAMEHEIGHT = 800;
+    public static final int FRAMEHEIGHT = 600;
     public static final int FRAMEWIDTH = 1000;
     public static final int FONTSIZE = FRAMEHEIGHT / 20;
     public static final int QUESTIONMARGINDIVISOR = 20;
