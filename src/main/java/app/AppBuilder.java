@@ -3,7 +3,6 @@ package app;
 import data_access.DBCustomQuizDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
-import entity.Quiz;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.access_quiz.AccessQuizController;
@@ -11,12 +10,13 @@ import interface_adapter.access_quiz.AccessQuizPresenter;
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.main_menu.MainMenuViewModel;
 import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationPresenter;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
@@ -79,6 +79,7 @@ public class AppBuilder {
     private AccessedQuizInfoView accessedQuizInfoView;
     private QuizGenerationViewModel quizGenerationViewModel;
     private QuizGenerationView quizGenerationView;
+    private MainMenuViewModel mainMenuViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -225,8 +226,9 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addQuizGenerationUseCase() {
+        loggedInViewModel = new LoggedInViewModel();
         final QuizGenerationOutputBoundary quizGenerationPresenter =
-                new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel);
+                new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel, loggedInViewModel);
 
         final QuizGenerationInputBoundary quizGenerationInteractor =
                 new QuizGenerationInteractor(quizGenerationPresenter);
@@ -234,7 +236,9 @@ public class AppBuilder {
         final QuizGenerationController quizGenerationController =
                 new QuizGenerationController(quizGenerationInteractor);
         loggedInMainMenuView.setQuizGenerationController(quizGenerationController);
+        quizGenerationView.setQuizGenerationController(quizGenerationController);
         return this;
+
     }
 
     /**

@@ -6,6 +6,7 @@ import data_access.TriviaApp;
 import entity.TriviaQuestion;
 import entity.TriviaResponse;
 
+import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 import javax.swing.*;
@@ -24,6 +25,7 @@ public class QuizGenerationView extends JPanel {
     private final JButton playButton;
     private final JButton cancelButton;
     private final QuizGenerationViewModel quizGenerationViewModel;
+    private QuizGenerationController quizGenerationController;
 
     public QuizGenerationView(QuizGenerationViewModel quizGenerationViewModel) {
         this.quizGenerationViewModel = quizGenerationViewModel;
@@ -102,7 +104,12 @@ public class QuizGenerationView extends JPanel {
             }
         });
 
-        cancelButton.addActionListener(evt -> System.out.println("Cancel button clicked"));
+        cancelButton.addActionListener(evt -> {
+            if (evt.getSource().equals(cancelButton)) {
+                quizGenerationController.switchToMainMenuView();
+                System.out.println("Cancel button clicked");
+            }
+        });
     }
 
     private GridBagConstraints createGbc() {
@@ -139,6 +146,10 @@ public class QuizGenerationView extends JPanel {
 
     public String getViewName() {
         return viewName;
+    }
+
+    public void setQuizGenerationController(QuizGenerationController quizGenerationController) {
+        this.quizGenerationController = quizGenerationController;
     }
 
     // Main method to run and test the QuizGenerationView in a JFrame
