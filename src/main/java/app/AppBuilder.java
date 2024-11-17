@@ -125,15 +125,6 @@ public class AppBuilder {
         quizGenerationViewModel = new QuizGenerationViewModel();
         quizGenerationView = new QuizGenerationView(quizGenerationViewModel);
         cardPanel.add(quizGenerationView, quizGenerationView.getViewName());
-        final QuizGenerationOutputBoundary quizGenerationPresenter = new QuizGenerationPresenter(viewManagerModel,
-                quizGenerationViewModel);
-
-        final QuizGenerationInputBoundary quizGenerationInteractor =
-                new QuizGenerationInteractor(quizGenerationPresenter);
-
-        final QuizGenerationController quizGenerationController =
-                new QuizGenerationController(quizGenerationInteractor);
-        loggedInMainMenuView.setQuizGenerationController(quizGenerationController);
         return this;
     }
 
@@ -226,6 +217,23 @@ public class AppBuilder {
 
         final AccessQuizController accessQuizController = new AccessQuizController(accessQuizInteractor);
         loggedInMainMenuView.setAccessQuizController(accessQuizController);
+        return this;
+    }
+
+    /**
+     * Adds the Quiz Generation Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addQuizGenerationUseCase() {
+        final QuizGenerationOutputBoundary quizGenerationPresenter =
+                new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel);
+
+        final QuizGenerationInputBoundary quizGenerationInteractor =
+                new QuizGenerationInteractor(quizGenerationPresenter);
+
+        final QuizGenerationController quizGenerationController =
+                new QuizGenerationController(quizGenerationInteractor);
+        loggedInMainMenuView.setQuizGenerationController(quizGenerationController);
         return this;
     }
 

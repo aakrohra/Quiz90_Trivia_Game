@@ -17,15 +17,17 @@ public class Main {
                                             .addLoginView()
                                             .addSignupView()
                                             .addLoggedInView()
+                                            .addQuizGenerationView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addAccessQuizUseCase()
-                                            .addQuizGenerationView()
+                                            .addQuizGenerationUseCase()
                                             .build();
 
         application.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
+        application.setLocationRelativeTo(null);
         application.setVisible(true);
     }
 }
