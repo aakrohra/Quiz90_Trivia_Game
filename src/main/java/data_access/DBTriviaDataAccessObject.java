@@ -24,15 +24,18 @@ public class DBTriviaDataAccessObject {
     private static final int SUCCESS_CODE = 0;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String STATUS_CODE_LABEL = "response_code";
-    private static final String MESSAGE = "message";
     private static final Map<String, String> HTMLENTITIES = new HashMap<>();
 
     static {
         HTMLENTITIES.put("&lt;", "<");
         HTMLENTITIES.put("&gt;", ">");
         HTMLENTITIES.put("&quot;", "\"");
+        HTMLENTITIES.put("&ldquo;", "\"");
+        HTMLENTITIES.put("&rdquo;", "\"");
         HTMLENTITIES.put("&apos;", "'");
         HTMLENTITIES.put("&#039;", "'");
+        HTMLENTITIES.put("&rsquo;", "'");
+        HTMLENTITIES.put("&lsquo;", "'");
         // Add more entities if there are any more that you find
     }
 
@@ -45,10 +48,11 @@ public class DBTriviaDataAccessObject {
      * @throws Exception If an error occurs during the API request or parsing the response.
      */
 
-    public TriviaResponse getTrivia(int amount, String difficulty) throws Exception {
+    public TriviaResponse getTrivia(int amount, int categoryID, String difficulty) throws Exception {
         // Construct URL with the given parameters
         final String urlString =
-                String.format("https://opentdb.com/api.php?amount=%d&difficulty=%s&type=multiple", amount, difficulty);
+                String.format("https://opentdb.com/api.php?amount=%d&category=%d&difficulty=%s&type=multiple",
+                        amount, categoryID, difficulty);
 
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
@@ -60,6 +64,8 @@ public class DBTriviaDataAccessObject {
             final Response response = client.newCall(request).execute();
             final JSONObject responseBody = new JSONObject(response.body().string());
 
+            System.out.println(urlString);
+
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
 
                 final List<TriviaQuestion> triviaQuestions =
@@ -67,7 +73,7 @@ public class DBTriviaDataAccessObject {
                 return new TriviaResponse(triviaQuestions);
             }
             else {
-                throw new RuntimeException(responseBody.getString(MESSAGE));
+                throw new RuntimeException();
             }
         }
         catch (IOException | JSONException ex) {

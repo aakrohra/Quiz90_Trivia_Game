@@ -1,7 +1,5 @@
 package app;
 
-import interface_adapter.access_quiz.AccessQuizController;
-
 import javax.swing.JFrame;
 import java.awt.*;
 
@@ -24,9 +22,10 @@ public class Main {
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addAccessQuizUseCase()
+                                            .addQuizGenerationView()
                                             .build();
 
-        application.setSize(new Dimension(1200, 500));
+        application.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
         application.setVisible(true);
     }
 }
