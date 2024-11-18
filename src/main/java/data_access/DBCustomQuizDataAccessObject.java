@@ -99,11 +99,11 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
                 final JSONObject data = userJSONObject.getJSONObject(INFO);
                 keyExists = data.has(key);
             }
-            return keyExists;
         }
         catch (final IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+            keyExists = false;
         }
+        return keyExists;
     }
 
     @Override
