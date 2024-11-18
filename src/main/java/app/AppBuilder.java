@@ -3,7 +3,6 @@ package app;
 import data_access.DBCustomQuizDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
-import entity.Quiz;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.access_quiz.AccessQuizController;
@@ -12,6 +11,9 @@ import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.local_multiplayer.LocalMultiplayerController;
+import interface_adapter.local_multiplayer.LocalMultiplayerPresenter;
+import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -29,6 +31,9 @@ import use_case.access_quiz.AccessQuizOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.local_multiplayer.LocalMultiplayerInputBoundary;
+import use_case.local_multiplayer.LocalMultiplayerInteractor;
+import use_case.local_multiplayer.LocalMultiplayerOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -79,6 +84,8 @@ public class AppBuilder {
     private AccessedQuizInfoView accessedQuizInfoView;
     private QuizGenerationViewModel quizGenerationViewModel;
     private QuizGenerationView quizGenerationView;
+    private LocalMultiplayerViewModel localMultiplayerViewModel;
+    private LocalMultiplayerView localMultiplayerView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -134,6 +141,26 @@ public class AppBuilder {
         final QuizGenerationController quizGenerationController =
                 new QuizGenerationController(quizGenerationInteractor);
         loggedInMainMenuView.setQuizGenerationController(quizGenerationController);
+        return this;
+    }
+
+    /**
+     * Adds the Local Multiplayer View to the application.
+     * @return this builder
+     */
+    public AppBuilder addLocalMultiplayerView() {
+        localMultiplayerViewModel = new LocalMultiplayerViewModel();
+        localMultiplayerView = new LocalMultiplayerView(localMultiplayerViewModel);
+        cardPanel.add(localMultiplayerView, localMultiplayerView.getViewName());
+        final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
+                viewManagerModel, localMultiplayerViewModel);
+
+        final LocalMultiplayerInputBoundary localMultiplayerInteractor =
+                new LocalMultiplayerInteractor(localMultiplayerPresenter);
+
+        final LocalMultiplayerController localMultiplayerController =
+                new LocalMultiplayerController(localMultiplayerInteractor);
+        loggedInMainMenuView.setLocalMultiplayerController(localMultiplayerController);
         return this;
     }
 

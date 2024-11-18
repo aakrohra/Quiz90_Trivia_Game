@@ -8,7 +8,7 @@ import interface_adapter.change_password.LoggedInViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.quiz_generation.QuizGenerationController;
-import use_case.myCreatedQuizzes.MyCreatedQuizzesController;
+//import use_case.myCreatedQuizzes.MyCreatedQuizzesController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -27,10 +27,8 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
-    private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
     private LocalMultiplayerController localMultiplayerController;
-    private MyCreatedQuizzesController myCreatedQuizzesController;
     private AccessQuizController accessQuizController;
     private LogoutController logoutController;
     private QuizGenerationController quizGenerationController;
@@ -187,17 +185,6 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
                 }
         );
 
-        localMultiplayer.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(changePassword)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-
-//                        TODO implement localMultiplayerController
-//                        this.localMultiplayerController.execute();
-                    }
-                }
-        );
-
         createdQuizzes.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(changePassword)) {
@@ -240,6 +227,13 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
             if (evt.getSource().equals(normalPlay)) {
                 quizGenerationController.switchToQuizGenerationView();
                 System.out.println("Normal play button clicked");
+            }
+        });
+
+        localMultiplayer.addActionListener(evt -> {
+            if (evt.getSource().equals(localMultiplayer)) {
+                localMultiplayerController.switchToLocalMultiplayerView();
+                System.out.println("local multiplayer clicked");
             }
         });
 
@@ -300,15 +294,19 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         this.quizGenerationController = quizGenerationController;
     }
 
-    // Main method to run and test the MainMenuView in a JFrame
-    public static void main(String[] args) {
-        final JFrame frame = new JFrame("Main Menu");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(1200, 500));
-        frame.setLocationRelativeTo(null);
-
-        final LoggedInMainMenuView loggedInMainMenuView = new LoggedInMainMenuView(new LoggedInViewModel());
-        frame.add(loggedInMainMenuView);
-        frame.setVisible(true);
+    public void setLocalMultiplayerController(LocalMultiplayerController localMultiplayerController) {
+        this.localMultiplayerController = localMultiplayerController;
     }
+
+//    // Main method to run and test the MainMenuView in a JFrame
+//    public static void main(String[] args) {
+//        final JFrame frame = new JFrame("Main Menu");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(new Dimension(1200, 500));
+//        frame.setLocationRelativeTo(null);
+//
+//        final LoggedInMainMenuView loggedInMainMenuView = new LoggedInMainMenuView(new LoggedInViewModel());
+//        frame.add(loggedInMainMenuView);
+//        frame.setVisible(true);
+//    }
 }
