@@ -136,7 +136,6 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
                 final LoggedInState currentState = loggedInViewModel.getState();
                 currentState.setQuizKey(sharedQuizKeyField.getText());
                 loggedInViewModel.setState(currentState);
-                System.out.println(currentState.getQuizKey());
             }
 
             @Override
@@ -180,8 +179,6 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
                 evt -> {
                     if (evt.getSource().equals(playSharedQuiz)) {
                         final LoggedInState currentState = loggedInViewModel.getState();
-
-                        System.out.println(currentState.getQuizKey());
                         this.accessQuizController.execute(currentState.getQuizKey());
                     }
                 }
@@ -277,6 +274,10 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         else if (evt.getPropertyName().equals("password")) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("keyError")) {
+            final LoggedInState state = (LoggedInState) evt.getNewValue();
+            sharedQuizKeyErrorField.setText(state.getQuizKeyError());
         }
     }
 

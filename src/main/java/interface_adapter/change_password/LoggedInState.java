@@ -46,4 +46,8 @@ public class LoggedInState {
     public void setQuizKeyError(String quizKeyError) {
         this.quizKeyError = quizKeyError;
     }
+
+    public String getQuizKeyError() {
+        return quizKeyError;
+    }
 }
