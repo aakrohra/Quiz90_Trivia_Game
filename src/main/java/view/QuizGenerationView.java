@@ -42,7 +42,7 @@ public class QuizGenerationView extends JPanel {
         // Labels and ComboBox boxes
         // Categories
         final Font optionFont = new Font("Arial", Font.BOLD, 14);
-        final Dimension comboBoxSize = new Dimension(200, 25);
+        final Dimension comboBoxSize = new Dimension(225, 25);
         // Create and add category label and ComboBox
         categoryComboBox = createComboBox(Constants.CATEGORIES, comboBoxSize);
         addComponent(createLabel(QuizGenerationViewModel.CATEGORY_LABEL, optionFont, SwingConstants.LEFT),
@@ -114,7 +114,7 @@ public class QuizGenerationView extends JPanel {
 
     private GridBagConstraints createGbc() {
         final GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         return gbc;
     }

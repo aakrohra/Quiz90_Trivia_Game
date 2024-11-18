@@ -1,39 +1,36 @@
-# Note Application
+# Quiz90 (Trivia Application)
 
-This is a minimal example demonstrating usage of the
-password-protected user part of the API used in lab 5.
 
-You can find more information about the API endpoints in
-[the documentation](https://www.postman.com/cloudy-astronaut-813156/csc207-grade-apis-demo/documentation/fg3zkjm/5-password-protected-user).
 
-If your team is considering an application for which it would be convenient to
-store data in something like a database, you may find that the API calls demonstrated
-here will be useful in your project, as this will allow you to store
-an arbitrary JSON object associated with a username and password.
+**Domain Idea:** Trivia quiz playability, creation, and shareability
+- A trivia quiz game where users can play pre-built quizzes or create and share their own trivia quizzes 
+with a scoring system.
 
-In this application, a single note has a name (the "username" in terms of the API) and the note
-can be read by anyone who knows the name — but only edited by someone who
-knows the password for it.
+**Key Features:**
+- Users can create quizzes with multiple-choice questions.
+- Players can take quizzes and see their scores.
+- Option to share quizzes via unique keys.
+- Players can view their statistics/scores
+- They can play multiplayer on the same machine. Two people play on the same laptop, taking turns answering questions
+- Retrieve trivia questions from an external API (OpenTDB).
+- Allow users to create their trivia questions and answers.
+- Generate unique keys for user-created questions to enable sharing.
+- Store user accounts and trivia questions persistently using the Grade API.
+- Allow users to input keys to access shared trivia questions.
+- Track user scores and progress in the game.
 
-You can see the documentation in the various files for more information.
+**Grade API:** [documentation](https://www.postman.com/cloudy-astronaut-813156/csc207-grade-apis-demo/documentation/fg3zkjm/5-password-protected-user).
+- Services Provided: User account management and storage for user-generated questions.
+- Usage: This will be used to store player data and persistent trivia questions.
 
-## Testing
+**Open TriviaDB:** [documentation](https://opentdb.com/api_config.php).
+- Services Provided: Fetch trivia questions based on category, difficulty, and type.
+- Usage: Will be used to retrieve a set of trivia questions for the game.
 
-The repo also includes an example of a use case interactor test, as well as
-an example of an end-to-end test which automates button clicks and inspects
-the contents of the actual views. This is something we discussed in the lectures
-about testing in CA but had not provided a code example of before. Note, one
-could also inspect the contents of the ViewModel objects instead when testing
-CA to make a similar test which would be less dependent on the details of the
-specific UI implementation.
 
-## Project Starter Code
 
-Your team may choose to use this repo as starter code for your project. You could
-also use the lab 5 code — or start from an empty repo if your team prefers.
 
-If you choose to use one of the repositories we have provided, you can either make
-a fork of it or copy the subset of code you want into a completely new repository.
+
 
 ## Entities  
 

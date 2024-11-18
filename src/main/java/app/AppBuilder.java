@@ -16,7 +16,6 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
-import interface_adapter.main_menu.MainMenuViewModel;
 import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationPresenter;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
@@ -74,12 +73,11 @@ public class AppBuilder {
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private AccessedQuizInfoViewModel accessedQuizInfoViewModel;
-    private LoggedInMainMenuView loggedInMainMenuView;
+    private LoggedInView loggedInView;
     private LoginView loginView;
     private AccessedQuizInfoView accessedQuizInfoView;
     private QuizGenerationViewModel quizGenerationViewModel;
     private QuizGenerationView quizGenerationView;
-    private MainMenuViewModel mainMenuViewModel;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -113,8 +111,8 @@ public class AppBuilder {
      */
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
-        loggedInMainMenuView = new LoggedInMainMenuView(loggedInViewModel);
-        cardPanel.add(loggedInMainMenuView, loggedInMainMenuView.getViewName());
+        loggedInView = new LoggedInView(loggedInViewModel);
+        cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
 
@@ -183,7 +181,7 @@ public class AppBuilder {
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        loggedInMainMenuView.setChangePasswordController(changePasswordController);
+        loggedInView.setChangePasswordController(changePasswordController);
         return this;
     }
 
@@ -199,7 +197,7 @@ public class AppBuilder {
                 new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInMainMenuView.setLogoutController(logoutController);
+        loggedInView.setLogoutController(logoutController);
         return this;
     }
 
@@ -217,7 +215,7 @@ public class AppBuilder {
         );
 
         final AccessQuizController accessQuizController = new AccessQuizController(accessQuizInteractor);
-        loggedInMainMenuView.setAccessQuizController(accessQuizController);
+        loggedInView.setAccessQuizController(accessQuizController);
         return this;
     }
 
@@ -235,7 +233,7 @@ public class AppBuilder {
 
         final QuizGenerationController quizGenerationController =
                 new QuizGenerationController(quizGenerationInteractor);
-        loggedInMainMenuView.setQuizGenerationController(quizGenerationController);
+        loggedInView.setQuizGenerationController(quizGenerationController);
         quizGenerationView.setQuizGenerationController(quizGenerationController);
         return this;
 

@@ -23,7 +23,7 @@ import java.beans.PropertyChangeListener;
 /**
  * The View for when the user is logged into the program.
  */
-public class LoggedInMainMenuView extends JPanel implements PropertyChangeListener {
+public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
@@ -48,7 +48,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
     private final JButton localMultiplayer;
     private final JButton changePassword;
 
-    public LoggedInMainMenuView(LoggedInViewModel loggedInViewModel) {
+    public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
@@ -307,8 +307,8 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         frame.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
         frame.setLocationRelativeTo(null);
 
-        final LoggedInMainMenuView loggedInMainMenuView = new LoggedInMainMenuView(new LoggedInViewModel());
-        frame.add(loggedInMainMenuView);
+        final LoggedInView loggedInView = new LoggedInView(new LoggedInViewModel());
+        frame.add(loggedInView);
         frame.setVisible(true);
     }
 }
