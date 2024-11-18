@@ -19,4 +19,11 @@ public class QuizGenerationController {
     public void switchToQuizGenerationView() {
         quizGenerationInputBoundary.switchToQuizGenerationView();
     }
+
+    /**
+     * Executes the action to switch to the Main Menu view.
+     */
+    public void switchToMainMenuView() {
+        quizGenerationInputBoundary.switchToMainMenuView();
+    }
 }

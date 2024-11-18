@@ -12,34 +12,37 @@ public class Constants {
     public static final int QUESTIONMARGINDIVISOR = 20;
 
     public static final int BUTTONWIDTH = 400;
-    public static final int BUTTONHEIGHT = 100;
+    public static final int BUTTONHEIGHT = 200;
     public static final int BUTTONMARGIN = 20;
     public static final int BUTTONFONTSIZE = FONTSIZE * 2 / 3;
+    public static final int MARGINS = 10;
 
-    public static final String[] CATEGORIES = {"General Knowledge",
+    public static final String[] CATEGORIES = {
+            "Animals",
+            "Art",
+            "Celebrities",
+            "Entertainment: Board Games",
             "Entertainment: Books",
+            "Entertainment: Cartoon & Animations",
+            "Entertainment: Comics",
             "Entertainment: Film",
+            "Entertainment: Japanese Anime & Manga",
             "Entertainment: Music",
             "Entertainment: Musicals & Theatres",
             "Entertainment: Television",
             "Entertainment: Video Games",
-            "Entertainment: Board Games",
-            "Science & Nature",
-            "Science: Computers",
-            "Science: Mathematics",
-            "Mythology",
-            "Sports",
+            "General Knowledge",
             "Geography",
             "History",
+            "Mythology",
             "Politics",
-            "Art",
-            "Celebrities",
-            "Animals",
-            "Vehicles",
-            "Entertainment: Comics",
+            "Science & Nature",
+            "Science: Computers",
             "Science: Gadgets",
-            "Entertainment: Japanese Anime & Manga",
-            "Entertainment: Cartoon & Animations"};
+            "Science: Mathematics",
+            "Sports",
+            "Vehicles"
+    };
     public static final String[] DIFFICULTIES = {"Easy", "Medium", "Hard"};
     public static final Integer[] NUM_QUESTION = {5, 10, 20};
 

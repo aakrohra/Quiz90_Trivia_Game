@@ -36,7 +36,9 @@ public class DBTriviaDataAccessObject {
         HTMLENTITIES.put("&#039;", "'");
         HTMLENTITIES.put("&rsquo;", "'");
         HTMLENTITIES.put("&lsquo;", "'");
+        HTMLENTITIES.put("&amp;", "&");
         // Add more entities if there are any more that you find
+        // Could also find a Java Library that does this automatically
     }
 
     /**

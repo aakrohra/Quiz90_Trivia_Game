@@ -6,6 +6,7 @@ import data_access.TriviaApp;
 import entity.TriviaQuestion;
 import entity.TriviaResponse;
 
+import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 import javax.swing.*;
@@ -24,43 +25,46 @@ public class QuizGenerationView extends JPanel {
     private final JButton playButton;
     private final JButton cancelButton;
     private final QuizGenerationViewModel quizGenerationViewModel;
+    private QuizGenerationController quizGenerationController;
 
-    public QuizGenerationView(QuizGenerationViewModel viewModel) {
-        this.quizGenerationViewModel = viewModel;
+    public QuizGenerationView(QuizGenerationViewModel quizGenerationViewModel) {
+        this.quizGenerationViewModel = quizGenerationViewModel;
+        // quizGenerationViewModel.addPropertyChangeListener(this);
+
         this.setLayout(new GridBagLayout());
         final GridBagConstraints gbc = createGbc();
 
         // Title
-        final JLabel title = createLabel("Quiz Generation Screen", new Font("Arial", Font.BOLD, 18),
-                SwingConstants.CENTER);
+        final JLabel title = createLabel(QuizGenerationViewModel.TITLE_LABEL,
+                new Font("Arial", Font.BOLD, 18), SwingConstants.CENTER);
         addComponent(title, 0, 0, 2, GridBagConstraints.CENTER, gbc);
 
         // Labels and ComboBox boxes
         // Categories
         final Font optionFont = new Font("Arial", Font.BOLD, 14);
-        final Dimension comboBoxSize = new Dimension(200, 25);
+        final Dimension comboBoxSize = new Dimension(225, 25);
         // Create and add category label and ComboBox
         categoryComboBox = createComboBox(Constants.CATEGORIES, comboBoxSize);
-        addComponent(createLabel("Select Category:", optionFont, SwingConstants.LEFT),
+        addComponent(createLabel(QuizGenerationViewModel.CATEGORY_LABEL, optionFont, SwingConstants.LEFT),
                 0, 1, 1, GridBagConstraints.WEST, gbc);
         addComponent(categoryComboBox, 1, 1, 1, GridBagConstraints.WEST, gbc);
 
         // Number of questions
         questionComboBox = createComboBox(Constants.NUM_QUESTION, comboBoxSize);
-        addComponent(createLabel("Number of Questions:", optionFont, SwingConstants.LEFT),
+        addComponent(createLabel(QuizGenerationViewModel.QUESTIONS_LABEL, optionFont, SwingConstants.LEFT),
                 0, 2, 1, GridBagConstraints.WEST, gbc);
         addComponent(questionComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
 
         // Difficulties
         difficultyComboBox = createComboBox(Constants.DIFFICULTIES, comboBoxSize);
-        addComponent(createLabel("Select Difficulty:", optionFont, SwingConstants.LEFT),
+        addComponent(createLabel(QuizGenerationViewModel.DIFFICULTY_LABEL, optionFont, SwingConstants.LEFT),
                 0, 3, 1, GridBagConstraints.WEST, gbc);
         addComponent(difficultyComboBox, 1, 3, 1, GridBagConstraints.WEST, gbc);
 
         // Play and Cancel buttons
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
-        playButton = new JButton("Play");
-        cancelButton = new JButton("Cancel");
+        playButton = new JButton(QuizGenerationViewModel.PLAY_BUTTON_LABEL);
+        cancelButton = new JButton(QuizGenerationViewModel.CANCEL_BUTTON_LABEL);
         buttonPanel.add(playButton);
         buttonPanel.add(cancelButton);
         addComponent(buttonPanel, 0, 4, 2, GridBagConstraints.CENTER, gbc);
@@ -79,14 +83,14 @@ public class QuizGenerationView extends JPanel {
         playButton.addActionListener(evt -> {
             try {
                 // Convert user inputs as strings/integers
-                String category = (String) categoryComboBox.getSelectedItem();
-                int numQuestions = (int) questionComboBox.getSelectedItem();
-                String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
-                String difficulty = difficultyUpper.toLowerCase();
+                final String category = (String) categoryComboBox.getSelectedItem();
+                final int numQuestions = (int) questionComboBox.getSelectedItem();
+                final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
+                final String difficulty = difficultyUpper.toLowerCase();
 
                 // Fetch trivia
-                TriviaApp triviaApp = new TriviaApp();
-                TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
+                final TriviaApp triviaApp = new TriviaApp();
+                final TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
 
                 for (TriviaQuestion question : trivia.getQuestions()) {
                     System.out.println("Question: " + question.getQuestion());
@@ -95,17 +99,22 @@ public class QuizGenerationView extends JPanel {
                     System.out.println();
                 }
 
-            } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Exception exp) {
+                exp.printStackTrace();
             }
         });
 
-        cancelButton.addActionListener(evt -> System.out.println("Cancel button clicked"));
+        cancelButton.addActionListener(evt -> {
+            if (evt.getSource().equals(cancelButton)) {
+                quizGenerationController.switchToMainMenuView();
+                System.out.println("Cancel button clicked");
+            }
+        });
     }
 
     private GridBagConstraints createGbc() {
         final GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         return gbc;
     }
@@ -139,16 +148,20 @@ public class QuizGenerationView extends JPanel {
         return viewName;
     }
 
-//    // Main method to run and test the QuizGenerationView in a JFrame
-//    public static void main(String[] args) {
-//        JFrame frame = new JFrame("Quiz Generation");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(700, 700);
-//        frame.setLocationRelativeTo(null);
-//
-//        QuizGenerationView quizGenerationView = new QuizGenerationView();
-//        frame.add(quizGenerationView);
-//        frame.setVisible(true);
-//    }
+    public void setQuizGenerationController(QuizGenerationController quizGenerationController) {
+        this.quizGenerationController = quizGenerationController;
+    }
+
+    // Main method to run and test the QuizGenerationView in a JFrame
+    public static void main(String[] args) {
+        final JFrame frame = new JFrame("Quiz Generation");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
+        frame.setLocationRelativeTo(null);
+
+        final QuizGenerationView quizGenerationView = new QuizGenerationView(new QuizGenerationViewModel());
+        frame.add(quizGenerationView);
+        frame.setVisible(true);
+    }
 
 }
