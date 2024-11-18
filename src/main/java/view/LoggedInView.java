@@ -1,14 +1,13 @@
 package view;
 
-import interface_adapter.ViewManagerModel;
+import app.Constants;
 import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.logged_in.LoggedInState;
+import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.quiz_generation.QuizGenerationController;
-//import use_case.myCreatedQuizzes.MyCreatedQuizzesController;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -23,7 +22,7 @@ import java.beans.PropertyChangeListener;
 /**
  * The View for when the user is logged into the program.
  */
-public class LoggedInMainMenuView extends JPanel implements PropertyChangeListener {
+public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
@@ -46,7 +45,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
     private final JButton localMultiplayer;
     private final JButton changePassword;
 
-    public LoggedInMainMenuView(LoggedInViewModel loggedInViewModel) {
+    public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
@@ -134,7 +133,6 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
                 final LoggedInState currentState = loggedInViewModel.getState();
                 currentState.setQuizKey(sharedQuizKeyField.getText());
                 loggedInViewModel.setState(currentState);
-                System.out.println(currentState.getQuizKey());
             }
 
             @Override
@@ -178,8 +176,6 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
                 evt -> {
                     if (evt.getSource().equals(playSharedQuiz)) {
                         final LoggedInState currentState = loggedInViewModel.getState();
-
-                        System.out.println(currentState.getQuizKey());
                         this.accessQuizController.execute(currentState.getQuizKey());
                     }
                 }
@@ -272,6 +268,10 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
         }
+        else if (evt.getPropertyName().equals("keyError")) {
+            final LoggedInState state = (LoggedInState) evt.getNewValue();
+            sharedQuizKeyErrorField.setText(state.getQuizKeyError());
+        }
     }
 
     public String getViewName() {
@@ -298,15 +298,15 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         this.localMultiplayerController = localMultiplayerController;
     }
 
-//    // Main method to run and test the MainMenuView in a JFrame
-//    public static void main(String[] args) {
-//        final JFrame frame = new JFrame("Main Menu");
-//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setSize(new Dimension(1200, 500));
-//        frame.setLocationRelativeTo(null);
-//
-//        final LoggedInMainMenuView loggedInMainMenuView = new LoggedInMainMenuView(new LoggedInViewModel());
-//        frame.add(loggedInMainMenuView);
-//        frame.setVisible(true);
-//    }
+    // Main method to run and test the MainMenuView in a JFrame
+    public static void main(String[] args) {
+        final JFrame frame = new JFrame("Main Menu");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
+        frame.setLocationRelativeTo(null);
+
+        final LoggedInView loggedInView = new LoggedInView(new LoggedInViewModel());
+        frame.add(loggedInView);
+        frame.setVisible(true);
+    }
 }

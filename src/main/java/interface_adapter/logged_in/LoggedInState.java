@@ -1,4 +1,4 @@
-package interface_adapter.change_password;
+package interface_adapter.logged_in;
 
 /**
  * The State information representing the logged-in user.
@@ -45,5 +45,9 @@ public class LoggedInState {
 
     public void setQuizKeyError(String quizKeyError) {
         this.quizKeyError = quizKeyError;
+    }
+
+    public String getQuizKeyError() {
+        return quizKeyError;
     }
 }
