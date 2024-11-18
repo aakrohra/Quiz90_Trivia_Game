@@ -285,11 +285,10 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
      * @return key of quiz added to the database
      */
     @Override
-    public String addQuiz(PlayerCreatedQuiz quiz, User user) {
+    public String addQuiz(JSONObject quizObject, User user) {
         final JSONObject currentUserInfo = getUserInfo(user);
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject quizObject = quizObjectToJSONObject(quiz);
         String key;
         while (true) {
             key = randomKey() + user.getName();
