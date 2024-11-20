@@ -3,7 +3,6 @@ package app;
 import data_access.DBCustomQuizDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
-import entity.Quiz;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.access_quiz.AccessQuizController;
@@ -11,7 +10,10 @@ import interface_adapter.access_quiz.AccessQuizPresenter;
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.local_multiplayer.LocalMultiplayerController;
+import interface_adapter.local_multiplayer.LocalMultiplayerPresenter;
+import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -29,6 +31,9 @@ import use_case.access_quiz.AccessQuizOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.local_multiplayer.LocalMultiplayerInputBoundary;
+import use_case.local_multiplayer.LocalMultiplayerInteractor;
+import use_case.local_multiplayer.LocalMultiplayerOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -74,11 +79,13 @@ public class AppBuilder {
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
     private AccessedQuizInfoViewModel accessedQuizInfoViewModel;
-    private LoggedInMainMenuView loggedInMainMenuView;
+    private LoggedInView loggedInView;
     private LoginView loginView;
     private AccessedQuizInfoView accessedQuizInfoView;
     private QuizGenerationViewModel quizGenerationViewModel;
     private QuizGenerationView quizGenerationView;
+    private LocalMultiplayerViewModel localMultiplayerViewModel;
+    private LocalMultiplayerView localMultiplayerView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -112,8 +119,8 @@ public class AppBuilder {
      */
     public AppBuilder addLoggedInView() {
         loggedInViewModel = new LoggedInViewModel();
-        loggedInMainMenuView = new LoggedInMainMenuView(loggedInViewModel);
-        cardPanel.add(loggedInMainMenuView, loggedInMainMenuView.getViewName());
+        loggedInView = new LoggedInView(loggedInViewModel);
+        cardPanel.add(loggedInView, loggedInView.getViewName());
         return this;
     }
 
@@ -125,16 +132,37 @@ public class AppBuilder {
         quizGenerationViewModel = new QuizGenerationViewModel();
         quizGenerationView = new QuizGenerationView(quizGenerationViewModel);
         cardPanel.add(quizGenerationView, quizGenerationView.getViewName());
-        final QuizGenerationOutputBoundary quizGenerationPresenter = new QuizGenerationPresenter(viewManagerModel,
-                quizGenerationViewModel);
-
-        final QuizGenerationInputBoundary quizGenerationInteractor =
-                new QuizGenerationInteractor(quizGenerationPresenter);
-
-        final QuizGenerationController quizGenerationController =
-                new QuizGenerationController(quizGenerationInteractor);
-        loggedInMainMenuView.setQuizGenerationController(quizGenerationController);
         return this;
+    }
+
+    /**
+     * Adds the Local Multiplayer View to the application.
+     * @return this builder
+     */
+    public AppBuilder addLocalMultiplayerView() {
+        localMultiplayerViewModel = new LocalMultiplayerViewModel();
+        localMultiplayerView = new LocalMultiplayerView(localMultiplayerViewModel);
+        cardPanel.add(localMultiplayerView, localMultiplayerView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Local Multiplayer Use Case to the application.
+     */
+    public AppBuilder addLocalMultiplayerUseCase() {
+        loggedInViewModel = new LoggedInViewModel();
+        final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
+                viewManagerModel, localMultiplayerViewModel);
+
+        final LocalMultiplayerInputBoundary localMultiplayerInteractor =
+                new LocalMultiplayerInteractor(localMultiplayerPresenter);
+
+        final LocalMultiplayerController localMultiplayerController =
+                new LocalMultiplayerController(localMultiplayerInteractor);
+        loggedInView.setLocalMultiplayerController(localMultiplayerController);
+        localMultiplayerView.setLocalMultiplayerController(localMultiplayerController);
+        return this;
+
     }
 
     /**
@@ -191,7 +219,7 @@ public class AppBuilder {
 
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
-        loggedInMainMenuView.setChangePasswordController(changePasswordController);
+        loggedInView.setChangePasswordController(changePasswordController);
         return this;
     }
 
@@ -207,7 +235,7 @@ public class AppBuilder {
                 new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInMainMenuView.setLogoutController(logoutController);
+        loggedInView.setLogoutController(logoutController);
         return this;
     }
 
@@ -225,8 +253,28 @@ public class AppBuilder {
         );
 
         final AccessQuizController accessQuizController = new AccessQuizController(accessQuizInteractor);
-        loggedInMainMenuView.setAccessQuizController(accessQuizController);
+        loggedInView.setAccessQuizController(accessQuizController);
         return this;
+    }
+
+    /**
+     * Adds the Quiz Generation Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addQuizGenerationUseCase() {
+        loggedInViewModel = new LoggedInViewModel();
+        final QuizGenerationOutputBoundary quizGenerationPresenter =
+                new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel, loggedInViewModel);
+
+        final QuizGenerationInputBoundary quizGenerationInteractor =
+                new QuizGenerationInteractor(quizGenerationPresenter);
+
+        final QuizGenerationController quizGenerationController =
+                new QuizGenerationController(quizGenerationInteractor);
+        loggedInView.setQuizGenerationController(quizGenerationController);
+        quizGenerationView.setQuizGenerationController(quizGenerationController);
+        return this;
+
     }
 
     /**

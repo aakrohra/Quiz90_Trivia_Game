@@ -3,7 +3,6 @@ package view;
 import javax.swing.*;
 
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
-import interface_adapter.change_password.LoggedInViewModel;
 
 /**
  * The view for when a quiz has been accessed and its information must be shown.
