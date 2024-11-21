@@ -23,8 +23,6 @@ import java.beans.PropertyChangeListener;
  */
 public class LoggedInView extends JPanel implements PropertyChangeListener {
 
-    private final String viewName = "logged in";
-    private final LoggedInViewModel loggedInViewModel;
     private ChangePasswordController changePasswordController;
     private LocalMultiplayerController localMultiplayerController;
     private AccessQuizController accessQuizController;
@@ -44,8 +42,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final JButton changePassword;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
-        this.loggedInViewModel = loggedInViewModel;
-        this.loggedInViewModel.addPropertyChangeListener(this);
+        loggedInViewModel.addPropertyChangeListener(this);
 
         final TitlePanel titlePanel = new TitlePanel(LoggedInViewModel.TITLE_LABEL);
 
@@ -138,89 +135,13 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
             }
         });
 
-        sharedQuizKeyFieldUserInterfaceHelper();
-
-        createdQuizzes.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(changePassword)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-
-//                        TODO implement myCreatedQuizzesController
-//                        this.myCreatedQuizzesController.execute();
-                    }
-                }
-        );
-
-        changePassword.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(changePassword)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-
-                        this.changePasswordController.execute(
-                                currentState.getUsername(),
-                                currentState.getPassword()
-                        );
-                    }
-                }
-        );
-
-        playSharedQuiz.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(playSharedQuiz)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-                        this.accessQuizController.execute(currentState.getQuizKey());
-                    }
-                }
-        );
-
-        logOut.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(logOut)) {
-                        // 1. get the state out of the loggedInViewModel. It contains the username.
-                        // 2. Execute the logout Controller.
-                        final LoggedInState state = loggedInViewModel.getState();
-                        final String user = state.getUsername();
-                        logoutController.execute(user);
-                    }
-                }
-        );
-
-        normalPlay.addActionListener(evt -> {
-            if (evt.getSource().equals(normalPlay)) {
-                quizGenerationController.switchToQuizGenerationView();
+        playSharedQuiz.addActionListener(evt -> {
+            if (evt.getSource().equals(playSharedQuiz)) {
+                final LoggedInState state = loggedInViewModel.getState();
+                this.accessQuizController.execute(state.getQuizKey());
             }
         });
 
-        localMultiplayer.addActionListener(evt -> {
-            if (evt.getSource().equals(localMultiplayer)) {
-                localMultiplayerController.switchToLocalMultiplayerView();
-            }
-        });
-
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        this.add(Box.createVerticalGlue());
-        this.add(Box.createVerticalStrut(20));
-        this.add(titlePanel);
-        this.add(Box.createVerticalStrut(20));
-        this.add(currentPlayerPanel);
-        this.add(buttons0);
-        this.add(Box.createVerticalStrut(20));
-        this.add(buttons1);
-        this.add(sharedQuizKeyErrorField);
-        this.add(Box.createVerticalStrut(20));
-        this.add(buttons2);
-        this.add(Box.createVerticalStrut(20));
-        this.add(buttons3);
-        this.add(Box.createVerticalStrut(20));
-        this.add(Box.createVerticalGlue());
-
-        this.setBackground(Constants.BGCOLOUR);
-    }
-
-    private void sharedQuizKeyFieldUserInterfaceHelper() {
         sharedQuizKeyField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -241,6 +162,74 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 }
             }
         });
+
+        createdQuizzes.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(changePassword)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+
+//                        TODO implement myCreatedQuizzesController
+//                        this.myCreatedQuizzesController.execute();
+                    }
+                }
+        );
+
+        changePassword.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                evt -> {
+                    if (evt.getSource().equals(changePassword)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+                        this.changePasswordController.execute(
+                                currentState.getUsername(),
+                                currentState.getPassword()
+                        );
+                    }
+                }
+        );
+
+        logOut.addActionListener(evt -> {
+            if (evt.getSource().equals(logOut)) {
+                // 1. get the state out of the loggedInViewModel. It contains the username.
+                // 2. Execute the logout Controller.
+                final LoggedInState state = loggedInViewModel.getState();
+                final String user = state.getUsername();
+                logoutController.execute(user);
+            }
+        });
+
+        normalPlay.addActionListener(evt -> {
+            if (evt.getSource().equals(normalPlay)) {
+                quizGenerationController.switchToQuizGenerationView();
+            }
+        });
+
+        localMultiplayer.addActionListener(evt -> {
+            if (evt.getSource().equals(localMultiplayer)) {
+                localMultiplayerController.switchToLocalMultiplayerView();
+            }
+        });
+
+        final JPanel keyErrorPanel = new JPanel();
+        keyErrorPanel.add(sharedQuizKeyErrorField);
+        keyErrorPanel.setBackground(Color.green);
+
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
+        this.add(Box.createVerticalGlue());
+
+        this.add(titlePanel);
+        this.add(currentPlayerPanel);
+        this.add(buttons0);
+        this.add(buttons1);
+        this.add(Box.createVerticalStrut(20));
+        this.add(buttons2);
+        this.add(Box.createVerticalStrut(20));
+        this.add(buttons3);
+        this.add(keyErrorPanel);
+        this.add(Box.createVerticalStrut(20));
+        this.add(Box.createVerticalGlue());
+
+        this.setBackground(Constants.BGCOLOUR);
     }
 
     private void buttonsSizeHelper(JButton jbutton) {
@@ -249,22 +238,14 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("state")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            username.setText(state.getUsername());
-        }
-        else if (evt.getPropertyName().equals("password")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
-        }
-        else if (evt.getPropertyName().equals("keyError")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            sharedQuizKeyErrorField.setText(state.getQuizKeyError());
+        final LoggedInState state = (LoggedInState) evt.getNewValue();
+        if (state.getQuizKeyError() != null) {
+            JOptionPane.showMessageDialog(this, state.getQuizKeyError());
         }
     }
 
     public String getViewName() {
-        return viewName;
+        return "logged in";
     }
 
     public void setChangePasswordController(ChangePasswordController changePasswordController) {

@@ -33,8 +33,10 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
                     false, quizObject);
 
             accessQuizPresenter.prepareSuccessView(accessQuizOutputData);
+            System.out.println("key exists");
         }
         else {
+            System.out.println("key not exists");
             accessQuizPresenter.prepareFailView("There is no quiz with the key \"" + key + "\".");
         }
     }

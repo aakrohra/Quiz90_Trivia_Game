@@ -18,6 +18,12 @@ public class LocalMultiplayerController {
      */
     public void switchToLocalMultiplayerView() {
         localMultiplayerInputBoundary.switchToLocalMultiplayerView();
-        System.out.println("doing1");
+    }
+
+    /**
+     * Executes the action to switch to the Main Menu view.
+     */
+    public void switchToMainMenuView() {
+        localMultiplayerInputBoundary.switchToMainMenuView();
     }
 }

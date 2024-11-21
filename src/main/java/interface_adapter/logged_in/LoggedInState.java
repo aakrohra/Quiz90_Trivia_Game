@@ -5,23 +5,9 @@ package interface_adapter.logged_in;
  */
 public class LoggedInState {
     private String username = "";
-
     private String password = "";
-
     private String quizKey = "";
     private String quizKeyError;
-
-    public LoggedInState(LoggedInState copy) {
-        username = copy.username;
-        password = copy.password;
-        this.quizKey = copy.quizKey;
-        quizKeyError = copy.quizKeyError;
-    }
-
-    // Because of the previous copy constructor, the default constructor must be explicit.
-    public LoggedInState() {
-
-    }
 
     public String getUsername() {
         return username;
@@ -48,6 +34,6 @@ public class LoggedInState {
     }
 
     public String getQuizKeyError() {
-        return quizKeyError;
+        return this.quizKeyError;
     }
 }
