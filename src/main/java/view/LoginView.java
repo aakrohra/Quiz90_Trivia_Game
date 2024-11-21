@@ -1,5 +1,6 @@
 package view;
 
+// TODO fix order of imports
 import app.Constants;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
@@ -49,10 +50,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         final JPanel usernamePanel = usernamePanelHelper();
         final JPanel passwordPanel = passwordPanelHelper();
         final JPanel infoPanel = infoPanelHelper(usernamePanel, passwordPanel);
-        final JPanel errorPanel = new JPanel();
-        errorPanel.setBackground(Constants.BGCOLOUR);
-        errorPanel.add(usernameErrorField);
-        errorPanel.add(passwordErrorField);
+        final JPanel errorPanel = getjPanel();
 
         final JPanel buttons = new JPanel();
         logIn = new CustomButton("Log in");
@@ -62,6 +60,15 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         actionAndDocumentListeners(loginViewModel);
 
         assembleFinalPanel(titlePanel, infoPanel, errorPanel, buttons);
+    }
+
+    @NotNull
+    private JPanel getjPanel() {
+        final JPanel errorPanel = new JPanel();
+        errorPanel.setBackground(Constants.BGCOLOUR);
+        errorPanel.add(usernameErrorField);
+        errorPanel.add(passwordErrorField);
+        return errorPanel;
     }
 
     private void actionAndDocumentListeners(LoginViewModel tempLoginViewModel) {
