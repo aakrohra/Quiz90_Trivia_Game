@@ -1,7 +1,6 @@
 package app;
 
 import java.awt.Color;
-
 /**
  * Defines project constants.
  */
