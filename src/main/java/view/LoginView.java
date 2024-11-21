@@ -6,10 +6,7 @@ import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginState;
 import interface_adapter.login.LoginViewModel;
 
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
@@ -65,16 +62,19 @@ public class LoginView extends JPanel implements PropertyChangeListener {
     @NotNull
     private JPanel usernamePanelHelper() {
         final JPanel usernamePanel = new JPanel();
+        usernameField.setPreferredSize(new Dimension(Constants.FIELDX, Constants.FIELDY));
         usernamePanel.add(usernameField);
         usernameField.setText("Enter your username here...");
         usernameField.setForeground(Color.GRAY);
         usernamePanel.setBackground(Constants.BGCOLOUR);
+        usernamePanel.setMaximumSize(new Dimension(Integer.MAX_VALUE, Constants.FIELDY));
         return usernamePanel;
     }
 
     @NotNull
     private JPanel passwordPanelHelper() {
         final JPanel passwordPanel = new JPanel();
+        passwordField.setPreferredSize(new Dimension(Constants.FIELDX, Constants.FIELDY));
         passwordPanel.add(passwordField);
         passwordPanel.setBackground(Constants.BGCOLOUR);
         return passwordPanel;
@@ -84,8 +84,12 @@ public class LoginView extends JPanel implements PropertyChangeListener {
     private static JPanel infoPanelHelper(JPanel usernamePanel, JPanel passwordPanel) {
         final JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.add(Box.createVerticalGlue());
         infoPanel.add(usernamePanel);
         infoPanel.add(passwordPanel);
+        infoPanel.add(Box.createVerticalGlue());
+        infoPanel.setBackground(Constants.BGCOLOUR);
+        infoPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
         return infoPanel;
     }
 
@@ -264,6 +268,9 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         this.add(errorPanel);
         this.add(verticalSpacer());
         this.add(buttons);
+        this.add(verticalSpacer());
+        this.add(verticalSpacer());
+        this.add(verticalSpacer());
         this.add(verticalSpacer());
         this.add(Box.createVerticalGlue());
         this.setBackground(Constants.BGCOLOUR);
