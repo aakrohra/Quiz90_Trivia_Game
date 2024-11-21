@@ -45,19 +45,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         loggedInViewModel.addPropertyChangeListener(this);
 
         final TitlePanel titlePanel = new TitlePanel(LoggedInViewModel.TITLE_LABEL);
-
-        final JPanel currentPlayerPanel = new JPanel();
-        final Box currentPlayerBox = Box.createHorizontalBox();
-        currentPlayerPanel.setBackground(new Color(0, 71, 0));
-        currentPlayerPanel.setPreferredSize(new Dimension(1200, 100));
-        currentPlayerBox.setOpaque(true);
-        currentPlayerBox.setBackground(Color.WHITE);
-        currentPlayerBox.setBorder(BorderFactory.createEmptyBorder(10, 35, 10, 35));
-        final JLabel player = new JLabel("Current Player: ");
-        currentPlayerPanel.add(currentPlayerBox);
-        currentPlayerBox.add(player);
         username = new JLabel();
-        currentPlayerBox.add(username);
+        final CurrentPlayerPanel currentPlayerPanel = new CurrentPlayerPanel(username);
 
         final JPanel buttons0 = new JPanel();
         normalPlay = new JButton("Normal Play");
@@ -241,6 +230,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final LoggedInState state = (LoggedInState) evt.getNewValue();
+        if
         if (state.getQuizKeyError() != null) {
             JOptionPane.showMessageDialog(this, state.getQuizKeyError());
         }
