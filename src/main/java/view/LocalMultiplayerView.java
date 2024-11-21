@@ -15,7 +15,7 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
 
     private LocalMultiplayerController localMultiplayerController;
 
-    private final String viewName = "main menu";
+    private final String viewName = "local multiplayer";
     private final LocalMultiplayerViewModel localMultiplayerViewModel;
 
     public LocalMultiplayerView(LocalMultiplayerViewModel localMultiplayerViewModel) {

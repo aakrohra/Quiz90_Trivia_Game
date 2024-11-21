@@ -1,5 +1,6 @@
 package view;
 
+import app.Constants;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupState;
 import interface_adapter.signup.SignupViewModel;
@@ -28,7 +29,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
     private final JPasswordField repeatPasswordInputField = new JPasswordField(15);
     private SignupController signupController;
 
-    private final JButton signUp;
     private final JButton cancel;
     private final JButton toLogin;
 
@@ -36,28 +36,22 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         this.signupViewModel = signupViewModel;
         signupViewModel.addPropertyChangeListener(this);
 
-        final PanelBox titlePanelBox = new PanelBox(new JPanel(), Box.createHorizontalBox());
-        titlePanelBox.setBackground(new Color(0, 71, 171));
-        final JLabel title = new JLabel(SignupViewModel.TITLE_LABEL);
-        titlePanelBox.add(title);
-        title.setBorder(new EmptyBorder(20, 0, 20, 0));
-        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 24));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        final TitlePanel titlePanel = new TitlePanel(SignupViewModel.TITLE_LABEL);
 
         final LabelTextPanel usernameInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.USERNAME_LABEL), usernameInputField);
-        usernameInfo.setBackground(new Color(0, 71, 171));
+        usernameInfo.setBackground(Constants.BGCOLOUR);
 
         final LabelTextPanel passwordInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.PASSWORD_LABEL), passwordInputField);
-        passwordInfo.setBackground(new Color(0, 71, 171));
+        passwordInfo.setBackground(Constants.BGCOLOUR);
         final LabelTextPanel repeatPasswordInfo = new LabelTextPanel(
                 new JLabel(SignupViewModel.REPEAT_PASSWORD_LABEL), repeatPasswordInputField);
         repeatPasswordInfo.setBackground(new Color(0, 71, 171));
 
         final JPanel buttons0 = new JPanel();
-        buttons0.setBackground(new Color(0, 71, 171));
-        signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
+        buttons0.setBackground(Constants.BGCOLOUR);
+        final JButton signUp = new JButton(SignupViewModel.SIGNUP_BUTTON_LABEL);
 
         buttons0.setLayout(new BoxLayout(buttons0, BoxLayout.X_AXIS));
         buttons0.add(Box.createHorizontalGlue());
@@ -114,7 +108,7 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
 
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalStrut(10));
-        this.add(titlePanelBox);
+        this.add(titlePanel);
         this.add(Box.createVerticalStrut(30));
         this.add(usernameInfo);
         this.add(Box.createVerticalStrut(10));
@@ -127,7 +121,6 @@ public class SignupView extends JPanel implements ActionListener, PropertyChange
         this.add(buttons1);
         this.add(Box.createVerticalStrut(10));
         this.add(Box.createVerticalGlue());
-
 
         this.setBackground(new Color(0, 71, 171));
     }

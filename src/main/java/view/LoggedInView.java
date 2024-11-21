@@ -49,17 +49,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-//        final int WINDOW_WIDTH = this.getWidth(); // TODO implement this properly
-//        final int WINDOW_HEIGHT = this.getHeight(); // TODO implement this properly
-
-        final PanelBox titlePanelBox = new PanelBox(new JPanel(), Box.createHorizontalBox());
-        titlePanelBox.setBackground(new Color(0, 0, 171));
-        final JLabel title = new JLabel(LoggedInViewModel.TITLE_LABEL);
-        titlePanelBox.add(title);
-        title.setBorder(new EmptyBorder(20, 0, 0, 0));
-        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 24));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setSize(new Dimension(10, 20));
+        final TitlePanel titlePanel = new TitlePanel(LoggedInViewModel.TITLE_LABEL);
 
         final JPanel currentPlayerPanel = new JPanel();
         final Box currentPlayerBox = Box.createHorizontalBox();
@@ -69,7 +59,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         currentPlayerBox.setBackground(Color.WHITE);
         currentPlayerBox.setBorder(BorderFactory.createEmptyBorder(10, 35, 10, 35));
         final JLabel player = new JLabel("Current Player: ");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         currentPlayerPanel.add(currentPlayerBox);
         currentPlayerBox.add(player);
         username = new JLabel();
@@ -237,7 +226,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalStrut(20));
-        this.add(titlePanelBox);
+        this.add(titlePanel);
         this.add(Box.createVerticalStrut(20));
         this.add(currentPlayerPanel);
         this.add(buttons0);

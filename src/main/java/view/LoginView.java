@@ -35,17 +35,10 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
     private LoginController loginController;
 
     public LoginView(LoginViewModel loginViewModel) {
-
         this.loginViewModel = loginViewModel;
         this.loginViewModel.addPropertyChangeListener(this);
 
-        final PanelBox titlePanelBox = new PanelBox(new JPanel(), Box.createHorizontalBox());
-        final JLabel title = new JLabel(LoginViewModel.TITLE_LABEL);
-        titlePanelBox.setBackground(new Color(0, 71, 171));
-        titlePanelBox.add(title);
-        title.setBorder(new EmptyBorder(20, 0, 20, 0));
-        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 24));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        final TitlePanel titlePanel = new TitlePanel(LoginViewModel.TITLE_LABEL);
 
         final JPanel usernamePanel = new JPanel();
         usernamePanel.add(usernameField);
@@ -193,7 +186,7 @@ public class LoginView extends JPanel implements ActionListener, PropertyChangeL
 
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalStrut(10));
-        this.add(titlePanelBox);
+        this.add(titlePanel);
         this.add(Box.createVerticalStrut(10));
         this.add(usernamePanel);
         this.add(usernameErrorField);
