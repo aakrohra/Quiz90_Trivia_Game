@@ -135,13 +135,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
             }
         });
 
-        playSharedQuiz.addActionListener(evt -> {
-            if (evt.getSource().equals(playSharedQuiz)) {
-                final LoggedInState state = loggedInViewModel.getState();
-                this.accessQuizController.execute(state.getQuizKey());
-            }
-        });
-
         sharedQuizKeyField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -162,6 +155,15 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 }
             }
         });
+
+        playSharedQuiz.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(playSharedQuiz)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+                        this.accessQuizController.execute(currentState.getQuizKey());
+                    }
+                }
+        );
 
         createdQuizzes.addActionListener(
                 evt -> {
