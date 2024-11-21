@@ -49,7 +49,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         final JPanel infoPanel = infoPanelHelper(usernamePanel, passwordPanel);
         final JPanel errorPanel = errorPanelHelper();
 
-        final JPanel buttons = new JPanel();
+        final JPanel buttons = new ButtonPanel();
         logIn = new CustomButton("Log in");
         cancel = new CustomButton("Cancel");
         buttonsHelper(buttons);
@@ -94,8 +94,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
     }
 
     private void buttonsHelper(JPanel buttons) {
-        buttons.setBackground(Constants.BGCOLOUR);
-        buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
         buttons.add(Box.createHorizontalGlue());
         buttons.add(logIn);
         buttons.add(horizontalSpacer());

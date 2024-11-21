@@ -2,8 +2,8 @@ package view;
 
 import app.Constants;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.BoxLayout;
+import javax.swing.JPanel;
 
 /**
  * JPanel used for containing JButtons.
