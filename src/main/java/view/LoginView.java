@@ -14,6 +14,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -26,7 +27,6 @@ import javax.swing.event.DocumentListener;
 
 import org.jetbrains.annotations.NotNull;
 
-// TODO organize code helpers in order of relevance
 /**
  * The View for when the user is logging into the program.
  */
@@ -50,7 +50,7 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         final JPanel usernamePanel = usernamePanelHelper();
         final JPanel passwordPanel = passwordPanelHelper();
         final JPanel infoPanel = infoPanelHelper(usernamePanel, passwordPanel);
-        final JPanel errorPanel = getjPanel();
+        final JPanel errorPanel = errorPanelHelper();
 
         final JPanel buttons = new JPanel();
         logIn = new CustomButton("Log in");
@@ -63,7 +63,51 @@ public class LoginView extends JPanel implements PropertyChangeListener {
     }
 
     @NotNull
-    private JPanel getjPanel() {
+    private JPanel usernamePanelHelper() {
+        final JPanel usernamePanel = new JPanel();
+        usernamePanel.add(usernameField);
+        usernameField.setText("Enter your username here...");
+        usernameField.setForeground(Color.GRAY);
+        usernamePanel.setBackground(Constants.BGCOLOUR);
+        return usernamePanel;
+    }
+
+    @NotNull
+    private JPanel passwordPanelHelper() {
+        final JPanel passwordPanel = new JPanel();
+        passwordPanel.add(passwordField);
+        passwordPanel.setBackground(Constants.BGCOLOUR);
+        return passwordPanel;
+    }
+
+    @NotNull
+    private static JPanel infoPanelHelper(JPanel usernamePanel, JPanel passwordPanel) {
+        final JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
+        infoPanel.add(usernamePanel);
+        infoPanel.add(passwordPanel);
+        return infoPanel;
+    }
+
+    private void buttonsHelper(JPanel buttons) {
+        buttons.setBackground(Constants.BGCOLOUR);
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
+        buttons.add(Box.createHorizontalGlue());
+        buttons.add(logIn);
+        buttons.add(horizontalSpacer());
+        buttons.add(cancel);
+        buttons.add(Box.createHorizontalGlue());
+    }
+
+    private void actionAndDocumentListeners(LoginViewModel tempLoginViewModel) {
+        usernameFieldListener(tempLoginViewModel);
+        passwordFieldListener(tempLoginViewModel);
+        logInActionListener(tempLoginViewModel);
+        cancelActionListener();
+    }
+
+    @NotNull
+    private JPanel errorPanelHelper() {
         final JPanel errorPanel = new JPanel();
         errorPanel.setBackground(Constants.BGCOLOUR);
         errorPanel.add(usernameErrorField);
@@ -71,11 +115,12 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         return errorPanel;
     }
 
-    private void actionAndDocumentListeners(LoginViewModel tempLoginViewModel) {
-        logInActionListener(tempLoginViewModel);
+    private void usernameFieldListener(LoginViewModel tempLoginViewModel) {
+        usernameFieldInfoListener(tempLoginViewModel);
+        usernameFieldFocusAndInterface();
+    }
 
-        cancelActionListener();
-
+    private void usernameFieldInfoListener(LoginViewModel tempLoginViewModel) {
         usernameField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
@@ -99,7 +144,9 @@ public class LoginView extends JPanel implements PropertyChangeListener {
                 documentListenerHelper();
             }
         });
+    }
 
+    private void usernameFieldFocusAndInterface() {
         usernameField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -120,51 +167,11 @@ public class LoginView extends JPanel implements PropertyChangeListener {
                 }
             }
         });
-
-        passwordFieldListener(tempLoginViewModel);
     }
 
     private void passwordFieldListener(LoginViewModel tempLoginViewModel) {
         passwordFieldInfoListener(tempLoginViewModel);
-
-        passwordFieldListenerAndInterface();
-    }
-
-    private void passwordFieldListenerAndInterface() {
-        passwordField.setBackground(Color.WHITE);
-        // Default echo character
-        passwordField.setEchoChar('\u2022');
-        passwordField.addFocusListener(new FocusAdapter() {
-
-            @Override
-            public void focusGained(FocusEvent e) {
-                // Repaint to hide the placeholder when focused
-                passwordField.repaint();
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Repaint to show the placeholder if empty
-                passwordField.repaint();
-            }
-        });
-        // Custom paint component to display placeholder
-        passwordField.setOpaque(true);
-        // Ensures consistent background color
-        passwordField.setBackground(Color.WHITE);
-        passwordField.setUI(new javax.swing.plaf.basic.BasicPasswordFieldUI() {
-            @Override
-            protected void paintSafely(Graphics g) {
-                super.paintSafely(g);
-                if (passwordField.getPassword().length == 0 && !passwordField.hasFocus()) {
-                    final Graphics2D g2 = (Graphics2D) g.create();
-                    // Placeholder text color
-                    g2.setColor(Color.GRAY);
-                    g2.drawString("Enter your password here...", 5, passwordField.getHeight() - 7); // Position the placeholder text
-                    g2.dispose();
-                }
-            }
-        });
+        passwordFieldFocusAndInterface();
     }
 
     private void passwordFieldInfoListener(LoginViewModel tempLoginViewModel) {
@@ -192,8 +199,43 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         });
     }
 
-    private void cancelActionListener() {
-        cancel.addActionListener(evt -> loginController.switchToSignupView());
+    private void passwordFieldFocusAndInterface() {
+        passwordField.setBackground(Color.WHITE);
+        // Default echo character
+        passwordField.setEchoChar('*');
+        passwordField.addFocusListener(new FocusAdapter() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Repaint to hide the placeholder when focused
+                passwordField.repaint();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Repaint to show the placeholder if empty
+                passwordField.repaint();
+            }
+        });
+        // Custom paint component to display placeholder
+        passwordField.setOpaque(true);
+        // Ensures consistent background color
+        passwordField.setBackground(Color.WHITE);
+        passwordField.setUI(new javax.swing.plaf.basic.BasicPasswordFieldUI() {
+            @Override
+            protected void paintSafely(Graphics g) {
+                super.paintSafely(g);
+                if (passwordField.getPassword().length == 0 && !passwordField.hasFocus()) {
+                    final Graphics2D g2 = (Graphics2D) g.create();
+                    // Placeholder text color
+                    g2.setColor(Color.GRAY);
+                    // Position the placeholder text
+                    g2.drawString("Enter your password here...", Constants.POSITIONX,
+                            passwordField.getHeight() - Constants.POSITIONY);
+                    g2.dispose();
+                }
+            }
+        });
     }
 
     private void logInActionListener(LoginViewModel tempLoginViewModel) {
@@ -208,13 +250,8 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         });
     }
 
-    @NotNull
-    private static JPanel infoPanelHelper(JPanel usernamePanel, JPanel passwordPanel) {
-        final JPanel infoPanel = new JPanel();
-        infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
-        infoPanel.add(usernamePanel);
-        infoPanel.add(passwordPanel);
-        return infoPanel;
+    private void cancelActionListener() {
+        cancel.addActionListener(evt -> loginController.switchToSignupView());
     }
 
     private void assembleFinalPanel(TitlePanel titlePanel, JPanel infoPanel, JPanel errorPanel, JPanel buttons) {
@@ -230,34 +267,6 @@ public class LoginView extends JPanel implements PropertyChangeListener {
         this.add(verticalSpacer());
         this.add(Box.createVerticalGlue());
         this.setBackground(Constants.BGCOLOUR);
-    }
-
-    private void buttonsHelper(JPanel buttons) {
-        buttons.setBackground(Constants.BGCOLOUR);
-        buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
-        buttons.add(Box.createHorizontalGlue());
-        buttons.add(logIn);
-        buttons.add(horizontalSpacer());
-        buttons.add(cancel);
-        buttons.add(Box.createHorizontalGlue());
-    }
-
-    @NotNull
-    private JPanel passwordPanelHelper() {
-        final JPanel passwordPanel = new JPanel();
-        passwordPanel.add(passwordField);
-        passwordPanel.setBackground(Constants.BGCOLOUR);
-        return passwordPanel;
-    }
-
-    @NotNull
-    private JPanel usernamePanelHelper() {
-        final JPanel usernamePanel = new JPanel();
-        usernamePanel.add(usernameField);
-        usernameField.setText("Enter your username here...");
-        usernameField.setForeground(Color.GRAY);
-        usernamePanel.setBackground(Constants.BGCOLOUR);
-        return usernamePanel;
     }
 
     private Component horizontalSpacer() {
