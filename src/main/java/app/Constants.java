@@ -1,6 +1,6 @@
 package app;
 
-import java.awt.*;
+import java.awt.Color;
 
 /**
  * Defines project constants.
@@ -19,18 +19,31 @@ public class Constants {
     public static final int BUTTONFONTSIZE = FONTSIZE * 2 / 3;
     public static final int MARGINS = 10;
 
+    // Other Button constants
+    public static final int BUTTON1WIDTH = 200;
+    public static final int BUTTON1HEIGHT = 50;
+    public static final int TEXTPANELWIDTH = 400;
+    public static final int TEXTPANELHEIGHT = 100;
+
+    // Placeholder text
+    public static final String USERNAMEPLACEHOLDER = "Enter your username here...";
+    public static final int POSITIONX = 5;
+    public static final int POSITIONY = 7;
+    public static final int FIELDX = 500;
+    public static final int FIELDY = 25;
+
+
+    // UI Spacers
+    public static final int STRUTSMALLSPACER = 20;
+
     // Box Constants
     public static final int BOXX = 400;
     public static final int BOXY = 100;
 
-    // Title
-    public static final int TITLESIZE = 24;
-
     // UI Colours
-    public static final Color BGCOLOUR = new Color(0, 71, 171);
+    public static final Color BGCOLOUR = new Color(56, 113, 194);
 
-
-
+    // Normal Play
     public static final String[] CATEGORIES = {
         "Animals",
         "Art",
