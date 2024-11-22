@@ -7,8 +7,10 @@ import interface_adapter.ViewModel;
  */
 public class AccessedQuizInfoViewModel extends ViewModel<AccessedQuizInfoState> {
 
+    public static final String TITLE_LABEL = "Custom Quiz Information";
+
     public AccessedQuizInfoViewModel() {
-        super("Accessed quiz");
+        super("accessed quiz info");
         setState(new AccessedQuizInfoState());
     }
 }

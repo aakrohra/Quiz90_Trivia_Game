@@ -10,4 +10,9 @@ public interface AccessQuizInputBoundary {
      * @param accessQuizInputData the input data
      */
     void execute(AccessQuizInputData accessQuizInputData);
+
+    /**
+     * Switch to Logged In View use case.
+     */
+    void switchToLoggedInView();
 }
