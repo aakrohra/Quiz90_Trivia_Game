@@ -115,6 +115,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         buttons3.add(logOut);
         buttons3.add(Box.createHorizontalGlue());
 
+        sharedQuizKeyErrorField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sharedQuizKeyErrorField.setForeground(Color.WHITE);
+
         sharedQuizKeyField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
                 final LoggedInState currentState = loggedInViewModel.getState();
@@ -210,6 +213,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.add(buttons0);
         this.add(Box.createVerticalStrut(20));
         this.add(buttons1);
+        this.add(Box.createVerticalStrut(20));
         this.add(sharedQuizKeyErrorField);
         this.add(Box.createVerticalStrut(20));
         this.add(buttons2);

@@ -150,7 +150,6 @@ public class AppBuilder {
      * Adds the Local Multiplayer Use Case to the application.
      */
     public AppBuilder addLocalMultiplayerUseCase() {
-        loggedInViewModel = new LoggedInViewModel();
         final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
                 viewManagerModel, localMultiplayerViewModel);
 
