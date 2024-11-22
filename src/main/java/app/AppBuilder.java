@@ -254,6 +254,7 @@ public class AppBuilder {
 
         final AccessQuizController accessQuizController = new AccessQuizController(accessQuizInteractor);
         loggedInView.setAccessQuizController(accessQuizController);
+        accessedQuizInfoView.setAccessQuizController(accessQuizController);
         return this;
     }
 
@@ -282,7 +283,7 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("Quiz90 Trivia Game");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);
