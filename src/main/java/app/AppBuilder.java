@@ -14,10 +14,10 @@ import interface_adapter.access_quiz.AccessQuizPresenter;
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.local_multiplayer.LocalMultiplayerPresenter;
 import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
+import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -149,7 +149,14 @@ public class AppBuilder {
 
     /**
      * Adds the Local Multiplayer Use Case to the application.
+     * This method initializes and wires up the components required for the
+     * Local Multiplayer feature, including its presenter, interactor, and controller.
+     * It sets the controller for the associated views to enable interaction
+     * between the user interface and the underlying use case logic.
+     *
+     * @return the current instance of {@code AppBuilder} for method chaining.
      */
+
     public AppBuilder addLocalMultiplayerUseCase() {
         final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
                 viewManagerModel, localMultiplayerViewModel);

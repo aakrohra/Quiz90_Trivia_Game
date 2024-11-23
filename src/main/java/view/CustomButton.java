@@ -1,9 +1,10 @@
 package view;
 
-import app.Constants;
+import java.awt.*;
 
 import javax.swing.*;
-import java.awt.*;
+
+import app.Constants;
 
 /**
  * A custom JButton used in the program.

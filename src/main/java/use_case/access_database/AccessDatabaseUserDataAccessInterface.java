@@ -2,10 +2,10 @@ package use_case.access_database;
 
 import java.util.Map;
 
-import entity.PlayerCreatedQuiz;
-import entity.Quiz;
-import entity.User;
 import org.json.JSONObject;
+
+import entity.PlayerCreatedQuiz;
+import entity.User;
 
 /**
  * DAO for the Access Database Use Case.

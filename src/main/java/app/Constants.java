@@ -1,9 +1,11 @@
 package app;
 
 import java.awt.Color;
+
 /**
  * Defines project constants.
  */
+
 public class Constants {
     // Frame constants
     public static final int FRAMEHEIGHT = 600;
