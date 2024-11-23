@@ -2,13 +2,13 @@ package view;
 
 import app.Constants;
 
-import data_access.TriviaApp;
 import data_access.DBTriviaDataAccessObject;
 import entity.TriviaQuestion;
 import entity.TriviaResponse;
 
 import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
+import use_case.quiz_generation.QuizGenerationInputData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -85,13 +85,15 @@ public class QuizGenerationView extends JPanel {
             try {
                 // Convert user inputs as strings/integers
                 final String category = (String) categoryComboBox.getSelectedItem();
-                final int numQuestions = (int) questionComboBox.getSelectedItem();
                 final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
+                final int numQuestions = (int) questionComboBox.getSelectedItem();
                 final String difficulty = difficultyUpper.toLowerCase();
 
                 // Fetch trivia using DBTriviaDataAccessObject
                 final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
-                final TriviaResponse trivia = triviaDao.getTrivia(numQuestions, triviaDao.getCategoryId(category), difficulty);
+                final QuizGenerationInputData quizData = new QuizGenerationInputData(category, difficulty,
+                        numQuestions);
+                final TriviaResponse trivia = triviaDao.getTrivia(quizData);
 
                 // Output the trivia questions
                 System.out.println("Fetching Trivia");

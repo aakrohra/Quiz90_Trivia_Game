@@ -15,6 +15,7 @@ import entity.TriviaResponse;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
  * A Data Access Object (DAO) that handles retrieving trivia questions from an external API.
@@ -78,21 +79,11 @@ public class DBTriviaDataAccessObject {
         return CATEGORY_MAPPING.get(categoryName);
     }
 
-    /**
-     * Retrieves a list of trivia questions from the external API.
-     *
-     * @param amount The number of trivia questions to retrieve.
-     * @param difficulty The difficulty level of the trivia questions.
-     * @param categoryID The ID of the category of the trivia questions.
-     * @return A TriviaResponse containing the list of TriviaQuestion objects.
-     * @throws Exception If an error occurs during the API request or parsing the response.
-     */
-
-    public TriviaResponse getTrivia(int amount, int categoryID, String difficulty) throws Exception {
-        // Construct URL with the given parameters
+    public TriviaResponse getTrivia(QuizGenerationInputData quizData) throws Exception {
+        // Construct URL with the values from the QuizGenerationInputData object
         final String urlString =
                 String.format("https://opentdb.com/api.php?amount=%d&category=%d&difficulty=%s&type=multiple",
-                        amount, categoryID, difficulty);
+                        quizData.getNumQuestions(), quizData.getCategory(), quizData.getDifficulty());
 
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
@@ -107,18 +98,15 @@ public class DBTriviaDataAccessObject {
             System.out.println(urlString);
 
             if (responseBody.getInt(STATUS_CODE_LABEL) == SUCCESS_CODE) {
-
                 final List<TriviaQuestion> triviaQuestions =
                         parseTriviaQuestions(responseBody.getJSONArray("results"));
 
                 return new TriviaResponse(triviaQuestions);
+            } else {
+                throw new RuntimeException("Failed to fetch trivia");
             }
-            else {
-                throw new RuntimeException();
-            }
-        }
-        catch (IOException | JSONException ex) {
-            throw new Exception(ex);
+        } catch (IOException | JSONException ex) {
+            throw new Exception("Error while fetching trivia", ex);
         }
     }
 
