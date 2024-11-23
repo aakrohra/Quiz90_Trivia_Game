@@ -10,6 +10,7 @@ import entity.TriviaQuestion;
 import entity.TriviaQuiz;
 import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
+import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
  * The view for quiz generation, allowing users to select quiz parameters
@@ -89,11 +90,13 @@ public class QuizGenerationView extends JPanel {
 
                 // Fetch trivia using DBTriviaDataAccessObject
                 final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
-                final TriviaQuiz trivia = triviaDao.getTrivia(numQuestions, triviaDao.getCategoryId(category), difficulty);
+                final QuizGenerationInputData quizData = new QuizGenerationInputData(numQuestions, category,
+                        difficulty);
+                final TriviaQuiz trivia = triviaDao.getTrivia(quizData);
 
                 // Output the trivia questions
                 System.out.println("Fetching Trivia");
-                System.out.println(numQuestions + " questions, Category: " + triviaDao.getCategoryId(category)
+                System.out.println(numQuestions + " questions, Category: " + category
                         + ", Difficulty: " + difficulty);
                 for (TriviaQuestion question : trivia.getQuestions()) {
                     System.out.println("Question: " + question.getQuestionText());
