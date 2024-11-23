@@ -81,33 +81,13 @@ public class QuizGenerationView extends JPanel {
         });
 
         playButton.addActionListener(evt -> {
-            try {
-                // Convert user inputs as strings/integers
-                final String category = (String) categoryComboBox.getSelectedItem();
-                final int numQuestions = (int) questionComboBox.getSelectedItem();
-                final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
-                final String difficulty = difficultyUpper.toLowerCase();
+            // Convert user inputs as strings/integers
+            final String category = (String) categoryComboBox.getSelectedItem();
+            final int numQuestions = (int) questionComboBox.getSelectedItem();
+            final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
+            final String difficulty = difficultyUpper.toLowerCase();
 
-                // Fetch trivia using DBTriviaDataAccessObject
-                final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
-                final QuizGenerationInputData quizData = new QuizGenerationInputData(numQuestions, category,
-                        difficulty);
-                final TriviaQuiz trivia = triviaDao.getTrivia(quizData);
-
-                // Output the trivia questions
-                System.out.println("Fetching Trivia");
-                System.out.println(numQuestions + " questions, Category: " + category
-                        + ", Difficulty: " + difficulty);
-                for (TriviaQuestion question : trivia.getQuestions()) {
-                    System.out.println("Question: " + question.getQuestionText());
-                    System.out.println("Correct Answer: " + question.getCorrectAnswer());
-                    System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
-                    System.out.println();
-                }
-
-            } catch (Exception exp) {
-                exp.printStackTrace();
-            }
+            quizGenerationController.execute(numQuestions, category, difficulty);
         });
 
         cancelButton.addActionListener(evt -> {

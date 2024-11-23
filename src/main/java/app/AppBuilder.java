@@ -5,6 +5,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import data_access.DBCustomQuizDataAccessObject;
+import data_access.DBTriviaDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
@@ -73,6 +74,7 @@ public class AppBuilder {
 
     // thought question: is the hard dependency below a problem?
     private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    private final DBTriviaDataAccessObject triviaDataAccessObject = new DBTriviaDataAccessObject();
     private final DBCustomQuizDataAccessObject customQuizDataAccessObject = new DBCustomQuizDataAccessObject();
 
     private SignupView signupView;
@@ -275,7 +277,7 @@ public class AppBuilder {
                 new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel, loggedInViewModel);
 
         final QuizGenerationInputBoundary quizGenerationInteractor =
-                new QuizGenerationInteractor(quizGenerationPresenter);
+                new QuizGenerationInteractor(quizGenerationPresenter, triviaDataAccessObject);
 
         final QuizGenerationController quizGenerationController =
                 new QuizGenerationController(quizGenerationInteractor);

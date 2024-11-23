@@ -15,12 +15,13 @@ import entity.TriviaQuiz;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import use_case.quiz_generation.QuizGenerationDataAccessInterface;
 import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
  * A Data Access Object (DAO) that handles retrieving trivia questions from an external API.
  */
-public class DBTriviaDataAccessObject {
+public class DBTriviaDataAccessObject implements QuizGenerationDataAccessInterface {
 
     private static final int SUCCESS_CODE = 0;
     private static final String CONTENT_TYPE_JSON = "application/json";
@@ -87,8 +88,8 @@ public class DBTriviaDataAccessObject {
      * @return A TriviaResponse containing the list of TriviaQuestion objects.
      * @throws Exception If an error occurs during the API request or parsing the response.
      */
-
-    public TriviaQuiz getTrivia(QuizGenerationInputData quizData) throws Exception {
+    @Override
+    public TriviaQuiz getTrivia(QuizGenerationInputData quizData) {
 
         // Construct URL with the given parameters
         final String urlString =
@@ -120,7 +121,7 @@ public class DBTriviaDataAccessObject {
             }
         }
         catch (IOException | JSONException ex) {
-            throw new Exception(ex);
+            throw new RuntimeException(ex);
         }
     }
 
