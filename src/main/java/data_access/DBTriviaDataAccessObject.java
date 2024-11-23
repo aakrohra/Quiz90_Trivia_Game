@@ -46,6 +46,7 @@ public class DBTriviaDataAccessObject {
      *
      * @param amount The number of trivia questions to retrieve.
      * @param difficulty The difficulty level of the trivia questions.
+     * @param categoryID The ID of the category of the trivia questions.
      * @return A TriviaResponse containing the list of TriviaQuestion objects.
      * @throws Exception If an error occurs during the API request or parsing the response.
      */

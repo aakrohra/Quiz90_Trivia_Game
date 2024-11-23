@@ -39,8 +39,8 @@ public class TriviaApp {
         CATEGORY_MAPPING.put("Vehicles", 28);
         CATEGORY_MAPPING.put("Entertainment: Comics", 29);
         CATEGORY_MAPPING.put("Science: Gadgets", 30);
-        CATEGORY_MAPPING.put("Entertainment: Japanese Anime & Manga", 31);
-        CATEGORY_MAPPING.put("Entertainment: Cartoon & Animations", 32);
+        CATEGORY_MAPPING.put("Entertainment: Anime & Manga", 31);
+        CATEGORY_MAPPING.put("Entertainment: Cartoons", 32);
     }
 
     /**
