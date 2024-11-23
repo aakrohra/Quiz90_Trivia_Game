@@ -31,7 +31,6 @@ public class Constants {
     public static final int FIELDX = 500;
     public static final int FIELDY = 25;
 
-
     // UI Spacers
     public static final int STRUTSMALLSPACER = 20;
 
@@ -41,6 +40,10 @@ public class Constants {
 
     // UI Colours
     public static final Color BGCOLOUR = new Color(56, 113, 194);
+
+    // Grid Coordinates
+    public static final int THREE = 3;
+    public static final int FOUR = 4;
 
     // Normal Play
     public static final String[] CATEGORIES = {

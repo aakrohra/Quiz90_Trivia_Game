@@ -3,6 +3,7 @@ package view;
 import app.Constants;
 
 import data_access.TriviaApp;
+import data_access.DBTriviaDataAccessObject;
 import entity.TriviaQuestion;
 import entity.TriviaResponse;
 
@@ -49,17 +50,17 @@ public class QuizGenerationView extends JPanel {
                 0, 1, 1, GridBagConstraints.WEST, gbc);
         addComponent(categoryComboBox, 1, 1, 1, GridBagConstraints.WEST, gbc);
 
+        // Difficulty
+        difficultyComboBox = createComboBox(Constants.DIFFICULTIES, comboBoxSize);
+        addComponent(createLabel(QuizGenerationViewModel.DIFFICULTY_LABEL, optionFont, SwingConstants.LEFT),
+                0, 2, 1, GridBagConstraints.WEST, gbc);
+        addComponent(difficultyComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
+
         // Number of questions
         questionComboBox = createComboBox(Constants.NUM_QUESTION, comboBoxSize);
         addComponent(createLabel(QuizGenerationViewModel.QUESTIONS_LABEL, optionFont, SwingConstants.LEFT),
-                0, 2, 1, GridBagConstraints.WEST, gbc);
-        addComponent(questionComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
-
-        // Difficulties
-        difficultyComboBox = createComboBox(Constants.DIFFICULTIES, comboBoxSize);
-        addComponent(createLabel(QuizGenerationViewModel.DIFFICULTY_LABEL, optionFont, SwingConstants.LEFT),
                 0, Constants.THREE, 1, GridBagConstraints.WEST, gbc);
-        addComponent(difficultyComboBox, 1, Constants.THREE, 1, GridBagConstraints.WEST, gbc);
+        addComponent(questionComboBox, 1, Constants.THREE, 1, GridBagConstraints.WEST, gbc);
 
         // Play and Cancel buttons
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
@@ -73,11 +74,11 @@ public class QuizGenerationView extends JPanel {
         categoryComboBox.addActionListener(evt -> {
             System.out.println("Category selected: " + categoryComboBox.getSelectedItem());
         });
-        questionComboBox.addActionListener(evt -> {
-            System.out.println("Number of questions selected: " + questionComboBox.getSelectedItem());
-        });
         difficultyComboBox.addActionListener(evt -> {
             System.out.println("Difficulty selected: " + difficultyComboBox.getSelectedItem());
+        });
+        questionComboBox.addActionListener(evt -> {
+            System.out.println("Number of questions selected: " + questionComboBox.getSelectedItem());
         });
 
         playButton.addActionListener(evt -> {
@@ -88,10 +89,14 @@ public class QuizGenerationView extends JPanel {
                 final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
                 final String difficulty = difficultyUpper.toLowerCase();
 
-                // Fetch trivia
-                final TriviaApp triviaApp = new TriviaApp();
-                final TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
+                // Fetch trivia using DBTriviaDataAccessObject
+                final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
+                final TriviaResponse trivia = triviaDao.getTrivia(numQuestions, triviaDao.getCategoryId(category), difficulty);
 
+                // Output the trivia questions
+                System.out.println("Fetching Trivia");
+                System.out.println(numQuestions + " questions, Category: " + triviaDao.getCategoryId(category)
+                        + ", Difficulty: " + difficulty);
                 for (TriviaQuestion question : trivia.getQuestions()) {
                     System.out.println("Question: " + question.getQuestion());
                     System.out.println("Correct Answer: " + question.getCorrectAnswer());

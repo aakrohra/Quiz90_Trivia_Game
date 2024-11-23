@@ -25,6 +25,7 @@ public class DBTriviaDataAccessObject {
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String STATUS_CODE_LABEL = "response_code";
     private static final Map<String, String> HTMLENTITIES = new HashMap<>();
+    private static final Map<String, Integer> CATEGORY_MAPPING = new HashMap<>();
 
     static {
         HTMLENTITIES.put("&lt;", "<");
@@ -39,6 +40,42 @@ public class DBTriviaDataAccessObject {
         HTMLENTITIES.put("&amp;", "&");
         // Add more entities if there are any more that you find
         // Could also find a Java Library that does this automatically
+    }
+
+    static {
+        CATEGORY_MAPPING.put("General Knowledge", 9);
+        CATEGORY_MAPPING.put("Entertainment: Books", 10);
+        CATEGORY_MAPPING.put("Entertainment: Film", 11);
+        CATEGORY_MAPPING.put("Entertainment: Music", 12);
+        CATEGORY_MAPPING.put("Entertainment: Musicals & Theatres", 13);
+        CATEGORY_MAPPING.put("Entertainment: Television", 14);
+        CATEGORY_MAPPING.put("Entertainment: Video Games", 15);
+        CATEGORY_MAPPING.put("Entertainment: Board Games", 16);
+        CATEGORY_MAPPING.put("Science & Nature", 17);
+        CATEGORY_MAPPING.put("Science: Computers", 18);
+        CATEGORY_MAPPING.put("Science: Mathematics", 19);
+        CATEGORY_MAPPING.put("Mythology", 20);
+        CATEGORY_MAPPING.put("Sports", 21);
+        CATEGORY_MAPPING.put("Geography", 22);
+        CATEGORY_MAPPING.put("History", 23);
+        CATEGORY_MAPPING.put("Politics", 24);
+        CATEGORY_MAPPING.put("Art", 25);
+        CATEGORY_MAPPING.put("Celebrities", 26);
+        CATEGORY_MAPPING.put("Animals", 27);
+        CATEGORY_MAPPING.put("Vehicles", 28);
+        CATEGORY_MAPPING.put("Entertainment: Comics", 29);
+        CATEGORY_MAPPING.put("Science: Gadgets", 30);
+        CATEGORY_MAPPING.put("Entertainment: Japanese Anime & Manga", 31);
+        CATEGORY_MAPPING.put("Entertainment: Cartoon & Animations", 32);
+    }
+
+    /**
+     * Returns the id of the category to use for retrieving from the API call.
+     * @param categoryName String of the category
+     * @return Returns the id of its category as a string
+     */
+    public static int getCategoryId(String categoryName) {
+        return CATEGORY_MAPPING.get(categoryName);
     }
 
     /**
@@ -72,6 +109,7 @@ public class DBTriviaDataAccessObject {
 
                 final List<TriviaQuestion> triviaQuestions =
                         parseTriviaQuestions(responseBody.getJSONArray("results"));
+
                 return new TriviaResponse(triviaQuestions);
             }
             else {
