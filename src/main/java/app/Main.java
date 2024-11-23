@@ -1,10 +1,7 @@
 package app;
 
-import java.awt.*;
-
 import javax.swing.JFrame;
-
-import interface_adapter.access_quiz.AccessQuizController;
+import java.awt.*;
 
 /**
  * The Main class of our application.
@@ -20,14 +17,20 @@ public class Main {
                                             .addLoginView()
                                             .addSignupView()
                                             .addLoggedInView()
+                                            .addQuizGenerationView()
+                                            .addLocalMultiplayerView()
+                                            .addAccessedQuizInfoView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
+                                            .addLocalMultiplayerUseCase()
                                             .addAccessQuizUseCase()
+                                            .addQuizGenerationUseCase()
                                             .build();
 
-        application.setSize(new Dimension(1200, 500));
+        application.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
+        application.setLocationRelativeTo(null);
         application.setVisible(true);
     }
 }

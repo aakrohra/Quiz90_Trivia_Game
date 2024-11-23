@@ -1,17 +1,15 @@
 package view;
 
-import interface_adapter.ViewManagerModel;
+import app.Constants;
 import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.logged_in.LoggedInState;
+import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.quiz_generation.QuizGenerationController;
-import use_case.myCreatedQuizzes.MyCreatedQuizzesController;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -23,14 +21,12 @@ import java.beans.PropertyChangeListener;
 /**
  * The View for when the user is logged into the program.
  */
-public class LoggedInMainMenuView extends JPanel implements PropertyChangeListener {
+public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "logged in";
     private final LoggedInViewModel loggedInViewModel;
-    private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
     private LocalMultiplayerController localMultiplayerController;
-    private MyCreatedQuizzesController myCreatedQuizzesController;
     private AccessQuizController accessQuizController;
     private LogoutController logoutController;
     private QuizGenerationController quizGenerationController;
@@ -44,25 +40,14 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
 
     private final JButton normalPlay;
     private final JButton playSharedQuiz;
-    private final JButton createdQuizzes;
     private final JButton localMultiplayer;
     private final JButton changePassword;
 
-    public LoggedInMainMenuView(LoggedInViewModel loggedInViewModel) {
+    public LoggedInView(LoggedInViewModel loggedInViewModel) {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-//        final int WINDOW_WIDTH = this.getWidth(); // TODO implement this properly
-//        final int WINDOW_HEIGHT = this.getHeight(); // TODO implement this properly
-
-        final PanelBox titlePanelBox = new PanelBox(new JPanel(), Box.createHorizontalBox());
-        titlePanelBox.setBackground(new Color(0, 0, 171));
-        final JLabel title = new JLabel(LoggedInViewModel.TITLE_LABEL);
-        titlePanelBox.add(title);
-        title.setBorder(new EmptyBorder(20, 0, 0, 0));
-        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 24));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setSize(new Dimension(10, 20));
+        final TitlePanel titlePanel = new TitlePanel(LoggedInViewModel.TITLE_LABEL);
 
         final JPanel currentPlayerPanel = new JPanel();
         final Box currentPlayerBox = Box.createHorizontalBox();
@@ -72,7 +57,6 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         currentPlayerBox.setBackground(Color.WHITE);
         currentPlayerBox.setBorder(BorderFactory.createEmptyBorder(10, 35, 10, 35));
         final JLabel player = new JLabel("Current Player: ");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         currentPlayerPanel.add(currentPlayerBox);
         currentPlayerBox.add(player);
         username = new JLabel();
@@ -104,7 +88,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         buttons1.add(Box.createHorizontalGlue());
 
         final JPanel buttons2 = new JPanel();
-        createdQuizzes = new JButton("My Created Quizzes");
+        final JButton createdQuizzes = new JButton("My Created Quizzes");
         localMultiplayer = new JButton("Local Multiplayer");
         buttons2.setBackground(new Color(0, 71, 0));
 
@@ -131,12 +115,14 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         buttons3.add(logOut);
         buttons3.add(Box.createHorizontalGlue());
 
+        sharedQuizKeyErrorField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sharedQuizKeyErrorField.setForeground(Color.WHITE);
+
         sharedQuizKeyField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
                 final LoggedInState currentState = loggedInViewModel.getState();
                 currentState.setQuizKey(sharedQuizKeyField.getText());
                 loggedInViewModel.setState(currentState);
-                System.out.println(currentState.getQuizKey());
             }
 
             @Override
@@ -155,48 +141,7 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
             }
         });
 
-        sharedQuizKeyField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (sharedQuizKeyField.getText().equals("Enter quiz key...")) {
-                    sharedQuizKeyField.setText("");
-                    // Set text color when typing
-                    sharedQuizKeyField.setForeground(Color.BLACK);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Restore placeholder text if the field is empty
-                if (sharedQuizKeyField.getText().isEmpty()) {
-                    sharedQuizKeyField.setText("Enter quiz key...");
-                    // Set placeholder text color
-                    sharedQuizKeyField.setForeground(Color.GRAY);
-                }
-            }
-        });
-
-        playSharedQuiz.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(playSharedQuiz)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-
-                        System.out.println(currentState.getQuizKey());
-                        this.accessQuizController.execute(currentState.getQuizKey());
-                    }
-                }
-        );
-
-        localMultiplayer.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(changePassword)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-
-//                        TODO implement localMultiplayerController
-//                        this.localMultiplayerController.execute();
-                    }
-                }
-        );
+        sharedQuizKeyFieldUserInterfaceHelper();
 
         createdQuizzes.addActionListener(
                 evt -> {
@@ -223,6 +168,16 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
                 }
         );
 
+        playSharedQuiz.addActionListener(
+                evt -> {
+                    // the "testing" check can be removed later if wanted, here for testing purposes
+                    if (evt.getSource().equals(playSharedQuiz) || evt.getSource().equals("testing")) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+                        this.accessQuizController.execute(currentState.getQuizKey());
+                    }
+                }
+        );
+
         logOut.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
@@ -239,7 +194,12 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         normalPlay.addActionListener(evt -> {
             if (evt.getSource().equals(normalPlay)) {
                 quizGenerationController.switchToQuizGenerationView();
-                System.out.println("Normal play button clicked");
+            }
+        });
+
+        localMultiplayer.addActionListener(evt -> {
+            if (evt.getSource().equals(localMultiplayer)) {
+                localMultiplayerController.switchToLocalMultiplayerView();
             }
         });
 
@@ -247,12 +207,13 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
 
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalStrut(20));
-        this.add(titlePanelBox);
+        this.add(titlePanel);
         this.add(Box.createVerticalStrut(20));
         this.add(currentPlayerPanel);
         this.add(buttons0);
         this.add(Box.createVerticalStrut(20));
         this.add(buttons1);
+        this.add(Box.createVerticalStrut(20));
         this.add(sharedQuizKeyErrorField);
         this.add(Box.createVerticalStrut(20));
         this.add(buttons2);
@@ -261,7 +222,30 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         this.add(Box.createVerticalStrut(20));
         this.add(Box.createVerticalGlue());
 
-        this.setBackground(new Color(0, 71, 171));
+        this.setBackground(Constants.BGCOLOUR);
+    }
+
+    private void sharedQuizKeyFieldUserInterfaceHelper() {
+        sharedQuizKeyField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (sharedQuizKeyField.getText().equals("Enter quiz key...")) {
+                    sharedQuizKeyField.setText("");
+                    // Set text color when typing
+                    sharedQuizKeyField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Restore placeholder text if the field is empty
+                if (sharedQuizKeyField.getText().isEmpty()) {
+                    sharedQuizKeyField.setText("Enter quiz key...");
+                    // Set placeholder text color
+                    sharedQuizKeyField.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 
     private void buttonsSizeHelper(JButton jbutton) {
@@ -277,6 +261,10 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         else if (evt.getPropertyName().equals("password")) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+        }
+        else if (evt.getPropertyName().equals("keyError")) {
+            final LoggedInState state = (LoggedInState) evt.getNewValue();
+            sharedQuizKeyErrorField.setText(state.getQuizKeyError());
         }
     }
 
@@ -300,15 +288,19 @@ public class LoggedInMainMenuView extends JPanel implements PropertyChangeListen
         this.quizGenerationController = quizGenerationController;
     }
 
+    public void setLocalMultiplayerController(LocalMultiplayerController localMultiplayerController) {
+        this.localMultiplayerController = localMultiplayerController;
+    }
+
     // Main method to run and test the MainMenuView in a JFrame
     public static void main(String[] args) {
         final JFrame frame = new JFrame("Main Menu");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(1200, 500));
+        frame.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
         frame.setLocationRelativeTo(null);
 
-        final LoggedInMainMenuView loggedInMainMenuView = new LoggedInMainMenuView(new LoggedInViewModel());
-        frame.add(loggedInMainMenuView);
+        final LoggedInView loggedInView = new LoggedInView(new LoggedInViewModel());
+        frame.add(loggedInView);
         frame.setVisible(true);
     }
 }

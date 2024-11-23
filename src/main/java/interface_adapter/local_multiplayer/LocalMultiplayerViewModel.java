@@ -1,23 +1,22 @@
-package interface_adapter.quiz_generation;
+package interface_adapter.local_multiplayer;
 
 import interface_adapter.ViewModel;
 
 /**
- * The ViewModel for the Quiz Generation View.
+ * The ViewModel for the Local Multiplayer view.
  */
-public class QuizGenerationViewModel extends ViewModel<QuizGenerationState> {
-
-    public static final String TITLE_LABEL = "Quiz Generation!";
-    public static final String CATEGORY_LABEL = "Select Category: ";
-    public static final String QUESTIONS_LABEL = "Select # Of Questions: ";
-    public static final String DIFFICULTY_LABEL = "Select Difficulty: ";
+public class LocalMultiplayerViewModel extends ViewModel<LocalMultiplayerState> {
+    public static final String TITLE_LABEL = "Local Multiplayer Quiz Generation!";
+    public static final String CATEGORY_LABEL = "Select Category";
+    public static final String QUESTIONS_LABEL = "Select Number of Questions";
+    public static final String DIFFICULTY_LABEL = "Select Difficulty";
 
     public static final String PLAY_BUTTON_LABEL = "Play";
     public static final String CANCEL_BUTTON_LABEL = "Cancel";
 
-    public QuizGenerationViewModel() {
-        super("quiz generation");
-        setState(new QuizGenerationState());
+    public LocalMultiplayerViewModel() {
+        super("local multiplayer");
+        setState(new LocalMultiplayerState());
     }
 
     // Getters for the state values
@@ -45,4 +44,5 @@ public class QuizGenerationViewModel extends ViewModel<QuizGenerationState> {
     public void setSelectedDifficulty(String difficulty) {
         getState().setSelectedDifficulty(difficulty);
     }
+
 }

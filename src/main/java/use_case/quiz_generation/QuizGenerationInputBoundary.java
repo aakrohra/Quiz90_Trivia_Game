@@ -9,4 +9,9 @@ public interface QuizGenerationInputBoundary {
      * Executes the action to switch to the Quiz Generation view.
      */
     void switchToQuizGenerationView();
+
+    /**
+     * Executes the action to switch to the Main Menu view.
+     */
+    void switchToMainMenuView();
 }

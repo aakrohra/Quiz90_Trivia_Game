@@ -18,4 +18,12 @@ public class QuizGenerationInteractor implements QuizGenerationInputBoundary {
     public void switchToQuizGenerationView() {
         quizGenerationPresenter.switchToQuizGenerationView();
     }
+
+    /**
+     * Executes the action to switch to the Main Menu view.
+     */
+    @Override
+    public void switchToMainMenuView() {
+        quizGenerationPresenter.switchToMainMenuView();
+    }
 }

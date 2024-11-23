@@ -1,15 +1,26 @@
 package data_access;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.Constants;
-import entity.*;
-import okhttp3.*;
+import entity.PlayerCreatedQuestion;
+import entity.PlayerCreatedQuiz;
+import entity.PlayerCreatedQuizFactory;
+import entity.User;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 import use_case.access_database.AccessDatabaseUserDataAccessInterface;
 import use_case.access_quiz.AccessQuizUserDataAccessInterface;
 import use_case.create_quiz.CreateQuizUserDataAccessInterface;
@@ -88,11 +99,11 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
                 final JSONObject data = userJSONObject.getJSONObject(INFO);
                 keyExists = data.has(key);
             }
-            return keyExists;
         }
         catch (final IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+            keyExists = false;
         }
+        return keyExists;
     }
 
     @Override
@@ -100,7 +111,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s",
+                .url(String.format(API_USER_EXISTS_CALL,
                         user.getName()))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
@@ -150,7 +161,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     public Map<String, PlayerCreatedQuiz> getAllUserQuizzes(User user) throws RuntimeException {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(String.format("http://vm003.teach.cs.toronto.edu:20112/checkIfUserExists?username=%s",
+                .url(String.format(API_USER_EXISTS_CALL,
                         user.getName()))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
@@ -180,24 +191,24 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
      * Gets user info including username, password, and quizzes and returns as a JSONObject.
      * @param user the given user
      * @return username, password, and quizzes as JSONObject in the following format:
-     * {
-     *   "username": "user",
-     *   "password": "pass",*
-     *   "info": {
-     *     "key1": {
-     *       "title": "title1",
-     *       "questions": [
-     *         {
-     *           "questionText": "qqqqq",
-     *           "options": ["o1", "o2", "o3", "o4"],
-     *           "correct": "o2"
+     *     {
+     *       "username": "user",
+     *       "password": "pass",
+     *       "info": {
+     *         "key1": {
+     *           "title": "title1",
+     *           "questions": [
+     *             {
+     *               "questionText": "qqqqq",
+     *               "options": ["o1", "o2", "o3", "o4"],
+     *               "correct": "o2"
+     *             },
+     *             ...
+     *           ]
      *         },
      *         ...
-     *       ]
-     *     },
-     *     ...
-     *   }
-     * }
+     *       }
+     *     }
      * @throws RuntimeException if there is an issue
      */
     @Override
@@ -235,17 +246,17 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
      * Returns a JSONObject representing a quiz given a player created quiz object.
      * @param quiz the given quiz
      * @return JSONObject of the quiz object in the following format:
-     * {
-     *   "title": "title1",
-     *   "questions": [
      *     {
-     *       "questionText": "qqqqq",
-     *       "options": ["o1", "o2", "o3", "o4"],
-     *       "correct": "o2"
-     *     },
-     *     ...
-     *   ]
-     * }
+     *       "title": "title1",
+     *       "questions": [
+     *         {
+     *           "questionText": "qqqqq",
+     *           "options": ["o1", "o2", "o3", "o4"],
+     *           "correct": "o2"
+     *         },
+     *         ...
+     *       ]
+     *     }
      */
     private JSONObject quizObjectToJSONObject(PlayerCreatedQuiz quiz) {
         final JSONObject quizJSONObject = new JSONObject();
@@ -265,7 +276,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     }
 
     /**
-     * Helper function to generate a random key of RANDOMKEYSIZE in alphanumeric characters
+     * Helper function to generate a random key of RANDOMKEYSIZE in alphanumeric characters.
      * @return unique string
      */
     private String randomKey() {
@@ -282,21 +293,21 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
 
     /**
      * Adds quiz to the GradeAPI database to the given user and returns key of new quiz.
-     * @param quiz the given quiz
+     * @param quizObject the given quiz
      * @param user the given user
      * @return key of quiz added to the database
      */
     @Override
-    public String addQuiz(PlayerCreatedQuiz quiz, User user) {
+    public String addQuiz(JSONObject quizObject, User user) {
         final JSONObject currentUserInfo = getUserInfo(user);
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final MediaType mediaType = MediaType.parse(CONTENT_TYPE_JSON);
-        final JSONObject quizObject = quizObjectToJSONObject(quiz);
-        String key;
-        while (true) {
+        String key = "";
+        boolean exists = true;
+        while (exists) {
             key = randomKey() + user.getName();
             if (!existsByKey(key)) {
-                break;
+                exists = false;
             }
         }
         currentUserInfo.put(key, quizObject);

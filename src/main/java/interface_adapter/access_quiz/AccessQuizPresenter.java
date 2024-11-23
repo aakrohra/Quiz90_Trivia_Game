@@ -1,8 +1,8 @@
 package interface_adapter.access_quiz;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.change_password.LoggedInState;
-import interface_adapter.change_password.LoggedInViewModel;
+import interface_adapter.logged_in.LoggedInState;
+import interface_adapter.logged_in.LoggedInViewModel;
 import use_case.access_quiz.AccessQuizOutputBoundary;
 import use_case.access_quiz.AccessQuizOutputData;
 
@@ -42,6 +42,12 @@ public class AccessQuizPresenter implements AccessQuizOutputBoundary {
     public void prepareFailView(String error) {
         final LoggedInState loggedInState = loggedInViewModel.getState();
         loggedInState.setQuizKeyError(error);
-        loggedInViewModel.firePropertyChanged();
+        loggedInViewModel.firePropertyChanged("keyError");
+    }
+
+    @Override
+    public void switchToLoggedInView() {
+        viewManagerModel.setState(loggedInViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }
