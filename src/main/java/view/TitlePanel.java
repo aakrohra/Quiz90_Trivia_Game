@@ -22,7 +22,7 @@ class TitlePanel extends JPanel {
         nestedPanel.setPreferredSize(new Dimension(Constants.BOXX, Constants.BOXY));
 
         final JLabel labelTitle = new JLabel(title);
-        labelTitle.setFont(new Font(labelTitle.getFont().getName(), Font.BOLD, Constants.FONTSIZE));
+        labelTitle.setFont(new Font(labelTitle.getFont().getName(), Font.BOLD, Constants.QUESTIONFONTSIZE));
         labelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         labelTitle.setAlignmentY(Component.CENTER_ALIGNMENT);
 

@@ -36,13 +36,13 @@ public class QuizGenerationView extends JPanel {
 
         // Title
         final JLabel title = createLabel(QuizGenerationViewModel.TITLE_LABEL,
-                new Font("Arial", Font.BOLD, 18), SwingConstants.CENTER);
+                new Font("Tahoma", Font.BOLD, Constants.QUESTIONFONTSIZE), SwingConstants.CENTER);
         addComponent(title, 0, 0, 2, GridBagConstraints.CENTER, gbc);
 
         // Labels and ComboBox boxes
         // Categories
-        final Font optionFont = new Font("Arial", Font.BOLD, 14);
-        final Dimension comboBoxSize = new Dimension(225, 25);
+        final Font optionFont = new Font("Tahoma", Font.BOLD, Constants.BUTTONFONTSIZE);
+        final Dimension comboBoxSize = new Dimension(Constants.COMBOBOXWIDTH, Constants.COMBOBOXHEIGHT);
         // Create and add category label and ComboBox
         categoryComboBox = createComboBox(Constants.CATEGORIES, comboBoxSize);
         addComponent(createLabel(QuizGenerationViewModel.CATEGORY_LABEL, optionFont, SwingConstants.LEFT),
@@ -147,6 +147,9 @@ public class QuizGenerationView extends JPanel {
     private JComboBox<?> createComboBox(Object[] items, Dimension dimension) {
         final JComboBox<?> comboBox = new JComboBox<>(items);
         comboBox.setPreferredSize(dimension);
+
+        comboBox.setFont(new Font("Tahoma", Font.BOLD, Constants.COMBOBOXFONTSIZE));
+
         return comboBox;
     }
 
