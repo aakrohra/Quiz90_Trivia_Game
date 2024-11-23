@@ -36,12 +36,12 @@ public class QuizGenerationView extends JPanel {
 
         // Title
         final JLabel title = createLabel(QuizGenerationViewModel.TITLE_LABEL,
-                new Font("Tahoma", Font.BOLD, Constants.QUESTIONFONTSIZE), SwingConstants.CENTER);
+                new Font(Constants.FONTSTYLE, Font.BOLD, Constants.QUESTIONFONTSIZE), SwingConstants.CENTER);
         addComponent(title, 0, 0, 2, GridBagConstraints.CENTER, gbc);
 
         // Labels and ComboBox boxes
         // Categories
-        final Font optionFont = new Font("Tahoma", Font.BOLD, Constants.BUTTONFONTSIZE);
+        final Font optionFont = new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE);
         final Dimension comboBoxSize = new Dimension(Constants.COMBOBOXWIDTH, Constants.COMBOBOXHEIGHT);
         // Create and add category label and ComboBox
         categoryComboBox = createComboBox(Constants.CATEGORIES, comboBoxSize);
@@ -63,8 +63,17 @@ public class QuizGenerationView extends JPanel {
 
         // Play and Cancel buttons
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        final Font buttonFont = new Font(Constants.FONTSTYLE, Font.BOLD, 18);
+
         playButton = new JButton(QuizGenerationViewModel.PLAY_BUTTON_LABEL);
         cancelButton = new JButton(QuizGenerationViewModel.CANCEL_BUTTON_LABEL);
+        playButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH / Constants.THREE,
+                Constants.BUTTONHEIGHT / Constants.THREE));
+        cancelButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH / Constants.THREE,
+                Constants.BUTTONHEIGHT / Constants.THREE));
+
+        playButton.setFont(buttonFont);
+        cancelButton.setFont(buttonFont);
         buttonPanel.add(playButton);
         buttonPanel.add(cancelButton);
         addComponent(buttonPanel, 0, Constants.FOUR, 2, GridBagConstraints.CENTER, gbc);
@@ -148,7 +157,7 @@ public class QuizGenerationView extends JPanel {
         final JComboBox<?> comboBox = new JComboBox<>(items);
         comboBox.setPreferredSize(dimension);
 
-        comboBox.setFont(new Font("Tahoma", Font.BOLD, Constants.COMBOBOXFONTSIZE));
+        comboBox.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.COMBOBOXFONTSIZE));
 
         return comboBox;
     }

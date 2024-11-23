@@ -37,6 +37,9 @@ public class Constants {
     public static final int POSITIONY = 7;
     public static final int FIELDX = 500;
     public static final int FIELDY = 25;
+    
+    // Font
+    public static final String FONTSTYLE = "Tahoma";
 
     // UI Spacers
     public static final int STRUTSMALLSPACER = 20;

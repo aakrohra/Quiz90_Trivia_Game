@@ -30,7 +30,7 @@ public class QuestionView extends JFrame {
 
         // Question label
         question = new JLabel("Question");
-        question.setFont(new Font("Tahoma", Font.BOLD, Constants.QUESTIONFONTSIZE));
+        question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.QUESTIONFONTSIZE));
         question.setBounds(
                 Constants.FRAMEWIDTH / Constants.QUESTIONMARGINDIVISOR,
                 Constants.FRAMEHEIGHT / Constants.QUESTIONMARGINDIVISOR,
@@ -106,7 +106,7 @@ public class QuestionView extends JFrame {
      */
     private JButton createButton(String text) {
         final JButton button = new JButton(text);
-        button.setFont(new Font("Tahoma", Font.BOLD, Constants.BUTTONFONTSIZE));
+        button.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
         return button;
