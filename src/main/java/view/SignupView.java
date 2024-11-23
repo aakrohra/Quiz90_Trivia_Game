@@ -11,13 +11,7 @@ import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -240,5 +234,16 @@ public class SignupView extends JPanel implements PropertyChangeListener {
 
     public void setSignupController(SignupController controller) {
         this.signupController = controller;
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Sign up view");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(700, 700);
+        frame.setLocationRelativeTo(null);
+
+        SignupView signupView = new SignupView(new SignupViewModel());
+        frame.add(signupView);
+        frame.setVisible(true);
     }
 }

@@ -30,7 +30,6 @@ public class PlayerQuizDatabase implements Database {
         return titleToKeyMap;
     }
 
-
     @Override
     public User getUser() {
         return user;
@@ -42,22 +41,22 @@ public class PlayerQuizDatabase implements Database {
         return quiz;
     }
 
-//    private int getOrd(char chr) {
-//        final int result;
-//        if (97 <= chr && chr <= 122) {
-//            result = chr - 97;
-//        }
-//        else if (65 <= chr && chr <= 90) {
-//            result = chr - 65;
-//        }
-//        else if (48 <= chr && chr <= 57) {
-//            result = chr - 22;
-//        }
-//        else {
-//            result = 57 - 22;
-//        }
-//        return result;
-//    }
+    //    private int getOrd(char chr) {
+    //        final int result;
+    //        if (97 <= chr && chr <= 122) {
+    //            result = chr - 97;
+    //        }
+    //        else if (65 <= chr && chr <= 90) {
+    //            result = chr - 65;
+    //        }
+    //        else if (48 <= chr && chr <= 57) {
+    //            result = chr - 22;
+    //        }
+    //        else {
+    //            result = 57 - 22;
+    //        }
+    //        return result;
+    //    }
 
     @Override
     public Map<String, PlayerCreatedQuiz> getByTitle(String title) {

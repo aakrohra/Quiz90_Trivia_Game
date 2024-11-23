@@ -7,10 +7,12 @@ import entity.TriviaQuestion;
 import entity.TriviaResponse;
 
 /**
- * The main entry point of the Trivia application that retrieves trivia questions from the API
- * and prints them along with their correct and incorrect answers.
+ * A utility class for interacting with trivia data from an external API.
+ * It maps categories to their corresponding IDs and provides a method
+ * for fetching trivia questions based on specified parameters.
  */
 
+@SuppressWarnings({"checkstyle:MagicNumber", "checkstyle:SuppressWarnings"})
 public class TriviaApp {
     private static final Map<String, Integer> CATEGORY_MAPPING = new HashMap<>();
 
@@ -37,8 +39,8 @@ public class TriviaApp {
         CATEGORY_MAPPING.put("Vehicles", 28);
         CATEGORY_MAPPING.put("Entertainment: Comics", 29);
         CATEGORY_MAPPING.put("Science: Gadgets", 30);
-        CATEGORY_MAPPING.put("Entertainment: Japanese Anime & Manga", 31);
-        CATEGORY_MAPPING.put("Entertainment: Cartoon & Animations", 32);
+        CATEGORY_MAPPING.put("Entertainment: Anime & Manga", 31);
+        CATEGORY_MAPPING.put("Entertainment: Cartoons", 32);
     }
 
     /**
@@ -50,13 +52,23 @@ public class TriviaApp {
         return CATEGORY_MAPPING.get(categoryName);
     }
 
-    public TriviaResponse fetchTrivia (int numQuestions, String category, String difficulty) throws Exception {
-        DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
+    /**
+     * Fetches trivia questions from the API based on the provided parameters.
+     *
+     * @param numQuestions the number of questions to retrieve
+     * @param category the name of the category for the trivia questions
+     * @param difficulty the difficulty level of the trivia questions (e.g., "easy", "medium", "hard")
+     * @return a {@link TriviaResponse} object containing the trivia questions and answers
+     * @throws Exception if there is an error during the API call
+     */
+
+    public TriviaResponse fetchTrivia(int numQuestions, String category, String difficulty) throws Exception {
+        final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
 
         // Get trivia questions from the API
         System.out.println("Fetching Trivia");
         System.out.println(numQuestions + " " + category + " " + difficulty);
-        TriviaResponse trivia = triviaDao.getTrivia(numQuestions, getCategoryId(category), difficulty);
+        final TriviaResponse trivia = triviaDao.getTrivia(numQuestions, getCategoryId(category), difficulty);
         for (TriviaQuestion question : trivia.getQuestions()) {
             System.out.println("Question: " + question.getQuestion());
             System.out.println("Correct Answer: " + question.getCorrectAnswer());
