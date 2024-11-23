@@ -16,8 +16,10 @@ public class Constants {
     public static final int BUTTONMARGIN = 20;
     public static final int BUTTONFONTSIZE = FONTSIZE * 2 / 3;
     public static final int MARGINS = 10;
+    public static final int THREE = 3;
+    public static final int FOUR = 4;
 
-    public static final String[] CATEGORIES = {
+    public static final String[] CATEGORIES = new String[]{
             "Animals",
             "Art",
             "Celebrities",

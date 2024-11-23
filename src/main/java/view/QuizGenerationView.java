@@ -58,8 +58,8 @@ public class QuizGenerationView extends JPanel {
         // Difficulties
         difficultyComboBox = createComboBox(Constants.DIFFICULTIES, comboBoxSize);
         addComponent(createLabel(QuizGenerationViewModel.DIFFICULTY_LABEL, optionFont, SwingConstants.LEFT),
-                0, 3, 1, GridBagConstraints.WEST, gbc);
-        addComponent(difficultyComboBox, 1, 3, 1, GridBagConstraints.WEST, gbc);
+                0, Constants.THREE, 1, GridBagConstraints.WEST, gbc);
+        addComponent(difficultyComboBox, 1, Constants.THREE, 1, GridBagConstraints.WEST, gbc);
 
         // Play and Cancel buttons
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
@@ -67,7 +67,7 @@ public class QuizGenerationView extends JPanel {
         cancelButton = new JButton(QuizGenerationViewModel.CANCEL_BUTTON_LABEL);
         buttonPanel.add(playButton);
         buttonPanel.add(cancelButton);
-        addComponent(buttonPanel, 0, 4, 2, GridBagConstraints.CENTER, gbc);
+        addComponent(buttonPanel, 0, Constants.FOUR, 2, GridBagConstraints.CENTER, gbc);
 
         // Action Listeners
         categoryComboBox.addActionListener(evt -> {
