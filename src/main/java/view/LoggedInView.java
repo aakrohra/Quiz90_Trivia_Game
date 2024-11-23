@@ -149,8 +149,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(changePassword)) {
                         final LoggedInState currentState = loggedInViewModel.getState();
 
-//                        TODO implement myCreatedQuizzesController
-//                        this.myCreatedQuizzesController.execute();
+                        // TODO implement myCreatedQuizzesController
+                        // this.myCreatedQuizzesController.execute();
                     }
                 }
         );
