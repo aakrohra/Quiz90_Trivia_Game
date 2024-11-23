@@ -8,7 +8,7 @@ public interface Question {
      * Returns the String representation of the question.
      * @return the String representation of the question.
      */
-    String getQuestionText();
+    String getQuestion();
 
     /**
      * Returns String representation of the answer options of the question.

@@ -2,7 +2,6 @@ package view;
 
 import app.Constants;
 
-import data_access.TriviaApp;
 import data_access.DBTriviaDataAccessObject;
 import entity.TriviaQuestion;
 import entity.TriviaResponse;
