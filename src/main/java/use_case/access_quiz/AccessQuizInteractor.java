@@ -1,9 +1,13 @@
 package use_case.access_quiz;
 
+import entity.PlayerCreatedQuestion;
 import org.json.JSONObject;
 
 import entity.PlayerCreatedQuiz;
 import entity.PlayerCreatedQuizFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Access Quiz Interactor.
@@ -34,8 +38,22 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
 
             accessQuizPresenter.prepareSuccessView(accessQuizOutputData);
         }
+        // this is here for easy testing and can be removed later if wanted
+        else if (key.equals("testing")) {
+            final List<PlayerCreatedQuestion> temp2 = new ArrayList<>();
+            final PlayerCreatedQuiz temp = new PlayerCreatedQuiz("title", temp2, "author");
+            final AccessQuizOutputData accessQuizOutputData = new AccessQuizOutputData(
+                    false, temp);
+
+            accessQuizPresenter.prepareSuccessView(accessQuizOutputData);
+        }
         else {
             accessQuizPresenter.prepareFailView("There is no quiz with the key \"" + key + "\".");
         }
+    }
+
+    @Override
+    public void switchToLoggedInView() {
+        accessQuizPresenter.switchToLoggedInView();
     }
 }

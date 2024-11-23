@@ -10,7 +10,6 @@ import interface_adapter.logout.LogoutController;
 import interface_adapter.quiz_generation.QuizGenerationController;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
@@ -41,7 +40,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final JButton normalPlay;
     private final JButton playSharedQuiz;
-    private final JButton createdQuizzes;
     private final JButton localMultiplayer;
     private final JButton changePassword;
 
@@ -49,17 +47,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.loggedInViewModel = loggedInViewModel;
         this.loggedInViewModel.addPropertyChangeListener(this);
 
-//        final int WINDOW_WIDTH = this.getWidth(); // TODO implement this properly
-//        final int WINDOW_HEIGHT = this.getHeight(); // TODO implement this properly
-
-        final PanelBox titlePanelBox = new PanelBox(new JPanel(), Box.createHorizontalBox());
-        titlePanelBox.setBackground(new Color(0, 0, 171));
-        final JLabel title = new JLabel(LoggedInViewModel.TITLE_LABEL);
-        titlePanelBox.add(title);
-        title.setBorder(new EmptyBorder(20, 0, 0, 0));
-        title.setFont(new Font(title.getFont().getName(), Font.BOLD, 24));
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        title.setSize(new Dimension(10, 20));
+        final TitlePanel titlePanel = new TitlePanel(LoggedInViewModel.TITLE_LABEL);
 
         final JPanel currentPlayerPanel = new JPanel();
         final Box currentPlayerBox = Box.createHorizontalBox();
@@ -69,7 +57,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         currentPlayerBox.setBackground(Color.WHITE);
         currentPlayerBox.setBorder(BorderFactory.createEmptyBorder(10, 35, 10, 35));
         final JLabel player = new JLabel("Current Player: ");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         currentPlayerPanel.add(currentPlayerBox);
         currentPlayerBox.add(player);
         username = new JLabel();
@@ -101,7 +88,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         buttons1.add(Box.createHorizontalGlue());
 
         final JPanel buttons2 = new JPanel();
-        createdQuizzes = new JButton("My Created Quizzes");
+        final JButton createdQuizzes = new JButton("My Created Quizzes");
         localMultiplayer = new JButton("Local Multiplayer");
         buttons2.setBackground(new Color(0, 71, 0));
 
@@ -128,6 +115,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         buttons3.add(logOut);
         buttons3.add(Box.createHorizontalGlue());
 
+        sharedQuizKeyErrorField.setAlignmentX(Component.CENTER_ALIGNMENT);
+        sharedQuizKeyErrorField.setForeground(Color.WHITE);
+
         sharedQuizKeyField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
                 final LoggedInState currentState = loggedInViewModel.getState();
@@ -151,35 +141,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
             }
         });
 
-        sharedQuizKeyField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (sharedQuizKeyField.getText().equals("Enter quiz key...")) {
-                    sharedQuizKeyField.setText("");
-                    // Set text color when typing
-                    sharedQuizKeyField.setForeground(Color.BLACK);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Restore placeholder text if the field is empty
-                if (sharedQuizKeyField.getText().isEmpty()) {
-                    sharedQuizKeyField.setText("Enter quiz key...");
-                    // Set placeholder text color
-                    sharedQuizKeyField.setForeground(Color.GRAY);
-                }
-            }
-        });
-
-        playSharedQuiz.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(playSharedQuiz)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-                        this.accessQuizController.execute(currentState.getQuizKey());
-                    }
-                }
-        );
+        sharedQuizKeyFieldUserInterfaceHelper();
 
         createdQuizzes.addActionListener(
                 evt -> {
@@ -206,6 +168,16 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 }
         );
 
+        playSharedQuiz.addActionListener(
+                evt -> {
+                    // the "testing" check can be removed later if wanted, here for testing purposes
+                    if (evt.getSource().equals(playSharedQuiz) || evt.getSource().equals("testing")) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+                        this.accessQuizController.execute(currentState.getQuizKey());
+                    }
+                }
+        );
+
         logOut.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
@@ -222,14 +194,12 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         normalPlay.addActionListener(evt -> {
             if (evt.getSource().equals(normalPlay)) {
                 quizGenerationController.switchToQuizGenerationView();
-                System.out.println("Normal play button clicked");
             }
         });
 
         localMultiplayer.addActionListener(evt -> {
             if (evt.getSource().equals(localMultiplayer)) {
                 localMultiplayerController.switchToLocalMultiplayerView();
-                System.out.println("local multiplayer clicked");
             }
         });
 
@@ -237,12 +207,13 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
         this.add(Box.createVerticalGlue());
         this.add(Box.createVerticalStrut(20));
-        this.add(titlePanelBox);
+        this.add(titlePanel);
         this.add(Box.createVerticalStrut(20));
         this.add(currentPlayerPanel);
         this.add(buttons0);
         this.add(Box.createVerticalStrut(20));
         this.add(buttons1);
+        this.add(Box.createVerticalStrut(20));
         this.add(sharedQuizKeyErrorField);
         this.add(Box.createVerticalStrut(20));
         this.add(buttons2);
@@ -251,7 +222,30 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.add(Box.createVerticalStrut(20));
         this.add(Box.createVerticalGlue());
 
-        this.setBackground(new Color(0, 71, 171));
+        this.setBackground(Constants.BGCOLOUR);
+    }
+
+    private void sharedQuizKeyFieldUserInterfaceHelper() {
+        sharedQuizKeyField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (sharedQuizKeyField.getText().equals("Enter quiz key...")) {
+                    sharedQuizKeyField.setText("");
+                    // Set text color when typing
+                    sharedQuizKeyField.setForeground(Color.BLACK);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Restore placeholder text if the field is empty
+                if (sharedQuizKeyField.getText().isEmpty()) {
+                    sharedQuizKeyField.setText("Enter quiz key...");
+                    // Set placeholder text color
+                    sharedQuizKeyField.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 
     private void buttonsSizeHelper(JButton jbutton) {
