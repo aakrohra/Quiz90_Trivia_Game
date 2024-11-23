@@ -8,6 +8,7 @@ import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.quiz_generation.QuizGenerationController;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -30,8 +31,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private QuizGenerationController quizGenerationController;
 
     private final JLabel username;
+    private int userLength;
 
-    private final JTextField sharedQuizKeyField = new JTextField(23);
     private final JLabel sharedQuizKeyErrorField = new JLabel();
 
     private final JButton logOut;
@@ -48,56 +49,44 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         username = new JLabel();
         final CurrentPlayerPanel currentPlayerPanel = new CurrentPlayerPanel(username);
 
-        final JPanel buttons0 = new JPanel();
-        normalPlay = new JButton("Normal Play");
-        buttons0.setBackground(new Color(0, 71, 171));
-
-        buttons0.setLayout(new BoxLayout(buttons0, BoxLayout.X_AXIS));
-        buttons0.add(Box.createHorizontalGlue());
-        buttonsSizeHelper(normalPlay);
+        final JPanel buttons0 = new ButtonPanel();
+        normalPlay = new CustomButton("Normal Play");
         buttons0.add(normalPlay);
-        buttons0.add(Box.createHorizontalGlue());
 
-        final JPanel buttons1 = new JPanel();
+        final JPanel buttons1 = new ButtonPanel();
+        final JPanel sharedQuizKeyFieldPanel = new JPanel();
+        final JTextField sharedQuizKeyField = new JTextField(23);
         sharedQuizKeyField.setText("Enter quiz key...");
         sharedQuizKeyField.setForeground(Color.GRAY);
-        sharedQuizKeyField.setMaximumSize(new Dimension(300, 30));
-        playSharedQuiz = new JButton("Play Shared Quiz");
-        buttons1.setBackground(new Color(0, 71, 171));
+        sharedQuizKeyField.setPreferredSize(new Dimension(Constants.FIELDX, Constants.FIELDY));
+        final JPanel playSharedQuizPanel = new JPanel();
+        playSharedQuiz = new CustomButton("Play Shared Quiz");
 
-        buttons1.setLayout(new BoxLayout(buttons1, BoxLayout.X_AXIS));
         buttons1.add(Box.createHorizontalGlue());
-        buttons1.add(sharedQuizKeyField);
-        buttons1.add(Box.createHorizontalStrut(200));
-        buttonsSizeHelper(playSharedQuiz);
-        buttons1.add(playSharedQuiz);
+        sharedQuizKeyFieldPanel.add(sharedQuizKeyField);
+        buttons1.add(sharedQuizKeyFieldPanel);
+        buttons1.add(Box.createHorizontalStrut(Constants.STRUTSMALLSPACER));
+        playSharedQuizPanel.add(playSharedQuiz);
+        buttons1.add(playSharedQuizPanel);
         buttons1.add(Box.createHorizontalGlue());
 
-        final JPanel buttons2 = new JPanel();
-        final JButton createdQuizzes = new JButton("My Created Quizzes");
-        localMultiplayer = new JButton("Local Multiplayer");
-        buttons2.setBackground(new Color(0, 71, 0));
+        final JPanel buttons2 = new ButtonPanel();
+        final JButton createdQuizzes = new CustomButton("My Created Quizzes");
+        localMultiplayer = new CustomButton("Local Multiplayer");
 
-        buttons2.setLayout(new BoxLayout(buttons2, BoxLayout.X_AXIS));
         buttons2.add(Box.createHorizontalGlue());
-        buttonsSizeHelper(createdQuizzes);
         buttons2.add(createdQuizzes);
-        buttons2.add(Box.createHorizontalStrut(200));
-        buttonsSizeHelper(localMultiplayer);
+        buttons2.add(Box.createHorizontalStrut(Constants.STRUTSMALLSPACER));
         buttons2.add(localMultiplayer);
         buttons2.add(Box.createHorizontalGlue());
 
-        final JPanel buttons3 = new JPanel();
-        changePassword = new JButton("Change Password");
-        logOut = new JButton("Log Out");
-        buttons3.setBackground(new Color(0, 71, 171));
+        final JPanel buttons3 = new ButtonPanel();
+        changePassword = new CustomButton("Change Password");
+        logOut = new CustomButton("Log Out");
 
-        buttons3.setLayout(new BoxLayout(buttons3, BoxLayout.X_AXIS));
         buttons3.add(Box.createHorizontalGlue());
-        buttonsSizeHelper(changePassword);
         buttons3.add(changePassword);
-        buttons3.add(Box.createHorizontalStrut(200));
-        buttonsSizeHelper(logOut);
+        buttons3.add(Box.createHorizontalStrut(Constants.STRUTSMALLSPACER));
         buttons3.add(logOut);
         buttons3.add(Box.createHorizontalGlue());
 
@@ -207,30 +196,35 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(Box.createVerticalGlue());
-
+        this.add(verticalSpacer());
         this.add(titlePanel);
+        this.add(verticalSpacer());
         this.add(currentPlayerPanel);
+        this.add(verticalSpacer());
         this.add(buttons0);
+        this.add(verticalSpacer());
         this.add(buttons1);
-        this.add(Box.createVerticalStrut(20));
+        this.add(verticalSpacer());
         this.add(buttons2);
-        this.add(Box.createVerticalStrut(20));
+        this.add(verticalSpacer());
         this.add(buttons3);
-        this.add(keyErrorPanel);
-        this.add(Box.createVerticalStrut(20));
+        this.add(verticalSpacer());
         this.add(Box.createVerticalGlue());
-
         this.setBackground(Constants.BGCOLOUR);
     }
 
-    private void buttonsSizeHelper(JButton jbutton) {
-        jbutton.setPreferredSize(new Dimension(250, 200));
+    @NotNull
+    private static Component verticalSpacer() {
+        return Box.createVerticalStrut(Constants.STRUTSMALLSPACER);
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getPropertyName().equals("state")) {
+            final LoggedInState state = (LoggedInState) evt.getNewValue();
+            username.setText(state.getUsername());
+        }
         final LoggedInState state = (LoggedInState) evt.getNewValue();
-        if
         if (state.getQuizKeyError() != null) {
             JOptionPane.showMessageDialog(this, state.getQuizKeyError());
         }
