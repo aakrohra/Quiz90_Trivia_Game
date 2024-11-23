@@ -8,6 +8,7 @@ import entity.TriviaQuiz;
 
 import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
+import use_case.quiz_generation.QuizGenerationInputData;
 
 import javax.swing.*;
 import java.awt.*;
@@ -89,12 +90,14 @@ public class QuizGenerationView extends JPanel {
                 final String difficulty = difficultyUpper.toLowerCase();
 
                 // Fetch trivia using DBTriviaDataAccessObject
-                final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
-                final TriviaQuiz trivia = triviaDao.getTrivia(numQuestions, triviaDao.getCategoryId(category), difficulty);
+                final DBTriviaDataAccessObject triviaDAO = new DBTriviaDataAccessObject();
+                final QuizGenerationInputData quizData = new QuizGenerationInputData(numQuestions, category,
+                        difficulty);
+                final TriviaQuiz trivia = triviaDAO.getTrivia(quizData);
 
                 // Output the trivia questions
                 System.out.println("Fetching Trivia");
-                System.out.println(numQuestions + " questions, Category: " + triviaDao.getCategoryId(category)
+                System.out.println(numQuestions + " questions, Category: " + category
                         + ", Difficulty: " + difficulty);
                 for (TriviaQuestion question : trivia.getQuestions()) {
                     System.out.println("Question: " + question.getQuestionText());

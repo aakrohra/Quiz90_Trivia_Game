@@ -15,6 +15,7 @@ import entity.TriviaQuiz;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
  * A Data Access Object (DAO) that handles retrieving trivia questions from an external API.
@@ -74,25 +75,26 @@ public class DBTriviaDataAccessObject {
      * @param categoryName String of the category
      * @return Returns the id of its category as a string
      */
-    public static int getCategoryId(String categoryName) {
+    private static int getCategoryId(String categoryName) {
         return CATEGORY_MAPPING.get(categoryName);
     }
 
     /**
      * Retrieves a list of trivia questions from the external API.
      *
-     * @param amount The number of trivia questions to retrieve.
-     * @param difficulty The difficulty level of the trivia questions.
-     * @param categoryID The ID of the category of the trivia questions.
+     * @param quizData Contains the category, difficulty, and number of questions which are required to make
+     *                 an API call.
      * @return A TriviaResponse containing the list of TriviaQuestion objects.
      * @throws Exception If an error occurs during the API request or parsing the response.
      */
 
-    public TriviaQuiz getTrivia(int amount, int categoryID, String difficulty) throws Exception {
+    public TriviaQuiz getTrivia(QuizGenerationInputData quizData) throws Exception {
+
         // Construct URL with the given parameters
         final String urlString =
                 String.format("https://opentdb.com/api.php?amount=%d&category=%d&difficulty=%s&type=multiple",
-                        amount, categoryID, difficulty);
+                        quizData.getNumQuestions(), getCategoryId(quizData.getCategory()),
+                        quizData.getDifficulty());
 
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
