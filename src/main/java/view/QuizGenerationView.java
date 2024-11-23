@@ -89,8 +89,7 @@ public class QuizGenerationView extends JPanel {
 
                 // Fetch trivia using DBTriviaDataAccessObject
                 final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
-                final TriviaQuiz trivia =
-                        triviaDao.getTrivia(numQuestions, triviaDao.getCategoryId(category), difficulty);
+                final TriviaQuiz trivia = triviaDao.getTrivia(numQuestions, triviaDao.getCategoryId(category), difficulty);
 
                 // Output the trivia questions
                 System.out.println("Fetching Trivia");
@@ -103,8 +102,7 @@ public class QuizGenerationView extends JPanel {
                     System.out.println();
                 }
 
-            }
-            catch (Exception exp) {
+            } catch (Exception exp) {
                 exp.printStackTrace();
             }
         });

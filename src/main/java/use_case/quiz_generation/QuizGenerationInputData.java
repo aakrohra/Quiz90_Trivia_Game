@@ -5,25 +5,25 @@ package use_case.quiz_generation;
  */
 public class QuizGenerationInputData {
 
+    private final int numQuestions;
+    private final String category;
     private final String difficulty;
-    private final String selectedCategory;
-    private final String selectedNumberOfQuestions;
 
-    public QuizGenerationInputData(String difficulty, String selectedCategory, String selectedNumberOfQuestions) {
+    public QuizGenerationInputData(int selectedNumberOfQuestions, String selectedCategory, String difficulty) {
+        this.numQuestions = selectedNumberOfQuestions;
+        this.category = selectedCategory;
         this.difficulty = difficulty;
-        this.selectedCategory = selectedCategory;
-        this.selectedNumberOfQuestions = selectedNumberOfQuestions;
     }
 
     public String getDifficulty() {
         return difficulty;
     }
 
-    public String getSelectedCategory() {
-        return selectedCategory;
+    public String getCategory() {
+        return category;
     }
 
-    public String getSelectedNumberOfQuestions() {
-        return selectedNumberOfQuestions;
+    public int getNumQuestions() {
+        return numQuestions;
     }
 }
