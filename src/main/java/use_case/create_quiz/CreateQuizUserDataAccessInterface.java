@@ -1,7 +1,7 @@
 package use_case.create_quiz;
 
-import entity.PlayerCreatedQuiz;
 import entity.User;
+import org.json.JSONObject;
 
 /**
  * DAO for the Creating Quiz use case.
@@ -14,5 +14,5 @@ public interface CreateQuizUserDataAccessInterface {
      * @param user the given user
      * @return key of quiz added to the database
      */
-    String addQuiz(PlayerCreatedQuiz quiz, User user);
+    String addQuiz(JSONObject quizObject, User user);
 }

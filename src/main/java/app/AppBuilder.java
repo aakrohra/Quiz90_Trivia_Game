@@ -11,6 +11,9 @@ import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.local_multiplayer.LocalMultiplayerController;
+import interface_adapter.local_multiplayer.LocalMultiplayerPresenter;
+import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -28,6 +31,9 @@ import use_case.access_quiz.AccessQuizOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.local_multiplayer.LocalMultiplayerInputBoundary;
+import use_case.local_multiplayer.LocalMultiplayerInteractor;
+import use_case.local_multiplayer.LocalMultiplayerOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -78,6 +84,8 @@ public class AppBuilder {
     private AccessedQuizInfoView accessedQuizInfoView;
     private QuizGenerationViewModel quizGenerationViewModel;
     private QuizGenerationView quizGenerationView;
+    private LocalMultiplayerViewModel localMultiplayerViewModel;
+    private LocalMultiplayerView localMultiplayerView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -125,6 +133,35 @@ public class AppBuilder {
         quizGenerationView = new QuizGenerationView(quizGenerationViewModel);
         cardPanel.add(quizGenerationView, quizGenerationView.getViewName());
         return this;
+    }
+
+    /**
+     * Adds the Local Multiplayer View to the application.
+     * @return this builder
+     */
+    public AppBuilder addLocalMultiplayerView() {
+        localMultiplayerViewModel = new LocalMultiplayerViewModel();
+        localMultiplayerView = new LocalMultiplayerView(localMultiplayerViewModel);
+        cardPanel.add(localMultiplayerView, localMultiplayerView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Local Multiplayer Use Case to the application.
+     */
+    public AppBuilder addLocalMultiplayerUseCase() {
+        final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
+                viewManagerModel, localMultiplayerViewModel);
+
+        final LocalMultiplayerInputBoundary localMultiplayerInteractor =
+                new LocalMultiplayerInteractor(localMultiplayerPresenter);
+
+        final LocalMultiplayerController localMultiplayerController =
+                new LocalMultiplayerController(localMultiplayerInteractor);
+        loggedInView.setLocalMultiplayerController(localMultiplayerController);
+        localMultiplayerView.setLocalMultiplayerController(localMultiplayerController);
+        return this;
+
     }
 
     /**
@@ -216,6 +253,7 @@ public class AppBuilder {
 
         final AccessQuizController accessQuizController = new AccessQuizController(accessQuizInteractor);
         loggedInView.setAccessQuizController(accessQuizController);
+        accessedQuizInfoView.setAccessQuizController(accessQuizController);
         return this;
     }
 
@@ -244,7 +282,7 @@ public class AppBuilder {
      * @return the application
      */
     public JFrame build() {
-        final JFrame application = new JFrame("Login Example");
+        final JFrame application = new JFrame("Quiz90 Trivia Game");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         application.add(cardPanel);

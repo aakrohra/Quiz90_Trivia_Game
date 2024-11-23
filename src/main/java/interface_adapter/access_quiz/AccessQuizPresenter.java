@@ -42,6 +42,12 @@ public class AccessQuizPresenter implements AccessQuizOutputBoundary {
     public void prepareFailView(String error) {
         final LoggedInState loggedInState = loggedInViewModel.getState();
         loggedInState.setQuizKeyError(error);
-        loggedInViewModel.firePropertyChanged();
+        loggedInViewModel.firePropertyChanged("keyError");
+    }
+
+    @Override
+    public void switchToLoggedInView() {
+        viewManagerModel.setState(loggedInViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

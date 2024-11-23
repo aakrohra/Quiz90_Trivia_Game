@@ -18,10 +18,13 @@ public class Main {
                                             .addSignupView()
                                             .addLoggedInView()
                                             .addQuizGenerationView()
+                                            .addLocalMultiplayerView()
+                                            .addAccessedQuizInfoView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
+                                            .addLocalMultiplayerUseCase()
                                             .addAccessQuizUseCase()
                                             .addQuizGenerationUseCase()
                                             .build();
