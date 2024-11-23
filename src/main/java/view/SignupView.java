@@ -1,11 +1,5 @@
 package view;
 
-import app.Constants;
-import interface_adapter.signup.SignupController;
-import interface_adapter.signup.SignupState;
-import interface_adapter.signup.SignupViewModel;
-
-// TODO import statements in the right order
 import java.awt.Component;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
@@ -16,6 +10,11 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.jetbrains.annotations.NotNull;
+
+import app.Constants;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupState;
+import interface_adapter.signup.SignupViewModel;
 
 /**
  * The View for the Signup Use Case.
@@ -237,12 +236,12 @@ public class SignupView extends JPanel implements PropertyChangeListener {
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Sign up view");
+        final JFrame frame = new JFrame("Sign up view");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(700, 700);
+        frame.setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
         frame.setLocationRelativeTo(null);
 
-        SignupView signupView = new SignupView(new SignupViewModel());
+        final SignupView signupView = new SignupView(new SignupViewModel());
         frame.add(signupView);
         frame.setVisible(true);
     }

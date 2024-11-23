@@ -88,7 +88,7 @@ public class QuestionView extends JFrame {
         selectedButton.setBackground(Color.GREEN);
 
         // Change the border color to blue
-        Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
+        final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
         selectedButton.setBorder(blueBorder);
 
         // Print out the selected button
