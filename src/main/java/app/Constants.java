@@ -8,14 +8,14 @@ import java.awt.Color;
 
 public class Constants {
     // Frame constants
-    public static final int FRAMEHEIGHT = 600;
+    public static final int FRAMEHEIGHT = 800;
     public static final int FRAMEWIDTH = 1000;
     public static final int FONTSIZE = FRAMEHEIGHT / 20;
     public static final int QUESTIONMARGINDIVISOR = 20;
 
     // Button constants
-    public static final int BUTTONWIDTH = 400;
-    public static final int BUTTONHEIGHT = 200;
+    public static final int BUTTONWIDTH = FRAMEWIDTH * 2 / 5;
+    public static final int BUTTONHEIGHT = BUTTONWIDTH / 2;
     public static final int BUTTONMARGIN = 20;
     public static final int BUTTONFONTSIZE = FONTSIZE * 2 / 3;
     public static final int MARGINS = 10;

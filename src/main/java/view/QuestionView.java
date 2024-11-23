@@ -47,7 +47,7 @@ public class QuestionView extends JFrame {
         final int xPos = (Constants.FRAMEWIDTH - Constants.BUTTONWIDTH * 2) / 3;
 
         // Position for the first row
-        final int yPosTop = 200;
+        final int yPosTop = Constants.BUTTONHEIGHT;
         // Position for the second row
         final int yPosBottom = yPosTop + Constants.BUTTONHEIGHT + Constants.BUTTONMARGIN;
 
