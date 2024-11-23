@@ -4,7 +4,7 @@ import app.Constants;
 
 import data_access.DBTriviaDataAccessObject;
 import entity.TriviaQuestion;
-import entity.TriviaResponse;
+import entity.TriviaQuiz;
 
 import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
@@ -90,14 +90,14 @@ public class QuizGenerationView extends JPanel {
 
                 // Fetch trivia using DBTriviaDataAccessObject
                 final DBTriviaDataAccessObject triviaDao = new DBTriviaDataAccessObject();
-                final TriviaResponse trivia = triviaDao.getTrivia(numQuestions, triviaDao.getCategoryId(category), difficulty);
+                final TriviaQuiz trivia = triviaDao.getTrivia(numQuestions, triviaDao.getCategoryId(category), difficulty);
 
                 // Output the trivia questions
                 System.out.println("Fetching Trivia");
                 System.out.println(numQuestions + " questions, Category: " + triviaDao.getCategoryId(category)
                         + ", Difficulty: " + difficulty);
                 for (TriviaQuestion question : trivia.getQuestions()) {
-                    System.out.println("Question: " + question.getQuestion());
+                    System.out.println("Question: " + question.getQuestionText());
                     System.out.println("Correct Answer: " + question.getCorrectAnswer());
                     System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
                     System.out.println();

@@ -5,7 +5,7 @@ import java.util.List;
 /**
  * Represents a trivia question with its correct and incorrect answers.
  */
-public class TriviaQuestion implements Question{
+public class TriviaQuestion implements Question {
     private final String question;
     private final String correctAnswer;
     private final List<String> incorrectAnswers;
@@ -16,7 +16,7 @@ public class TriviaQuestion implements Question{
         this.incorrectAnswers = incorrectAnswers;
     }
 
-    public String getQuestion() {
+    public String getQuestionText() {
         return question;
     }
 

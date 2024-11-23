@@ -19,7 +19,7 @@ public class PlayerCreatedQuestion implements Question {
     }
 
     @Override
-    public String getQuestion() {
+    public String getQuestionText() {
         return this.question;
     }
 

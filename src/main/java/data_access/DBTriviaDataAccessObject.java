@@ -11,7 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import entity.TriviaQuestion;
-import entity.TriviaResponse;
+import entity.TriviaQuiz;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -65,8 +65,8 @@ public class DBTriviaDataAccessObject {
         CATEGORY_MAPPING.put("Vehicles", 28);
         CATEGORY_MAPPING.put("Entertainment: Comics", 29);
         CATEGORY_MAPPING.put("Science: Gadgets", 30);
-        CATEGORY_MAPPING.put("Entertainment: Japanese Anime & Manga", 31);
-        CATEGORY_MAPPING.put("Entertainment: Cartoon & Animations", 32);
+        CATEGORY_MAPPING.put("Entertainment: Anime & Manga", 31);
+        CATEGORY_MAPPING.put("Entertainment: Cartoons", 32);
     }
 
     /**
@@ -88,7 +88,7 @@ public class DBTriviaDataAccessObject {
      * @throws Exception If an error occurs during the API request or parsing the response.
      */
 
-    public TriviaResponse getTrivia(int amount, int categoryID, String difficulty) throws Exception {
+    public TriviaQuiz getTrivia(int amount, int categoryID, String difficulty) throws Exception {
         // Construct URL with the given parameters
         final String urlString =
                 String.format("https://opentdb.com/api.php?amount=%d&category=%d&difficulty=%s&type=multiple",
@@ -111,7 +111,7 @@ public class DBTriviaDataAccessObject {
                 final List<TriviaQuestion> triviaQuestions =
                         parseTriviaQuestions(responseBody.getJSONArray("results"));
 
-                return new TriviaResponse(triviaQuestions);
+                return new TriviaQuiz(triviaQuestions);
             }
             else {
                 throw new RuntimeException();
