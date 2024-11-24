@@ -161,7 +161,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     public Map<String, PlayerCreatedQuiz> getAllUserQuizzes(User user) throws RuntimeException {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
-                .url(String.format(API_USER_EXISTS_CALL,
+                .url(String.format(API_INFO_CALL,
                         user.getName()))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
