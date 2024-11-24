@@ -310,7 +310,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
                 exists = false;
             }
         }
-        currentUserInfo.put(key, quizObject);
+        currentUserInfo.getJSONObject(INFO).put(key, quizObject);
         final RequestBody body = RequestBody.create(currentUserInfo.toString(), mediaType);
         final Request request = new Request.Builder()
                 .url("http://vm003.teach.cs.toronto.edu:20112/modifyUserInfo")
