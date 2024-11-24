@@ -2,10 +2,8 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
-
 import javax.swing.*;
 import javax.swing.border.Border;
-
 import app.Constants;
 
 /**
@@ -24,38 +22,43 @@ public class QuestionView extends JFrame {
         setTitle("Quiz90");
         setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
 
-        // This puts the screen in the middle
+        // Center the screen
         setLocationRelativeTo(null);
 
         setLayout(null);
         setVisible(true);
 
-        // TODO "Question" Label should be replaced with the actual question
+        // Question label
         question = new JLabel("Question");
-        question.setFont(new Font("Calibri", Font.BOLD, Constants.FONTSIZE));
-        question.setBounds(Constants.FRAMEWIDTH / Constants.QUESTIONMARGINDIVISOR,
+        question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.QUESTIONFONTSIZE));
+        question.setBounds(
+                Constants.FRAMEWIDTH / Constants.QUESTIONMARGINDIVISOR,
                 Constants.FRAMEHEIGHT / Constants.QUESTIONMARGINDIVISOR,
-                Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT / Constants.QUESTIONMARGINDIVISOR);
+                Constants.FRAMEWIDTH,
+                Constants.FRAMEHEIGHT / Constants.QUESTIONMARGINDIVISOR
+        );
 
-        // TODO Not entirely sure if there'll always be 4 options, also replace "Options" with answers
+        // Create answer buttons
         button1 = createButton("Option 1");
         button2 = createButton("Option 2");
         button3 = createButton("Option 3");
         button4 = createButton("Option 4");
 
-        // Center the buttons horizontally with 2 per row
-        final int xPos = (Constants.FRAMEWIDTH - Constants.BUTTONWIDTH * 2) / 3;
+        // Button margins
+        final int horizontalSpacing = Constants.BUTTONMARGIN;
+        final int verticalSpacing = Constants.BUTTONMARGIN;
+        final int gap = (Constants.FRAMEWIDTH - 2 * Constants.BUTTONWIDTH - horizontalSpacing) / 2;
 
-        // Position for the first row
-        final int yPosTop = 200;
-        // Position for the second row
-        final int yPosBottom = yPosTop + Constants.BUTTONHEIGHT + Constants.BUTTONMARGIN;
+        // First row vertical position
+        final int firstRowY = Constants.FRAMEHEIGHT / 3;
+        final int secondRowY = firstRowY + Constants.BUTTONHEIGHT + verticalSpacing;
 
-        button1.setBounds(xPos, yPosTop, Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
-        button2.setBounds(xPos + Constants.BUTTONWIDTH + Constants.BUTTONMARGIN, yPosTop,
+        // Set bounds for each button
+        button1.setBounds(gap, firstRowY, Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
+        button2.setBounds(gap + horizontalSpacing + Constants.BUTTONWIDTH, firstRowY,
                 Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
-        button3.setBounds(xPos, yPosBottom, Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
-        button4.setBounds(xPos + Constants.BUTTONWIDTH + Constants.BUTTONMARGIN, yPosBottom,
+        button3.setBounds(gap, secondRowY, Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
+        button4.setBounds(gap + horizontalSpacing + Constants.BUTTONWIDTH, secondRowY,
                 Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
 
         // Add ActionListeners to buttons
@@ -64,7 +67,7 @@ public class QuestionView extends JFrame {
         button3.addActionListener(evt -> handleButtonClick(button3));
         button4.addActionListener(evt -> handleButtonClick(button4));
 
-        // Add everything to the frame
+        // Add components to the frame
         add(button1);
         add(button2);
         add(button3);
@@ -95,9 +98,15 @@ public class QuestionView extends JFrame {
         System.out.println("Selected: " + selectedButton.getText());
     }
 
+    /**
+     * Creates a button with default styles.
+     *
+     * @param text the text to display on the button
+     * @return a styled {@link JButton}
+     */
     private JButton createButton(String text) {
         final JButton button = new JButton(text);
-        button.setFont(new Font("Calibri", Font.BOLD, Constants.BUTTONFONTSIZE));
+        button.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
         return button;
@@ -106,5 +115,4 @@ public class QuestionView extends JFrame {
     public static void main(String[] args) {
         new QuestionView();
     }
-
 }

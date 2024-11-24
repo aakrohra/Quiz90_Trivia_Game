@@ -8,16 +8,16 @@ import java.awt.Color;
 
 public class Constants {
     // Frame constants
-    public static final int FRAMEHEIGHT = 600;
-    public static final int FRAMEWIDTH = 1000;
-    public static final int FONTSIZE = FRAMEHEIGHT / 20;
+    public static final int FRAMEHEIGHT = 720;
+    public static final int FRAMEWIDTH = FRAMEHEIGHT * 16 / 9;
+    public static final int QUESTIONFONTSIZE = FRAMEHEIGHT / 20;
     public static final int QUESTIONMARGINDIVISOR = 20;
 
     // Button constants
-    public static final int BUTTONWIDTH = 400;
-    public static final int BUTTONHEIGHT = 200;
-    public static final int BUTTONMARGIN = 20;
-    public static final int BUTTONFONTSIZE = FONTSIZE * 2 / 3;
+    public static final int BUTTONWIDTH = FRAMEWIDTH / 3;
+    public static final int BUTTONHEIGHT = BUTTONWIDTH / 3;
+    public static final int BUTTONMARGIN = BUTTONHEIGHT / 5;
+    public static final int BUTTONFONTSIZE = QUESTIONFONTSIZE * 2 / 3;
     public static final int MARGINS = 10;
 
     // Other Button constants
@@ -26,12 +26,20 @@ public class Constants {
     public static final int TEXTPANELWIDTH = 400;
     public static final int TEXTPANELHEIGHT = 100;
 
+    // Combobox constants
+    public static final int COMBOBOXWIDTH = BUTTONWIDTH;
+    public static final int COMBOBOXHEIGHT = BUTTONHEIGHT / 3;
+    public static final int COMBOBOXFONTSIZE = BUTTONFONTSIZE * 9 / 10;
+
     // Placeholder text
     public static final String USERNAMEPLACEHOLDER = "Enter your username here...";
     public static final int POSITIONX = 5;
     public static final int POSITIONY = 7;
     public static final int FIELDX = 500;
     public static final int FIELDY = 25;
+    
+    // Font
+    public static final String FONTSTYLE = "Tahoma";
 
     // UI Spacers
     public static final int STRUTSMALLSPACER = 20;
@@ -54,10 +62,10 @@ public class Constants {
         "Celebrities",
         "Entertainment: Board Games",
         "Entertainment: Books",
-        "Entertainment: Cartoons",
+        "Entertainment: Animations & Cartoons",
         "Entertainment: Comics",
         "Entertainment: Film",
-        "Entertainment: Anime & Manga",
+        "Entertainment: Japanese Anime & Manga",
         "Entertainment: Music",
         "Entertainment: Musicals & Theatres",
         "Entertainment: Television",
