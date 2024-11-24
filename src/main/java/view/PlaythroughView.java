@@ -1,16 +1,17 @@
 package view;
 
-import java.awt.Color;
-import java.awt.Font;
-import javax.swing.*;
-import javax.swing.border.Border;
 import app.Constants;
 
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+
 /**
- * The {@code QuestionView} class creates a simple quiz interface extending {@link JFrame}.
+ * The PlaythroughView class creates a simple quiz interface extending JPanel.
  * It includes a question label and four answer buttons.
  */
-public class QuestionView extends JFrame {
+public class PlaythroughView extends JPanel {
+    private final String viewName = "Playthrough";
 
     private JLabel question;
     private JButton button1;
@@ -18,15 +19,8 @@ public class QuestionView extends JFrame {
     private JButton button3;
     private JButton button4;
 
-    public QuestionView() {
-        setTitle("Quiz90");
-        setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
-
-        // Center the screen
-        setLocationRelativeTo(null);
-
+    public PlaythroughView() {
         setLayout(null);
-        setVisible(true);
 
         // Question label
         question = new JLabel("Question");
@@ -67,7 +61,7 @@ public class QuestionView extends JFrame {
         button3.addActionListener(evt -> handleButtonClick(button3));
         button4.addActionListener(evt -> handleButtonClick(button4));
 
-        // Add components to the frame
+        // Add components to the panel
         add(button1);
         add(button2);
         add(button3);
@@ -112,7 +106,20 @@ public class QuestionView extends JFrame {
         return button;
     }
 
+    public String getQuestion() {
+        return viewName;
+    }
+
+    // TODO: Whoever makes playthroughController implement this
+    public void setPlaythroughController(){
+    }
+
     public static void main(String[] args) {
-        new QuestionView();
+        final JFrame frame = new JFrame("Quiz90");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
+        frame.setLocationRelativeTo(null);
+        frame.setContentPane(new PlaythroughView());
+        frame.setVisible(true);
     }
 }

@@ -1,5 +1,6 @@
 package use_case.quiz_generation;
 
+import entity.Question;
 import entity.TriviaQuestion;
 import entity.TriviaQuiz;
 
@@ -49,7 +50,7 @@ public class QuizGenerationInteractor implements QuizGenerationInputBoundary {
                 "Number of Questions: " + quizData.getNumQuestions()
                         + ", Category: " + quizData.getCategory()
                         + ", Difficulty: " + quizData.getDifficulty());
-        for (TriviaQuestion question : trivia.getQuestions()) {
+        for (Question question : trivia.getQuestions()) {
             System.out.println("Question: " + question.getQuestionText());
             System.out.println("Correct Answer: " + question.getCorrectAnswer());
             System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));

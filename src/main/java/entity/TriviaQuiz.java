@@ -12,14 +12,15 @@ public class TriviaQuiz implements Quiz {
         this.questions = questions;
     }
 
-    public List<TriviaQuestion> getQuestions() {
+    @Override
+    public List<? extends Question> getQuestions() {
         return questions;
     }
 
     @Override
     public String getListOfQuestions() {
         final StringBuilder result = new StringBuilder();
-        for (TriviaQuestion question : this.getQuestions()) {
+        for (Question question : this.getQuestions()) {
             result.append(question.getQuestionText()).append("\n");
         }
         return result.toString();

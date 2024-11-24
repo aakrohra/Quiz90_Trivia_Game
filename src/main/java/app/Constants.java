@@ -29,7 +29,7 @@ public class Constants {
     // Combobox constants
     public static final int COMBOBOXWIDTH = BUTTONWIDTH;
     public static final int COMBOBOXHEIGHT = BUTTONHEIGHT / 3;
-    public static final int COMBOBOXFONTSIZE = BUTTONFONTSIZE * 9 / 10;
+    public static final int COMBOBOXFONTSIZE = BUTTONFONTSIZE * 8 / 10;
 
     // Placeholder text
     public static final String USERNAMEPLACEHOLDER = "Enter your username here...";

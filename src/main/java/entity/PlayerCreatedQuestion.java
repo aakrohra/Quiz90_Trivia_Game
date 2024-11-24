@@ -40,4 +40,11 @@ public class PlayerCreatedQuestion implements Question {
     public String getCorrectAnswer() {
         return this.correctAnswer;
     }
+
+    @Override
+    public List<String> getIncorrectAnswers() {
+        final List<String> incorrectAnswers = new ArrayList<>(this.answerOptions);
+        incorrectAnswers.remove(this.correctAnswer);
+        return incorrectAnswers;
+    }
 }
