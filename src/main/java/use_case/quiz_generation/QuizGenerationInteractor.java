@@ -56,5 +56,7 @@ public class QuizGenerationInteractor implements QuizGenerationInputBoundary {
             System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
             System.out.println();
         }
+
+        quizGenerationPresenter.prepareSuccessView(trivia);
     }
 }

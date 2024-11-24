@@ -27,6 +27,10 @@ public class PlaythroughState {
         this.selectedAnswer = "";
     }
 
+    public Quiz getCurrentQuiz() {
+        return quiz;
+    }
+
     public int getCurrentQuestionIndex() {
         return currentQuestionIndex;
     }

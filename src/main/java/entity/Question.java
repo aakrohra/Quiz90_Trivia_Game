@@ -25,4 +25,5 @@ public interface Question {
     String getCorrectAnswer();
 
     List<String> getIncorrectAnswers();
+
 }

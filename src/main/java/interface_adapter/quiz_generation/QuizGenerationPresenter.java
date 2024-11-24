@@ -6,6 +6,7 @@ import interface_adapter.playthrough.PlaythroughState;
 import interface_adapter.playthrough.PlaythroughViewModel;
 import use_case.quiz_generation.QuizGenerationOutputBoundary;
 import entity.Quiz;
+import view.PlaythroughView;
 
 /**
  * The Presenter for switching to the Quiz Generation View.
@@ -40,7 +41,6 @@ public class QuizGenerationPresenter implements QuizGenerationOutputBoundary {
         playthroughState.setQuiz(triviaQuiz);
         playthroughViewModel.setState(playthroughState);
 
-        // Notify the PlaythroughView of the state change
         playthroughViewModel.firePropertyChanged();
 
         // Switch to the Playthrough View

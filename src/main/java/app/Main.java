@@ -20,6 +20,7 @@ public class Main {
                                             .addQuizGenerationView()
                                             .addLocalMultiplayerView()
                                             .addAccessedQuizInfoView()
+                                            .addPlaythroughView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()

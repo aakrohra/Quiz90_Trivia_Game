@@ -90,6 +90,8 @@ public class AppBuilder {
     private QuizGenerationView quizGenerationView;
     private LocalMultiplayerViewModel localMultiplayerViewModel;
     private LocalMultiplayerView localMultiplayerView;
+    private PlaythroughViewModel playthroughViewModel;
+    private PlaythroughView playthroughView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -147,6 +149,17 @@ public class AppBuilder {
         localMultiplayerViewModel = new LocalMultiplayerViewModel();
         localMultiplayerView = new LocalMultiplayerView(localMultiplayerViewModel);
         cardPanel.add(localMultiplayerView, localMultiplayerView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Playthrough View to the application.
+     * @return this builder
+     */
+    public AppBuilder addPlaythroughView() {
+        playthroughViewModel = new PlaythroughViewModel();
+        playthroughView = new PlaythroughView(playthroughViewModel);
+        cardPanel.add(playthroughView, playthroughView.getViewName());
         return this;
     }
 
@@ -277,7 +290,7 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         final QuizGenerationOutputBoundary quizGenerationPresenter =
                 new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel, loggedInViewModel,
-                        new PlaythroughViewModel());
+                        playthroughViewModel);
 
         final QuizGenerationInputBoundary quizGenerationInteractor =
                 new QuizGenerationInteractor(quizGenerationPresenter, triviaDataAccessObject);
