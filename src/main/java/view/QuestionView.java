@@ -3,9 +3,8 @@ package view;
 import java.awt.Color;
 import java.awt.Font;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.*;
+import javax.swing.border.Border;
 
 import app.Constants;
 
@@ -60,10 +59,10 @@ public class QuestionView extends JFrame {
                 Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT);
 
         // Add ActionListeners to buttons
-        button1.addActionListener(evt -> System.out.println("Button 1 pressed"));
-        button2.addActionListener(evt -> System.out.println("Button 2 pressed"));
-        button3.addActionListener(evt -> System.out.println("Button 3 pressed"));
-        button4.addActionListener(evt -> System.out.println("Button 4 pressed"));
+        button1.addActionListener(evt -> handleButtonClick(button1));
+        button2.addActionListener(evt -> handleButtonClick(button2));
+        button3.addActionListener(evt -> handleButtonClick(button3));
+        button4.addActionListener(evt -> handleButtonClick(button4));
 
         // Add everything to the frame
         add(button1);
@@ -71,6 +70,29 @@ public class QuestionView extends JFrame {
         add(button3);
         add(button4);
         add(question);
+    }
+
+    /**
+     * Handles the button click event. Disables all buttons and changes the color
+     * of the selected button.
+     * @param selectedButton the button that was clicked
+     */
+    private void handleButtonClick(JButton selectedButton) {
+        // Disable all buttons after one of them has been clicked
+        button1.setEnabled(false);
+        button2.setEnabled(false);
+        button3.setEnabled(false);
+        button4.setEnabled(false);
+
+        // Change the background color of the selected button
+        selectedButton.setBackground(Color.GREEN);
+
+        // Change the border color to blue
+        final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
+        selectedButton.setBorder(blueBorder);
+
+        // Print out the selected button
+        System.out.println("Selected: " + selectedButton.getText());
     }
 
     private JButton createButton(String text) {

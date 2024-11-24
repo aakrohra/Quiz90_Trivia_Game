@@ -1,14 +1,20 @@
 package use_case.quiz_generation;
 
+import entity.TriviaQuestion;
+import entity.TriviaQuiz;
+
 /**
  * Interactor for the Quiz Generation Use Case.
  */
 public class QuizGenerationInteractor implements QuizGenerationInputBoundary {
 
     private final QuizGenerationOutputBoundary quizGenerationPresenter;
+    private final QuizGenerationDataAccessInterface triviaDataAccessObject;
 
-    public QuizGenerationInteractor(QuizGenerationOutputBoundary quizGenerationPresenter) {
+    public QuizGenerationInteractor(QuizGenerationOutputBoundary quizGenerationPresenter,
+                                    QuizGenerationDataAccessInterface triviaDataAccessObject) {
         this.quizGenerationPresenter = quizGenerationPresenter;
+        this.triviaDataAccessObject = triviaDataAccessObject;
     }
 
     /**
@@ -25,5 +31,29 @@ public class QuizGenerationInteractor implements QuizGenerationInputBoundary {
     @Override
     public void switchToMainMenuView() {
         quizGenerationPresenter.switchToMainMenuView();
+    }
+
+    /**
+     * Executes the quiz generation process using the provided input data.
+     *
+     * @param quizData The input data containing the number of questions, category,
+     *                 and difficulty level for the quiz generation.
+     */
+    @Override
+    public void execute(QuizGenerationInputData quizData) {
+        final TriviaQuiz trivia = triviaDataAccessObject.getTrivia(quizData);
+
+        // Output the trivia questions
+        System.out.println("Fetching Trivia");
+        System.out.println(
+                "Number of Questions: " + quizData.getNumQuestions()
+                        + ", Category: " + quizData.getCategory()
+                        + ", Difficulty: " + quizData.getDifficulty());
+        for (TriviaQuestion question : trivia.getQuestions()) {
+            System.out.println("Question: " + question.getQuestionText());
+            System.out.println("Correct Answer: " + question.getCorrectAnswer());
+            System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
+            System.out.println();
+        }
     }
 }

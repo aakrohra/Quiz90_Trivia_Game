@@ -1,9 +1,11 @@
 package app;
 
 import java.awt.Color;
+
 /**
  * Defines project constants.
  */
+
 public class Constants {
     // Frame constants
     public static final int FRAMEHEIGHT = 600;
@@ -31,7 +33,6 @@ public class Constants {
     public static final int FIELDX = 500;
     public static final int FIELDY = 25;
 
-
     // UI Spacers
     public static final int STRUTSMALLSPACER = 20;
 
@@ -42,6 +43,10 @@ public class Constants {
     // UI Colours
     public static final Color BGCOLOUR = new Color(56, 113, 194);
 
+    // Grid Coordinates
+    public static final int THREE = 3;
+    public static final int FOUR = 4;
+
     // Normal Play
     public static final String[] CATEGORIES = {
         "Animals",
@@ -49,10 +54,10 @@ public class Constants {
         "Celebrities",
         "Entertainment: Board Games",
         "Entertainment: Books",
-        "Entertainment: Cartoon & Animations",
+        "Entertainment: Cartoons",
         "Entertainment: Comics",
         "Entertainment: Film",
-        "Entertainment: Japanese Anime & Manga",
+        "Entertainment: Anime & Manga",
         "Entertainment: Music",
         "Entertainment: Musicals & Theatres",
         "Entertainment: Television",

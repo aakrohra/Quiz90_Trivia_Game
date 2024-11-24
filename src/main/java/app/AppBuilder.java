@@ -1,6 +1,11 @@
 package app;
 
+import java.awt.*;
+
+import javax.swing.*;
+
 import data_access.DBCustomQuizDataAccessObject;
+import data_access.DBTriviaDataAccessObject;
 import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
@@ -10,10 +15,10 @@ import interface_adapter.access_quiz.AccessQuizPresenter;
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
-import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.local_multiplayer.LocalMultiplayerPresenter;
 import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
+import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
@@ -48,9 +53,6 @@ import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import view.*;
 
-import javax.swing.*;
-import java.awt.*;
-
 /**
  * The AppBuilder class is responsible for putting together the pieces of
  * our CA architecture; piece by piece.
@@ -72,6 +74,7 @@ public class AppBuilder {
 
     // thought question: is the hard dependency below a problem?
     private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    private final DBTriviaDataAccessObject triviaDataAccessObject = new DBTriviaDataAccessObject();
     private final DBCustomQuizDataAccessObject customQuizDataAccessObject = new DBCustomQuizDataAccessObject();
 
     private SignupView signupView;
@@ -148,7 +151,14 @@ public class AppBuilder {
 
     /**
      * Adds the Local Multiplayer Use Case to the application.
+     * This method initializes and wires up the components required for the
+     * Local Multiplayer feature, including its presenter, interactor, and controller.
+     * It sets the controller for the associated views to enable interaction
+     * between the user interface and the underlying use case logic.
+     *
+     * @return the current instance of {@code AppBuilder} for method chaining.
      */
+
     public AppBuilder addLocalMultiplayerUseCase() {
         final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
                 viewManagerModel, localMultiplayerViewModel);
@@ -267,7 +277,7 @@ public class AppBuilder {
                 new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel, loggedInViewModel);
 
         final QuizGenerationInputBoundary quizGenerationInteractor =
-                new QuizGenerationInteractor(quizGenerationPresenter);
+                new QuizGenerationInteractor(quizGenerationPresenter, triviaDataAccessObject);
 
         final QuizGenerationController quizGenerationController =
                 new QuizGenerationController(quizGenerationInteractor);
