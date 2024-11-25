@@ -5,7 +5,7 @@ import org.json.JSONObject;
 /**
  * DAO for the Access Quiz Use Case.
  */
-public interface AccessQuizUserDataAccessInterface {
+public interface AccessQuizDataAccessInterface {
 
     /**
      * Check if the given key points to an existing created quiz.

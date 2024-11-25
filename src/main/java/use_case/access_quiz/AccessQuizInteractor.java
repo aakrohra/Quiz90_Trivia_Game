@@ -14,10 +14,10 @@ import entity.PlayerCreatedQuizFactory;
  */
 public class AccessQuizInteractor implements AccessQuizInputBoundary {
 
-    private final AccessQuizUserDataAccessInterface customQuizDataAccessObject;
+    private final AccessQuizDataAccessInterface customQuizDataAccessObject;
     private final AccessQuizOutputBoundary accessQuizPresenter;
 
-    public AccessQuizInteractor(AccessQuizUserDataAccessInterface customQuizDataAccessObject,
+    public AccessQuizInteractor(AccessQuizDataAccessInterface customQuizDataAccessObject,
                                 AccessQuizOutputBoundary accessQuizPresenter) {
         this.customQuizDataAccessObject = customQuizDataAccessObject;
         this.accessQuizPresenter = accessQuizPresenter;
@@ -55,5 +55,10 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
     @Override
     public void switchToLoggedInView() {
         accessQuizPresenter.switchToLoggedInView();
+    }
+
+    @Override
+    public void playAccessedQuiz(PlayerCreatedQuiz quizObject) {
+        accessQuizPresenter.playAccessedQuiz(quizObject);
     }
 }

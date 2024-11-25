@@ -1,5 +1,7 @@
 package use_case.access_quiz;
 
+import entity.PlayerCreatedQuiz;
+
 /**
  * The output boundary for the Access Quiz Use Case.
  */
@@ -21,4 +23,9 @@ public interface AccessQuizOutputBoundary {
      * Switch to Logged In View.
      */
     void switchToLoggedInView();
+
+    /**
+     * Play Accessed Quiz.
+     */
+    void playAccessedQuiz(PlayerCreatedQuiz quizObject);
 }

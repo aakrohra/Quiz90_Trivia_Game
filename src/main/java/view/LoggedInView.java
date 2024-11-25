@@ -174,7 +174,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                     // the "testing" check can be removed later if wanted, here for testing purposes
                     if (evt.getSource().equals(playSharedQuiz) || evt.getSource().equals("testing")) {
                         final LoggedInState currentState = loggedInViewModel.getState();
-                        this.accessQuizController.execute(currentState.getQuizKey());
+                        this.accessQuizController.accessQuizFromKey(currentState.getQuizKey());
                     }
                 }
         );
