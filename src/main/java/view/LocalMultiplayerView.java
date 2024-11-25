@@ -1,5 +1,6 @@
 package view;
 
+<<<<<<< HEAD
 import app.Constants;
 import data_access.TriviaApp;
 import entity.TriviaQuestion;
@@ -9,9 +10,17 @@ import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 import javax.swing.*;
+=======
+>>>>>>> origin
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import javax.swing.*;
+
+import app.Constants;
+import interface_adapter.local_multiplayer.LocalMultiplayerController;
+import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
 
 /**
  * The View for when the user is playing Local Multiplayer.
@@ -179,7 +188,7 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
     public static void main(String[] args) {
         final JFrame frame = new JFrame("Local Multiplayer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(1200, 500));
+        frame.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
         frame.setLocationRelativeTo(null);
 
         final LocalMultiplayerView localMultiplayerView = new LocalMultiplayerView(new LocalMultiplayerViewModel());

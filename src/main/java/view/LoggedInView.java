@@ -1,23 +1,24 @@
 package view;
 
-import app.Constants;
-import interface_adapter.access_quiz.AccessQuizController;
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.logged_in.LoggedInState;
-import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.local_multiplayer.LocalMultiplayerController;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.quiz_generation.QuizGenerationController;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import app.Constants;
+import interface_adapter.access_quiz.AccessQuizController;
+import interface_adapter.change_password.ChangePasswordController;
+import interface_adapter.local_multiplayer.LocalMultiplayerController;
+import interface_adapter.logged_in.LoggedInState;
+import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.logout.LogoutController;
+import interface_adapter.quiz_generation.QuizGenerationController;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The View for when the user is logged into the program.

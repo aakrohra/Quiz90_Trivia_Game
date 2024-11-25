@@ -1,5 +1,7 @@
 package entity;
 
+import java.util.List;
+
 /**
  * Representation of a question in our program.
  */
@@ -21,4 +23,7 @@ public interface Question {
      * @return the correct answer to the question.
      */
     String getCorrectAnswer();
+
+    List<String> getIncorrectAnswers();
+
 }

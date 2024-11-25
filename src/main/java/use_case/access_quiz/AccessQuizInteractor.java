@@ -1,13 +1,13 @@
 package use_case.access_quiz;
 
-import entity.PlayerCreatedQuestion;
-import org.json.JSONObject;
-
-import entity.PlayerCreatedQuiz;
-import entity.PlayerCreatedQuizFactory;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
+import entity.PlayerCreatedQuestion;
+import entity.PlayerCreatedQuiz;
+import entity.PlayerCreatedQuizFactory;
 
 /**
  * The Access Quiz Interactor.
@@ -40,7 +40,7 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
             System.out.println("key exists");
         }
         // this is here for easy testing and can be removed later if wanted
-        else if (key.equals("testing")) {
+        else if ("testing".equals(key)) {
             final List<PlayerCreatedQuestion> temp2 = new ArrayList<>();
             final PlayerCreatedQuiz temp = new PlayerCreatedQuiz("title", temp2, "author");
             final AccessQuizOutputData accessQuizOutputData = new AccessQuizOutputData(
