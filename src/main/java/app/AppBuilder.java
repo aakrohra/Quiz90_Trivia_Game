@@ -268,7 +268,7 @@ public class AppBuilder {
      */
     public AppBuilder addAccessQuizUseCase() {
         final AccessQuizOutputBoundary accessQuizOutputBoundary = new AccessQuizPresenter(
-                viewManagerModel, loggedInViewModel, accessedQuizInfoViewModel
+                viewManagerModel, loggedInViewModel, accessedQuizInfoViewModel, playthroughViewModel
         );
 
         final AccessQuizInputBoundary accessQuizInteractor = new AccessQuizInteractor(

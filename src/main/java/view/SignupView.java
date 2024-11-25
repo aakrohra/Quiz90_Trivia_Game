@@ -9,6 +9,10 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
+import data_access.DBCustomQuizDataAccessObject;
+import data_access.DBUserDataAccessObject;
+import entity.CommonUserFactory;
+import entity.UserFactory;
 import org.jetbrains.annotations.NotNull;
 
 import app.Constants;
@@ -47,6 +51,12 @@ public class SignupView extends JPanel implements PropertyChangeListener {
         actionAndDocumentListeners(signupViewModel, exit, signUp, toLogin);
 
         assembleFinalPanel(titlePanel, infoPanel, buttonPanel, buttonPanel1);
+
+        // DBCustomQuizDataAccessObject dao = new DBCustomQuizDataAccessObject();
+        // CommonUserFactory userfac = new CommonUserFactory();
+        // DBUserDataAccessObject dao2 = new DBUserDataAccessObject(userfac);
+        // System.out.println(dao.getAllUserQuizzes(dao2.get("aak")));
+
     }
 
     @NotNull
