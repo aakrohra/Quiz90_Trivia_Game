@@ -27,10 +27,9 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private static final int OPTION_THREE_INDEX = 2;
     private static final int OPTION_FOUR_INDEX = 3;
 
-    private final String viewName = "playthrough";
     private final PlaythroughViewModel playthroughViewModel;
 
-    private final JLabel question;
+    private final JTextPane question;
     private final JButton button1;
     private final JButton button2;
     private final JButton button3;
@@ -44,10 +43,21 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         this.playthroughViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = createGbc();
+        final GridBagConstraints gbc = createGbc();
 
         // Question label
-        question = new JLabel("");
+        final JPanel questionPanel = new JPanel();
+        questionPanel.setSize(1000, 1000);
+        questionPanel.setMaximumSize(new Dimension(1000, 1000));
+        questionPanel.setPreferredSize(new Dimension(1000, 1000));
+        question = new JTextPane();
+        question.setEditable(false);
+        question.setFocusable(false);
+
+        question.setBackground(Color.red);
+//        question.setPreferredSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
+        question.setText("By definition, where does an abyssopelagic animal live ahahahahahah ahah ah hah ah ahhahhahah haha hha?");
+
         question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.QUESTIONFONTSIZE));
         question.setBounds(
                 Constants.FRAMEWIDTH / Constants.QUESTIONMARGINDIVISOR,
@@ -55,6 +65,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
                 Constants.FRAMEWIDTH,
                 Constants.FRAMEHEIGHT / Constants.QUESTIONMARGINDIVISOR
         );
+        questionPanel.add(question);
 
         final ButtonPanel buttonRow1 = new ButtonPanel();
 
@@ -76,12 +87,12 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         button4.addActionListener(evt -> handleButtonClick(button4));
 
         nextButton = new JButton("Next");
-        nextButton.setOpaque(false);
+        nextButton.setVisible(false);
 
         nextButton.addActionListener(evt -> handleNextClick());
 
         // Add components to the panel
-        this.addComp(question, 0, 0, 5, GridBagConstraints.CENTER, gbc);
+        this.addComp(questionPanel, 0, 0, 1, GridBagConstraints.WEST, gbc);
         this.addComp(buttonRow1, 0, 1, 2, GridBagConstraints.CENTER, gbc);
         this.addComp(buttonRow2, 0, 2, 2, GridBagConstraints.CENTER, gbc);
         this.addComp(nextButton, 2, 3, 3, GridBagConstraints.CENTER, gbc);
@@ -103,11 +114,11 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         this.add(comp, gbc);
     }
 
-    private void assemble2Buttons(JPanel buttonPanel, JButton button1, JButton button2) {
+    private void assemble2Buttons(JPanel buttonPanel, JButton firstButton, JButton secondButton) {
         buttonPanel.add(Box.createHorizontalGlue());
-        buttonPanel.add(button1);
+        buttonPanel.add(firstButton);
         buttonPanel.add(horizontalSpacer());
-        buttonPanel.add(button2);
+        buttonPanel.add(secondButton);
         buttonPanel.add(Box.createHorizontalGlue());
     }
 
@@ -143,7 +154,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
         selectedButton.setBorder(blueBorder);
 
-        nextButton.setOpaque(true);
+        nextButton.setVisible(true);
 
         // Print out the selected button
         System.out.println("Selected: " + selectedButton.getText());
@@ -154,7 +165,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
      */
     private void handleNextClick() {
         final PlaythroughState state = this.playthroughViewModel.getState();
-        nextButton.setOpaque(false);
+        nextButton.setVisible(false);
         state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
         this.playthroughViewModel.firePropertyChanged();
     }
@@ -170,12 +181,13 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         button.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
-        button.setSize(new Dimension(10000, 1000));
+        button.setMaximumSize(new Dimension(10000, 1000));
+        button.setMaximumSize(new Dimension(10000, 1000));
         return button;
     }
 
     public String getViewName() {
-        return viewName;
+        return "playthrough";
     }
 
     /**
