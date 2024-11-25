@@ -34,42 +34,46 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
         this.localMultiplayerViewModel = localMultiplayerViewModel;
         this.localMultiplayerViewModel.addPropertyChangeListener(this);
 
-        final TitlePanel title = new TitlePanel("Local Multiplayer");
-
-        final JPanel dropdownPanel = new JPanel();
-
-        this.setLayout(new GridBagLayout());
         final GridBagConstraints gbc = createGbc();
+        this.setLayout(new GridBagLayout());
 
-        // Labels and ComboBox boxes
+        final TitlePanel title = new TitlePanel("Local Multiplayer");
+        this.addComponent(title, 0, 0 , 3, GridBagConstraints.CENTER, gbc);
+
+        final JPanel twoPlayerModePanel = new RoundPanel();
+        final JLabel twoPlayerModeLabel = new JLabel("Local Two Player Mode!");
+        twoPlayerModePanel.add(twoPlayerModeLabel);
+        this.addComponent(twoPlayerModePanel, 0, 1 , 3, GridBagConstraints.CENTER, gbc);
+
         // Categories
         final Font optionFont = new Font("Arial", Font.BOLD, 14);
         final Dimension comboBoxSize = new Dimension(225, 25);
-        // Create and add category label and ComboBox
+
         categoryComboBox = createComboBox(Constants.CATEGORIES, comboBoxSize);
         addComponent(createLabel(QuizGenerationViewModel.CATEGORY_LABEL, optionFont, SwingConstants.LEFT),
-                0, 1, 1, GridBagConstraints.WEST, gbc);
-        addComponent(categoryComboBox, 1, 1, 1, GridBagConstraints.WEST, gbc);
+                0, 2, 1, GridBagConstraints.WEST, gbc);
+        addComponent(categoryComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
 
         // Number of questions
         questionComboBox = createComboBox(Constants.NUM_QUESTION, comboBoxSize);
         addComponent(createLabel(QuizGenerationViewModel.QUESTIONS_LABEL, optionFont, SwingConstants.LEFT),
-                0, 2, 1, GridBagConstraints.WEST, gbc);
-        addComponent(questionComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
+                0, 3, 1, GridBagConstraints.WEST, gbc);
+        addComponent(questionComboBox, 1, 3, 1, GridBagConstraints.WEST, gbc);
 
         // Difficulties
         difficultyComboBox = createComboBox(Constants.DIFFICULTIES, comboBoxSize);
         addComponent(createLabel(QuizGenerationViewModel.DIFFICULTY_LABEL, optionFont, SwingConstants.LEFT),
-                0, 3, 1, GridBagConstraints.WEST, gbc);
-        addComponent(difficultyComboBox, 1, 3, 1, GridBagConstraints.WEST, gbc);
+                0, 4, 1, GridBagConstraints.WEST, gbc);
+        addComponent(difficultyComboBox, 1, 4, 1, GridBagConstraints.WEST, gbc);
 
         // Play and Cancel buttons
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        buttonPanel.setBackground(Constants.BGCOLOUR);
         playButton = new JButton(QuizGenerationViewModel.PLAY_BUTTON_LABEL);
         cancelButton = new JButton(QuizGenerationViewModel.CANCEL_BUTTON_LABEL);
         buttonPanel.add(playButton);
         buttonPanel.add(cancelButton);
-        addComponent(buttonPanel, 0, 4, 2, GridBagConstraints.CENTER, gbc);
+        addComponent(buttonPanel, 0, 5, 2, GridBagConstraints.CENTER, gbc);
 
         // Action Listeners
         categoryComboBox.addActionListener(evt -> {
@@ -82,34 +86,19 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
             System.out.println("Difficulty selected: " + difficultyComboBox.getSelectedItem());
         });
 
-//        playButton.addActionListener(evt -> {
-//            try {
-//                // Convert user inputs as strings/integers
-//                final String category = (String) categoryComboBox.getSelectedItem();
-//                final int numQuestions = (int) questionComboBox.getSelectedItem();
-//                final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
-//                final String difficulty = difficultyUpper.toLowerCase();
-//
-//                // Fetch trivia
-//                final TriviaApp triviaApp = new TriviaApp();
-//                final TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
-//
-//                for (TriviaQuestion question : trivia.getQuestions()) {
-//                    System.out.println("Question: " + question.getQuestion());
-//                    System.out.println("Correct Answer: " + question.getCorrectAnswer());
-//                    System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
-//                    System.out.println();
-//                }
-//
-//            } catch (Exception exp) {
-//                exp.printStackTrace();
-//            }
-//        });
+        playButton.addActionListener(evt -> {
+            // Convert user inputs as strings/integers
+            final String category = (String) categoryComboBox.getSelectedItem();
+            final int numQuestions = (int) questionComboBox.getSelectedItem();
+            final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
+            final String difficulty = difficultyUpper.toLowerCase();
+
+            localMultiplayerController.execute(numQuestions, category, difficulty);
+        });
 
         cancelButton.addActionListener(evt -> {
             if (evt.getSource().equals(cancelButton)) {
                 localMultiplayerController.switchToMainMenuView();
-                System.out.println("Cancel button clicked");
             }
         });
 
@@ -120,13 +109,6 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
                 System.out.println("test button clicked");
             }
         });
-
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        this.add(Box.createVerticalGlue());
-        this.add(title);
-        this.add(testButton);
-        this.add(Box.createVerticalGlue());
 
         this.setBackground(Constants.BGCOLOUR);
 
