@@ -13,7 +13,6 @@ import interface_adapter.change_password.ChangePasswordState;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordViewModel;
 import interface_adapter.logout.LogoutController;
-import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 /**
  * The View for when the user is logged into the program.
@@ -28,7 +27,7 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
 
     private final JLabel username;
 
-    private final JButton Cancel;
+    private final JButton cancel;
 
     private final JTextField passwordInputField = new JTextField(15);
     private final JButton changePassword;
@@ -47,8 +46,8 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
         username = new JLabel();
 
         final JPanel buttons = new JPanel();
-        Cancel = new JButton("Cancel");
-        buttons.add(Cancel);
+        cancel = new JButton("Cancel");
+        buttons.add(cancel);
 
         changePassword = new JButton("Change Password");
         buttons.add(changePassword);
@@ -93,10 +92,10 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
                 }
         );
 
-        Cancel.addActionListener(
+        cancel.addActionListener(
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
-                    if (evt.getSource().equals(Cancel)) {
+                    if (evt.getSource().equals(cancel)) {
                         final String un = ChangePasswordViewModel.getState().getUsername();
                         logoutController.execute(un);
                     }
@@ -117,13 +116,10 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
         if (evt.getPropertyName().equals("state")) {
             final ChangePasswordState state = (ChangePasswordState) evt.getNewValue();
             username.setText(state.getUsername());
-            System.out.println("Password state updated!");
-            System.out.println("Username: " + state.getUsername());
-            System.out.println("Password: " + state.getPassword());
         }
         else if (evt.getPropertyName().equals("password")) {
             final ChangePasswordState state = (ChangePasswordState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
+            JOptionPane.showMessageDialog(null, "Password updated for " + state.getUsername());
         }
 
     }
