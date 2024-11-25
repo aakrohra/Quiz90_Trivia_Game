@@ -235,7 +235,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 evt -> {
                     if (evt.getSource().equals(playSharedQuiz)) {
                         final LoggedInState currentState = loggedInViewModel.getState();
-                        this.accessQuizController.execute(currentState.getQuizKey());
+                        this.accessQuizController.accessQuizFromKey(currentState.getQuizKey());
                     }
                 }
         );
