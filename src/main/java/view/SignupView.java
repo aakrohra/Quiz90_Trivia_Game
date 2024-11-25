@@ -52,10 +52,10 @@ public class SignupView extends JPanel implements PropertyChangeListener {
 
         assembleFinalPanel(titlePanel, infoPanel, buttonPanel, buttonPanel1);
 
-//        DBCustomQuizDataAccessObject dao = new DBCustomQuizDataAccessObject();
-//        CommonUserFactory userfac = new CommonUserFactory();
-//        DBUserDataAccessObject dao2 = new DBUserDataAccessObject(userfac);
-//        System.out.println(dao.getAllUserQuizzes(dao2.get("aak")));
+        // DBCustomQuizDataAccessObject dao = new DBCustomQuizDataAccessObject();
+        // CommonUserFactory userfac = new CommonUserFactory();
+        // DBUserDataAccessObject dao2 = new DBUserDataAccessObject(userfac);
+        // System.out.println(dao.getAllUserQuizzes(dao2.get("aak")));
 
     }
 

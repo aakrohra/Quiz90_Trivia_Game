@@ -19,4 +19,12 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
         localMultiplayerPresenter.switchToLocalMultiplayerView();
         System.out.println("doing2");
     }
+
+    /**
+     * Executes the action to switch to the Main Menu view.
+     */
+    @Override
+    public void switchToMainMenuView() {
+        localMultiplayerPresenter.switchToMainMenuView();
+    }
 }
