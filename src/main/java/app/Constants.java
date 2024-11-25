@@ -50,6 +50,8 @@ public class Constants {
 
     // UI Colours
     public static final Color BGCOLOUR = new Color(56, 113, 194);
+    public static final Color LIGHTERBGCOLOUR = new Color(111, 161, 232);
+    public static final int MAGICTHREE = 3;
 
     // Grid Coordinates
     public static final int THREE = 3;

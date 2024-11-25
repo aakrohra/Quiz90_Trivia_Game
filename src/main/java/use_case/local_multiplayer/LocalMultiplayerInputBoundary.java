@@ -9,4 +9,9 @@ public interface LocalMultiplayerInputBoundary {
      * Executes action to switch to Local Multiplayer view.
      */
     void switchToLocalMultiplayerView();
+
+    /**
+     * Executes the action to switch to the Main Menu view.
+     */
+    void switchToMainMenuView();
 }

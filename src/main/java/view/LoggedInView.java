@@ -18,14 +18,13 @@ import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.quiz_generation.QuizGenerationController;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * The View for when the user is logged into the program.
  */
 public class LoggedInView extends JPanel implements PropertyChangeListener {
 
-    private final String viewName = "logged in";
-    private final LoggedInViewModel loggedInViewModel;
     private ChangePasswordController changePasswordController;
     private LocalMultiplayerController localMultiplayerController;
     private AccessQuizController accessQuizController;
@@ -34,7 +33,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final JLabel username;
 
-    private final JTextField sharedQuizKeyField = new JTextField(23);
     private final JLabel sharedQuizKeyErrorField = new JLabel();
 
     private final JButton logOut;
@@ -45,80 +43,150 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final JButton changePassword;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
-        this.loggedInViewModel = loggedInViewModel;
-        this.loggedInViewModel.addPropertyChangeListener(this);
+        loggedInViewModel.addPropertyChangeListener(this);
 
         final TitlePanel titlePanel = new TitlePanel(LoggedInViewModel.TITLE_LABEL);
-
-        final JPanel currentPlayerPanel = new JPanel();
-        final Box currentPlayerBox = Box.createHorizontalBox();
-        currentPlayerPanel.setBackground(new Color(0, 71, 0));
-        currentPlayerPanel.setPreferredSize(new Dimension(1200, 100));
-        currentPlayerBox.setOpaque(true);
-        currentPlayerBox.setBackground(Color.WHITE);
-        currentPlayerBox.setBorder(BorderFactory.createEmptyBorder(10, 35, 10, 35));
-        final JLabel player = new JLabel("Current Player: ");
-        currentPlayerPanel.add(currentPlayerBox);
-        currentPlayerBox.add(player);
         username = new JLabel();
-        currentPlayerBox.add(username);
+        final CurrentPlayerPanel currentPlayerPanel = new CurrentPlayerPanel(username);
 
-        final JPanel buttons0 = new JPanel();
-        normalPlay = new JButton("Normal Play");
-        buttons0.setBackground(new Color(0, 71, 171));
-
-        buttons0.setLayout(new BoxLayout(buttons0, BoxLayout.X_AXIS));
+        final JPanel buttons0 = new ButtonPanel();
+        normalPlay = new CustomButton("Normal Play");
         buttons0.add(Box.createHorizontalGlue());
-        buttonsSizeHelper(normalPlay);
         buttons0.add(normalPlay);
         buttons0.add(Box.createHorizontalGlue());
 
-        final JPanel buttons1 = new JPanel();
+        final ButtonPanel buttons1 = new ButtonPanel();
+        final JPanel sharedQuizKeyFieldPanel = new JPanel();
+        sharedQuizKeyFieldPanel.setLayout(new BoxLayout(sharedQuizKeyFieldPanel, BoxLayout.Y_AXIS));
+        sharedQuizKeyFieldPanel.setPreferredSize(new Dimension(Constants.BUTTON1WIDTH, Constants.BUTTON1HEIGHT));
+        sharedQuizKeyFieldPanel.setBackground(Constants.BGCOLOUR);
+        final JTextField sharedQuizKeyField = new JTextField(15);
         sharedQuizKeyField.setText("Enter quiz key...");
         sharedQuizKeyField.setForeground(Color.GRAY);
-        sharedQuizKeyField.setMaximumSize(new Dimension(300, 30));
-        playSharedQuiz = new JButton("Play Shared Quiz");
-        buttons1.setBackground(new Color(0, 71, 171));
+        sharedQuizKeyField.setMargin(new Insets(0, 10, 0, 0));
+        sharedQuizKeyField.setMinimumSize(new Dimension(Integer.MAX_VALUE, Constants.FIELDY));
+        sharedQuizKeyFieldPanel.add(sharedQuizKeyField);
+        playSharedQuiz = new CustomButton("Play Shared Quiz");
 
-        buttons1.setLayout(new BoxLayout(buttons1, BoxLayout.X_AXIS));
+        assembleButton1(buttons1, sharedQuizKeyFieldPanel);
+
+        final JPanel buttons2 = new ButtonPanel();
+        final JButton createdQuizzes = new CustomButton("My Created Quizzes");
+        localMultiplayer = new CustomButton("Local Multiplayer");
+
+        assemble2Buttons(buttons2, createdQuizzes, localMultiplayer);
+
+        final JPanel buttons3 = new ButtonPanel();
+        changePassword = new CustomButton("Change Password");
+        logOut = new CustomButton("Log Out");
+
+        assemble2Buttons(buttons3, changePassword, logOut);
+
+        actionAndInterfaceHelpers(loggedInViewModel, sharedQuizKeyField, createdQuizzes);
+
+        assembleFinalPanelHelper(titlePanel, currentPlayerPanel, buttons0, buttons1, buttons2, buttons3);
+    }
+
+    private void assemble2Buttons(JPanel buttonPanel, JButton createdQuizzes, JButton tempMultiplayerButton) {
+        buttonPanel.add(Box.createHorizontalGlue());
+        buttonPanel.add(createdQuizzes);
+        buttonPanel.add(horizontalSpacer());
+        buttonPanel.add(tempMultiplayerButton);
+        buttonPanel.add(Box.createHorizontalGlue());
+    }
+
+    private void assembleButton1(ButtonPanel buttons1, JPanel sharedQuizKeyFieldPanel) {
         buttons1.add(Box.createHorizontalGlue());
-        buttons1.add(sharedQuizKeyField);
-        buttons1.add(Box.createHorizontalStrut(200));
-        buttonsSizeHelper(playSharedQuiz);
+        buttons1.add(sharedQuizKeyFieldPanel);
+        buttons1.add(horizontalSpacer());
         buttons1.add(playSharedQuiz);
         buttons1.add(Box.createHorizontalGlue());
+    }
 
-        final JPanel buttons2 = new JPanel();
-        final JButton createdQuizzes = new JButton("My Created Quizzes");
-        localMultiplayer = new JButton("Local Multiplayer");
-        buttons2.setBackground(new Color(0, 71, 0));
+    private void assembleFinalPanelHelper(TitlePanel titlePanel, CurrentPlayerPanel currentPlayerPanel, JPanel buttons0, JPanel buttons1, JPanel buttons2, JPanel buttons3) {
 
-        buttons2.setLayout(new BoxLayout(buttons2, BoxLayout.X_AXIS));
-        buttons2.add(Box.createHorizontalGlue());
-        buttonsSizeHelper(createdQuizzes);
-        buttons2.add(createdQuizzes);
-        buttons2.add(Box.createHorizontalStrut(200));
-        buttonsSizeHelper(localMultiplayer);
-        buttons2.add(localMultiplayer);
-        buttons2.add(Box.createHorizontalGlue());
+        this.setLayout(new GridBagLayout());
+        final GridBagConstraints gbc = createGbc();
 
-        final JPanel buttons3 = new JPanel();
-        changePassword = new JButton("Change Password");
-        logOut = new JButton("Log Out");
-        buttons3.setBackground(new Color(0, 71, 171));
+        this.addComp(titlePanel, 0, 0, 2, GridBagConstraints.CENTER, gbc);
+        this.addComp(currentPlayerPanel, 0, 1, 3, GridBagConstraints.CENTER, gbc);
+        this.addComp(buttons0, 0, 2, 3, GridBagConstraints.CENTER, gbc);
+        this.addComp(horizontalSpacer(), 0, 3, 0, GridBagConstraints.CENTER, gbc);
+        this.addComp(buttons1, 0, 4, 2, GridBagConstraints.CENTER, gbc);
+        this.addComp(buttons2, 0, 5, 2, GridBagConstraints.WEST, gbc);
+        this.addComp(buttons3, 0, 6, 2, GridBagConstraints.WEST, gbc);
 
-        buttons3.setLayout(new BoxLayout(buttons3, BoxLayout.X_AXIS));
-        buttons3.add(Box.createHorizontalGlue());
-        buttonsSizeHelper(changePassword);
-        buttons3.add(changePassword);
-        buttons3.add(Box.createHorizontalStrut(200));
-        buttonsSizeHelper(logOut);
-        buttons3.add(logOut);
-        buttons3.add(Box.createHorizontalGlue());
+        this.setBackground(Constants.BGCOLOUR);
+    }
 
-        sharedQuizKeyErrorField.setAlignmentX(Component.CENTER_ALIGNMENT);
-        sharedQuizKeyErrorField.setForeground(Color.WHITE);
+    private GridBagConstraints createGbc() {
+        final GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        return gbc;
+    }
 
+    private void addComp(Component comp, int x_axis, int y_axis, int width, int anchor, GridBagConstraints gbc) {
+        gbc.gridx = x_axis;
+        gbc.gridy = y_axis;
+        gbc.gridwidth = width;
+        gbc.anchor = anchor;
+        this.add(comp, gbc);
+    }
+
+    private void actionAndInterfaceHelpers(LoggedInViewModel loggedInViewModel, JTextField sharedQuizKeyField, JButton createdQuizzes) {
+        sharedQuizKeyActionAndInterface(loggedInViewModel, sharedQuizKeyField);
+        createdQuizzesAction(loggedInViewModel, createdQuizzes);
+        logOutAction(loggedInViewModel);
+        normalPlayAction();
+        localMultiplayerAction();
+    }
+
+    private void localMultiplayerAction() {
+        localMultiplayer.addActionListener(evt -> {
+            if (evt.getSource().equals(localMultiplayer)) {
+                localMultiplayerController.switchToLocalMultiplayerView();
+            }
+        });
+    }
+
+    private void normalPlayAction() {
+        normalPlay.addActionListener(evt -> {
+            if (evt.getSource().equals(normalPlay)) {
+                quizGenerationController.switchToQuizGenerationView();
+            }
+        });
+    }
+
+    private void logOutAction(LoggedInViewModel loggedInViewModel) {
+        logOut.addActionListener(
+                // This creates an anonymous subclass of ActionListener and instantiates it.
+                evt -> {
+                    if (evt.getSource().equals(logOut)) {
+                        // 1. get the state out of the loggedInViewModel. It contains the username.
+                        // 2. Execute the logout Controller.
+                        final LoggedInState state = loggedInViewModel.getState();
+                        final String user = state.getUsername();
+                        logoutController.execute(user);
+                    }
+                }
+        );
+    }
+
+    private void createdQuizzesAction(LoggedInViewModel loggedInViewModel, JButton createdQuizzes) {
+        createdQuizzes.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(changePassword)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+
+//                        TODO implement myCreatedQuizzesController
+//                        this.myCreatedQuizzesController.execute();
+                    }
+                }
+        );
+    }
+
+    private void sharedQuizKeyActionAndInterface(LoggedInViewModel loggedInViewModel, JTextField sharedQuizKeyField) {
         sharedQuizKeyField.getDocument().addDocumentListener(new DocumentListener() {
             private void documentListenerHelper() {
                 final LoggedInState currentState = loggedInViewModel.getState();
@@ -142,91 +210,6 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
             }
         });
 
-        sharedQuizKeyFieldUserInterfaceHelper();
-
-        createdQuizzes.addActionListener(
-                evt -> {
-                    if (evt.getSource().equals(changePassword)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-
-                        // TODO implement myCreatedQuizzesController
-                        // this.myCreatedQuizzesController.execute();
-                    }
-                }
-        );
-
-        changePassword.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(changePassword)) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-
-                        this.changePasswordController.execute(
-                                currentState.getUsername(),
-                                currentState.getPassword()
-                        );
-                    }
-                }
-        );
-
-        playSharedQuiz.addActionListener(
-                evt -> {
-                    // the "testing" check can be removed later if wanted, here for testing purposes
-                    if (evt.getSource().equals(playSharedQuiz) || evt.getSource().equals("testing")) {
-                        final LoggedInState currentState = loggedInViewModel.getState();
-                        this.accessQuizController.execute(currentState.getQuizKey());
-                    }
-                }
-        );
-
-        logOut.addActionListener(
-                // This creates an anonymous subclass of ActionListener and instantiates it.
-                evt -> {
-                    if (evt.getSource().equals(logOut)) {
-                        // 1. get the state out of the loggedInViewModel. It contains the username.
-                        // 2. Execute the logout Controller.
-                        final LoggedInState state = loggedInViewModel.getState();
-                        final String user = state.getUsername();
-                        logoutController.execute(user);
-                    }
-                }
-        );
-
-        normalPlay.addActionListener(evt -> {
-            if (evt.getSource().equals(normalPlay)) {
-                quizGenerationController.switchToQuizGenerationView();
-            }
-        });
-
-        localMultiplayer.addActionListener(evt -> {
-            if (evt.getSource().equals(localMultiplayer)) {
-                localMultiplayerController.switchToLocalMultiplayerView();
-            }
-        });
-
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
-        this.add(Box.createVerticalGlue());
-        this.add(Box.createVerticalStrut(20));
-        this.add(titlePanel);
-        this.add(Box.createVerticalStrut(20));
-        this.add(currentPlayerPanel);
-        this.add(buttons0);
-        this.add(Box.createVerticalStrut(20));
-        this.add(buttons1);
-        this.add(Box.createVerticalStrut(20));
-        this.add(sharedQuizKeyErrorField);
-        this.add(Box.createVerticalStrut(20));
-        this.add(buttons2);
-        this.add(Box.createVerticalStrut(20));
-        this.add(buttons3);
-        this.add(Box.createVerticalStrut(20));
-        this.add(Box.createVerticalGlue());
-
-        this.setBackground(Constants.BGCOLOUR);
-    }
-
-    private void sharedQuizKeyFieldUserInterfaceHelper() {
         sharedQuizKeyField.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -247,10 +230,20 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                 }
             }
         });
+
+        playSharedQuiz.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(playSharedQuiz)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+                        this.accessQuizController.execute(currentState.getQuizKey());
+                    }
+                }
+        );
     }
 
-    private void buttonsSizeHelper(JButton jbutton) {
-        jbutton.setPreferredSize(new Dimension(250, 200));
+    @NotNull
+    private static Component horizontalSpacer() {
+        return Box.createHorizontalStrut(Constants.STRUTSMALLSPACER * 3);
     }
 
     @Override
@@ -259,18 +252,14 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
         }
-        else if (evt.getPropertyName().equals("password")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            JOptionPane.showMessageDialog(null, "password updated for " + state.getUsername());
-        }
-        else if (evt.getPropertyName().equals("keyError")) {
-            final LoggedInState state = (LoggedInState) evt.getNewValue();
-            sharedQuizKeyErrorField.setText(state.getQuizKeyError());
+        final LoggedInState state = (LoggedInState) evt.getNewValue();
+        if (state.getQuizKeyError() != null) {
+            JOptionPane.showMessageDialog(this, state.getQuizKeyError());
         }
     }
 
     public String getViewName() {
-        return viewName;
+        return "logged in";
     }
 
     public void setChangePasswordController(ChangePasswordController changePasswordController) {

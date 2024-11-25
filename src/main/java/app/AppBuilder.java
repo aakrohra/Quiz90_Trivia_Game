@@ -175,7 +175,7 @@ public class AppBuilder {
 
     public AppBuilder addLocalMultiplayerUseCase() {
         final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
-                viewManagerModel, localMultiplayerViewModel);
+                viewManagerModel, localMultiplayerViewModel, loggedInViewModel);
 
         final LocalMultiplayerInputBoundary localMultiplayerInteractor =
                 new LocalMultiplayerInteractor(localMultiplayerPresenter);
@@ -272,8 +272,7 @@ public class AppBuilder {
         );
 
         final AccessQuizInputBoundary accessQuizInteractor = new AccessQuizInteractor(
-                customQuizDataAccessObject, accessQuizOutputBoundary
-        );
+                customQuizDataAccessObject, accessQuizOutputBoundary);
 
         final AccessQuizController accessQuizController = new AccessQuizController(accessQuizInteractor);
         loggedInView.setAccessQuizController(accessQuizController);
