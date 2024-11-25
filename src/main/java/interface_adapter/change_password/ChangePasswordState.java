@@ -1,5 +1,8 @@
 package interface_adapter.change_password;
 
+/**
+ * The state for the ChangePasswordViewModel.
+ */
 public class ChangePasswordState {
     private String username = "";
     private String password = "";
@@ -26,5 +29,6 @@ public class ChangePasswordState {
         return password;
     }
 
-    public void setPassword(String password) { this.password = password; }
+    public void setPassword(String password) {
+        this.password = password; }
 }

@@ -96,8 +96,7 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(cancel)) {
-                        final String un = ChangePasswordViewModel.getState().getUsername();
-                        logoutController.execute(un);
+                        changePasswordController.switchToMainMenuView();
                     }
                 }
         );

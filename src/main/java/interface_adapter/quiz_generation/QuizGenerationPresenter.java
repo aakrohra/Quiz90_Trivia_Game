@@ -53,8 +53,6 @@ public class QuizGenerationPresenter implements QuizGenerationOutputBoundary {
      */
     @Override
     public void switchToQuizGenerationView() {
-        System.out.println("Switching to quiz generation view");
-
         // Update the state in the ViewManagerModel
         viewManagerModel.setState(quizGenerationViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
@@ -65,8 +63,6 @@ public class QuizGenerationPresenter implements QuizGenerationOutputBoundary {
      */
     @Override
     public void switchToMainMenuView() {
-        System.out.println("Switching to main menu view");
-
         // Update the state in the ViewManagerModel
         viewManagerModel.setState(loggedInViewModel.getViewName());
         viewManagerModel.firePropertyChanged();

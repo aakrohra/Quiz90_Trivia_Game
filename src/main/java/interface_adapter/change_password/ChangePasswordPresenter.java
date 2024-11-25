@@ -2,7 +2,6 @@ package interface_adapter.change_password;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.playthrough.PlaythroughState;
 import use_case.change_password.ChangePasswordInputData;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.change_password.ChangePasswordOutputData;
@@ -12,15 +11,15 @@ import use_case.change_password.ChangePasswordOutputData;
  */
 public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
 
-    private final LoggedInViewModel loggedInViewModel;
     private final ViewManagerModel viewManagerModel;
     private final ChangePasswordViewModel changePasswordViewModel;
+    private final LoggedInViewModel loggedInViewModel;
 
-    public ChangePasswordPresenter(LoggedInViewModel loggedInViewModel, ViewManagerModel viewManagerModel,
-                                   ChangePasswordViewModel changePasswordViewmodel) {
-        this.loggedInViewModel = loggedInViewModel;
+    public ChangePasswordPresenter(ViewManagerModel viewManagerModel,
+                                   ChangePasswordViewModel changePasswordViewmodel, LoggedInViewModel loggedInViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.changePasswordViewModel = changePasswordViewmodel;
+        this.loggedInViewModel = loggedInViewModel;
     }
 
     @Override
@@ -49,4 +48,12 @@ public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
         viewManagerModel.setState(changePasswordViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
+
+    @Override
+    public void switchToMainMenuView() {
+        // Update the state in the ViewManagerModel
+        viewManagerModel.setState(loggedInViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
+    }
+
 }
