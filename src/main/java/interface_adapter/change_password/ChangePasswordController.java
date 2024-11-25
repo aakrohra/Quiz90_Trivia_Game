@@ -23,4 +23,8 @@ public class ChangePasswordController {
 
         userChangePasswordUseCaseInteractor.execute(changePasswordInputData);
     }
+
+    public void switchPasswordView() {
+        userChangePasswordUseCaseInteractor.switchToChangePasswordView();
+    }
 }
