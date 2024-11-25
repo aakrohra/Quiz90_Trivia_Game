@@ -181,8 +181,9 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(createdQuizzes)) {
                         System.out.println("button");
                         final LoggedInState currentState = loggedInViewModel.getState();
-                        final String username = currentState.getUsername();
-                        accessedDatabaseController.execute(username);
+                        final String user = currentState.getUsername();
+                        System.out.println("user: " + user);
+                        accessedDatabaseController.execute(user);
                     }
                 }
         );
@@ -250,6 +251,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("HELLO");
         if (evt.getPropertyName().equals("state")) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());

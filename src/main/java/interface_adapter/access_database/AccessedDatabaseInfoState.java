@@ -6,7 +6,7 @@ import entity.User;
 public class AccessedDatabaseInfoState {
     private Database database;
 
-    private Database getDatabase() {
+    public Database getDatabase() {
         return database;
     }
 

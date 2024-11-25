@@ -1,8 +1,10 @@
 package view;
 
 import app.Constants;
+import entity.Database;
 import entity.Quiz;
 import interface_adapter.access_database.AccessDatabaseController;
+import interface_adapter.access_database.AccessedDatabaseInfoState;
 import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 
@@ -20,7 +22,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 
-public class QuizDatabaseView extends JPanel {
+public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "access database";
 
@@ -34,6 +36,7 @@ public class QuizDatabaseView extends JPanel {
     final JButton resetButton = new JButton("Reset");
     final JButton mainMenuButton = new JButton("Main Menu");
     final Dimension windowSize = new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
+    private Database database;
 
 
     public QuizDatabaseView(AccessedDatabaseInfoViewModel accessDatabaseViewModel) {
@@ -86,7 +89,7 @@ public class QuizDatabaseView extends JPanel {
 
         final JPanel quizListPanel = new JPanel();
         quizListPanel.setLayout(new GridLayout(7, 1, 5, 5));
-
+        //System.out.print(database.getNumberOfItems());
         String[][] quizzes = {
                 {"Solar Systems", "Questions: 14", "BigJohn42_98erynsedf8943"},
                 {"Albert Einstein’s Life", "Questions: 50", "BigJohn42_nwead9823"},
@@ -96,8 +99,6 @@ public class QuizDatabaseView extends JPanel {
                 {"test", "test", "test"},
                 {"test", "test", "test"}
         };
-
-
 
         for (int i = 0; i<quizzes.length; i++) {
             JPanel row = new JPanel();
@@ -187,6 +188,14 @@ public class QuizDatabaseView extends JPanel {
 
     public String getViewName(){
         return viewName;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("propetychanged");
+        final AccessedDatabaseInfoState state = (AccessedDatabaseInfoState) evt.getNewValue();
+        database = state.getDatabase();
+        System.out.println(state.getDatabase());
     }
 
     public static void main(String[] args) {

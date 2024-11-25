@@ -31,9 +31,11 @@ public class AccessDatabasePresenter implements AccessDatabaseOutputBoundary {
         AccessedDatabaseInfoState accessedDatabaseInfoState = accessedDatabaseInfoViewModel.getState();
 
         accessedDatabaseInfoState.setDatabase(accessDatabaseOutputData.getQuizDatabase());
+
         this.accessedDatabaseInfoViewModel.setState(accessedDatabaseInfoState);
         this.accessedDatabaseInfoViewModel.firePropertyChanged();
 
+        System.out.println("firepropertychange");
         this.viewManagerModel.setState(accessedDatabaseInfoViewModel.getViewName());
         this.viewManagerModel.firePropertyChanged();
     }
