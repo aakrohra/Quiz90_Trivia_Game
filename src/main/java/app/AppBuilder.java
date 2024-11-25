@@ -175,17 +175,16 @@ public class AppBuilder {
 
     public AppBuilder addLocalMultiplayerUseCase() {
         final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
-                viewManagerModel, localMultiplayerViewModel, loggedInViewModel);
+                viewManagerModel, localMultiplayerViewModel, loggedInViewModel, playthroughViewModel);
 
         final LocalMultiplayerInputBoundary localMultiplayerInteractor =
-                new LocalMultiplayerInteractor(localMultiplayerPresenter);
+                new LocalMultiplayerInteractor(localMultiplayerPresenter, triviaDataAccessObject);
 
         final LocalMultiplayerController localMultiplayerController =
                 new LocalMultiplayerController(localMultiplayerInteractor);
         loggedInView.setLocalMultiplayerController(localMultiplayerController);
         localMultiplayerView.setLocalMultiplayerController(localMultiplayerController);
         return this;
-
     }
 
     /**

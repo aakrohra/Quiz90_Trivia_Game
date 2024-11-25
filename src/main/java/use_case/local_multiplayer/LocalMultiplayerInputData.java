@@ -5,19 +5,15 @@ package use_case.local_multiplayer;
  */
 public class LocalMultiplayerInputData {
 
-    private final int numPlayers;
-    private final String key;
+    private final int numQuestions;
+    private final String category;
+    private final String difficulty;
 
-    public LocalMultiplayerInputData(int numPlayers, String key) {
-        this.numPlayers = numPlayers;
-        this.key = key;
+    public LocalMultiplayerInputData(int selectedNumberOfQuestions, String selectedCategory, String difficulty) {
+        this.numQuestions = selectedNumberOfQuestions;
+        this.category = selectedCategory;
+        this.difficulty = difficulty;
     }
 
-    public int getNumPlayers() {
-        return numPlayers;
-    }
 
-    public String getKey() {
-        return key;
-    }
 }
