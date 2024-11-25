@@ -117,6 +117,9 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
         if (evt.getPropertyName().equals("state")) {
             final ChangePasswordState state = (ChangePasswordState) evt.getNewValue();
             username.setText(state.getUsername());
+            System.out.println("Password state updated!");
+            System.out.println("Username: " + state.getUsername());
+            System.out.println("Password: " + state.getPassword());
         }
         else if (evt.getPropertyName().equals("password")) {
             final ChangePasswordState state = (ChangePasswordState) evt.getNewValue();

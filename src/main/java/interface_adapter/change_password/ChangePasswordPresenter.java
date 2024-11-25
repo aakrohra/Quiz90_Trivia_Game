@@ -2,6 +2,8 @@ package interface_adapter.change_password;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.playthrough.PlaythroughState;
+import use_case.change_password.ChangePasswordInputData;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.change_password.ChangePasswordOutputData;
 
@@ -37,7 +39,13 @@ public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
     }
 
     @Override
-    public void switchToChangePasswordView() {
+    public void switchToChangePasswordView(ChangePasswordInputData changePasswordInputData) {
+        final ChangePasswordState changePasswordState = changePasswordViewModel.getState();
+        changePasswordState.setUsername(changePasswordInputData.getUsername());
+        changePasswordState.setPassword(changePasswordInputData.getPassword());
+        changePasswordViewModel.setState(changePasswordState);
+        changePasswordViewModel.firePropertyChanged();
+
         viewManagerModel.setState(changePasswordViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
