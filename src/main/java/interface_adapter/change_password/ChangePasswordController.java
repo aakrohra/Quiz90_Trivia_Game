@@ -2,7 +2,6 @@ package interface_adapter.change_password;
 
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInputData;
-import use_case.change_password.ChangePasswordOutputData;
 
 /**
  * Controller for the Change Password Use Case.
@@ -25,8 +24,20 @@ public class ChangePasswordController {
         userChangePasswordUseCaseInteractor.execute(changePasswordInputData);
     }
 
-    public void switchPasswordView(String password, String username) {
+    /**
+     * Switches the view to the Change Password screen.
+     * @param password the current password of the user
+     * @param username the username of the user
+     */
+    public void switchToPasswordView(String password, String username) {
         final ChangePasswordInputData inputData = new ChangePasswordInputData(password, username);
         userChangePasswordUseCaseInteractor.switchToChangePasswordView(inputData);
+    }
+
+    /**
+     * Executes the action to switch to the Main Menu view.
+     */
+    public void switchToMainMenuView() {
+        userChangePasswordUseCaseInteractor.switchToMainMenuView();
     }
 }

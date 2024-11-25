@@ -33,7 +33,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private final JLabel username;
 
-    private final JLabel sharedQuizKeyErrorField = new JLabel();
+    private final JLabel sharedQuizKeyErrorField;
 
     private final JButton logOut;
 
@@ -81,6 +81,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         final JPanel buttons3 = new ButtonPanel();
         changePassword = new CustomButton("Change Password");
         logOut = new CustomButton("Log Out");
+
+        sharedQuizKeyErrorField = new JLabel();
 
         assemble2Buttons(buttons3, changePassword, logOut);
 
@@ -195,7 +197,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(changePassword)) {
                         final LoggedInState currentState = loggedInViewModel.getState();
 
-                        changePasswordController.switchPasswordView(
+                        changePasswordController.switchToPasswordView(
                                 currentState.getPassword(), currentState.getUsername());
                     }
                 }

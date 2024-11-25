@@ -5,12 +5,8 @@ import java.awt.*;
 import javax.swing.*;
 
 import app.Constants;
-import data_access.DBTriviaDataAccessObject;
-import entity.TriviaQuestion;
-import entity.TriviaQuiz;
 import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
-import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
  * The view for quiz generation, allowing users to select quiz parameters
@@ -31,38 +27,48 @@ public class QuizGenerationView extends JPanel {
         this.quizGenerationViewModel = quizGenerationViewModel;
         // quizGenerationViewModel.addPropertyChangeListener(this);
 
+        this.setBackground(Constants.BGCOLOUR);
         this.setLayout(new GridBagLayout());
         final GridBagConstraints gbc = createGbc();
 
         // Title
         final JLabel title = createLabel(QuizGenerationViewModel.TITLE_LABEL,
-                new Font(Constants.FONTSTYLE, Font.BOLD, Constants.QUESTIONFONTSIZE), SwingConstants.CENTER);
+                new Font(Constants.FONTSTYLE, Font.BOLD, Constants.TITLEFONTSIZE), SwingConstants.CENTER, Color.WHITE);
+        gbc.insets = new Insets(
+                Constants.MARGINS, Constants.MARGINS, Constants.MARGINS * Constants.FOUR, Constants.MARGINS);
         addComponent(title, 0, 0, 2, GridBagConstraints.CENTER, gbc);
 
         // Labels and ComboBox boxes
+
+        // Reset Instets
+        gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
         // Categories
         final Font optionFont = new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE);
         final Dimension comboBoxSize = new Dimension(Constants.COMBOBOXWIDTH, Constants.COMBOBOXHEIGHT);
         // Create and add category label and ComboBox
         categoryComboBox = createComboBox(Constants.CATEGORIES, comboBoxSize);
-        addComponent(createLabel(QuizGenerationViewModel.CATEGORY_LABEL, optionFont, SwingConstants.LEFT),
+        addComponent(createLabel(
+                QuizGenerationViewModel.CATEGORY_LABEL, optionFont, SwingConstants.LEFT, Color.WHITE),
                 0, 1, 1, GridBagConstraints.WEST, gbc);
         addComponent(categoryComboBox, 1, 1, 1, GridBagConstraints.WEST, gbc);
 
         // Difficulty
         difficultyComboBox = createComboBox(Constants.DIFFICULTIES, comboBoxSize);
-        addComponent(createLabel(QuizGenerationViewModel.DIFFICULTY_LABEL, optionFont, SwingConstants.LEFT),
+        addComponent(createLabel(
+                QuizGenerationViewModel.DIFFICULTY_LABEL, optionFont, SwingConstants.LEFT, Color.WHITE),
                 0, 2, 1, GridBagConstraints.WEST, gbc);
         addComponent(difficultyComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
 
         // Number of questions
         questionComboBox = createComboBox(Constants.NUM_QUESTION, comboBoxSize);
-        addComponent(createLabel(QuizGenerationViewModel.QUESTIONS_LABEL, optionFont, SwingConstants.LEFT),
+        addComponent(createLabel(
+                QuizGenerationViewModel.QUESTIONS_LABEL, optionFont, SwingConstants.LEFT, Color.WHITE),
                 0, Constants.THREE, 1, GridBagConstraints.WEST, gbc);
         addComponent(questionComboBox, 1, Constants.THREE, 1, GridBagConstraints.WEST, gbc);
 
         // Play and Cancel buttons
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
+        buttonPanel.setBackground(Constants.BGCOLOUR);
         final Font buttonFont = new Font(Constants.FONTSTYLE, Font.BOLD, 18);
 
         playButton = new JButton(QuizGenerationViewModel.PLAY_BUTTON_LABEL);
@@ -108,7 +114,6 @@ public class QuizGenerationView extends JPanel {
 
     private GridBagConstraints createGbc() {
         final GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         return gbc;
     }
@@ -128,6 +133,13 @@ public class QuizGenerationView extends JPanel {
     private JLabel createLabel(String text, Font font, int alignment) {
         final JLabel label = new JLabel(text, alignment);
         label.setFont(font);
+        return label;
+    }
+
+    private JLabel createLabel(String text, Font font, int alignment, Color color) {
+        final JLabel label = new JLabel(text, alignment);
+        label.setFont(font);
+        label.setForeground(color);
         return label;
     }
 
