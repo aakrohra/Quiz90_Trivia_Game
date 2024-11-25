@@ -2,6 +2,8 @@ package interface_adapter.change_password;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.playthrough.PlaythroughState;
+import use_case.change_password.ChangePasswordInputData;
 import use_case.change_password.ChangePasswordOutputBoundary;
 import use_case.change_password.ChangePasswordOutputData;
 
@@ -27,7 +29,7 @@ public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
         // since the output data only contains the username, which remains the same.
         // We still fire the property changed event, but just to let the view know that
         // it can alert the user that their password was changed successfully..
-        loggedInViewModel.firePropertyChanged("password");
+        changePasswordViewModel.firePropertyChanged("password");
 
     }
 
@@ -37,7 +39,13 @@ public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
     }
 
     @Override
-    public void switchToChangePasswordView() {
+    public void switchToChangePasswordView(ChangePasswordInputData changePasswordInputData) {
+        final ChangePasswordState changePasswordState = changePasswordViewModel.getState();
+        changePasswordState.setUsername(changePasswordInputData.getUsername());
+        changePasswordState.setPassword(changePasswordInputData.getPassword());
+        changePasswordViewModel.setState(changePasswordState);
+        changePasswordViewModel.firePropertyChanged();
+
         viewManagerModel.setState(changePasswordViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

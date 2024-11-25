@@ -102,7 +102,6 @@ public class QuizGenerationView extends JPanel {
         cancelButton.addActionListener(evt -> {
             if (evt.getSource().equals(cancelButton)) {
                 quizGenerationController.switchToMainMenuView();
-                System.out.println("Cancel button clicked");
             }
         });
     }
