@@ -15,6 +15,7 @@ import interface_adapter.access_quiz.AccessQuizPresenter;
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
+import interface_adapter.change_password.ChangePasswordViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.local_multiplayer.LocalMultiplayerPresenter;
 import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
@@ -92,6 +93,8 @@ public class AppBuilder {
     private LocalMultiplayerView localMultiplayerView;
     private PlaythroughViewModel playthroughViewModel;
     private PlaythroughView playthroughView;
+    private ChangePasswordViewModel changePasswordViewModel;
+    private ChangePasswordView changePasswordView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -127,6 +130,17 @@ public class AppBuilder {
         loggedInViewModel = new LoggedInViewModel();
         loggedInView = new LoggedInView(loggedInViewModel);
         cardPanel.add(loggedInView, loggedInView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the ChangePassword View to the application.
+     * @return this builder
+     */
+    public AppBuilder addChangePasswordView() {
+        changePasswordViewModel = new ChangePasswordViewModel();
+        changePasswordView = new ChangePasswordView(changePasswordViewModel);
+        cardPanel.add(changePasswordView, changePasswordView.getViewName());
         return this;
     }
 
@@ -234,7 +248,7 @@ public class AppBuilder {
      */
     public AppBuilder addChangePasswordUseCase() {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary =
-                new ChangePasswordPresenter(loggedInViewModel);
+                new ChangePasswordPresenter(loggedInViewModel, viewManagerModel, changePasswordViewModel);
 
         final ChangePasswordInputBoundary changePasswordInteractor =
                 new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
@@ -242,6 +256,7 @@ public class AppBuilder {
         final ChangePasswordController changePasswordController =
                 new ChangePasswordController(changePasswordInteractor);
         loggedInView.setChangePasswordController(changePasswordController);
+        changePasswordView.setChangePasswordController(changePasswordController);
         return this;
     }
 
