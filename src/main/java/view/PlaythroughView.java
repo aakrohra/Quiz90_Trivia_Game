@@ -76,7 +76,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         button4.addActionListener(evt -> handleButtonClick(button4));
 
         nextButton = new JButton("Next");
-        nextButton.setOpaque(false);
+        nextButton.setVisible(false);
 
         nextButton.addActionListener(evt -> handleNextClick());
 
@@ -136,16 +136,30 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         }
         else {
             selectedButton.setBackground(Color.RED);
+
+            if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                button1.setBackground(Color.GREEN);
+            }
+            else if (button2.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                button2.setBackground(Color.GREEN);
+            }
+            else if (button3.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                button3.setBackground(Color.GREEN);
+            }
+            else if (button4.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                button4.setBackground(Color.GREEN);
+            }
+
             playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
         }
 
-
+        System.out.println(playerInfo.toString());
 
         // Change the border color to blue
         final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
         selectedButton.setBorder(blueBorder);
 
-        nextButton.setOpaque(true);
+        nextButton.setVisible(true);
 
         // Print out the selected button
         System.out.println("Selected: " + selectedButton.getText());
@@ -156,8 +170,8 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
      */
     private void handleNextClick() {
         final PlaythroughState state = this.playthroughViewModel.getState();
-        nextButton.setOpaque(false);
-        if (state.getCurrentQuestionIndex() == state.getQuiz().getListOfQuestions().length()) {
+        nextButton.setVisible(false);
+        if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
             System.out.println("done");
             // this is where you would call a controller for a summary use case and pass in the updated map of data
         }
