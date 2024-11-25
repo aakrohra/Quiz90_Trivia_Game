@@ -139,6 +139,8 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
             playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
         }
 
+
+
         // Change the border color to blue
         final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
         selectedButton.setBorder(blueBorder);
@@ -155,8 +157,14 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private void handleNextClick() {
         final PlaythroughState state = this.playthroughViewModel.getState();
         nextButton.setOpaque(false);
-        state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
-        this.playthroughViewModel.firePropertyChanged();
+        if (state.getCurrentQuestionIndex() == state.getQuiz().getListOfQuestions().length()) {
+            System.out.println("done");
+            // this is where you would call a controller for a summary use case and pass in the updated map of data
+        }
+        else {
+            state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
+            this.playthroughViewModel.firePropertyChanged();
+        }
     }
 
     /**
@@ -201,6 +209,19 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         button2.setText(options.get(OPTION_TWO_INDEX));
         button3.setText(options.get(OPTION_THREE_INDEX));
         button4.setText(options.get(OPTION_FOUR_INDEX));
+
+        button1.setEnabled(true);
+        button2.setEnabled(true);
+        button3.setEnabled(true);
+        button4.setEnabled(true);
+        button1.setBackground(Color.WHITE);
+        button2.setBackground(Color.WHITE);
+        button3.setBackground(Color.WHITE);
+        button4.setBackground(Color.WHITE);
+        button1.setBorder(BorderFactory.createEmptyBorder());
+        button2.setBorder(BorderFactory.createEmptyBorder());
+        button3.setBorder(BorderFactory.createEmptyBorder());
+        button4.setBorder(BorderFactory.createEmptyBorder());
     }
 
     public static void main(String[] args) {
