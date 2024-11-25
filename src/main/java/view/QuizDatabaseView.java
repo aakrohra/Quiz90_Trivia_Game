@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class QuizDatabaseView extends JPanel {
 
-    private final String viewName = "Quiz Database";
+    private final String viewName = "access database";
 
     private final AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel;
     GridBagConstraints c = new GridBagConstraints();
@@ -33,10 +33,12 @@ public class QuizDatabaseView extends JPanel {
     final JButton searchTitleButton = new JButton("Search");
     final JButton resetButton = new JButton("Reset");
     final JButton mainMenuButton = new JButton("Main Menu");
+    final Dimension windowSize = new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
 
 
-    public QuizDatabaseView(AccessedDatabaseInfoViewModel accessDatabaseViewModel, Dimension windowSize) {
+    public QuizDatabaseView(AccessedDatabaseInfoViewModel accessDatabaseViewModel) {
         this.accessedDatabaseInfoViewModel = accessDatabaseViewModel;
+        this.setBackground(Constants.BGCOLOUR);
 
         searchPanel.setLayout(new GridBagLayout());
 
@@ -183,7 +185,9 @@ public class QuizDatabaseView extends JPanel {
         this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
-
+    public String getViewName(){
+        return viewName;
+    }
 
     public static void main(String[] args) {
         final JFrame frame = new JFrame("test");
@@ -193,7 +197,7 @@ public class QuizDatabaseView extends JPanel {
 
         final Dimension windowSize = frame.getSize();
 
-        final QuizDatabaseView quizDatabaseView = new QuizDatabaseView(new AccessedDatabaseInfoViewModel(), windowSize);
+        final QuizDatabaseView quizDatabaseView = new QuizDatabaseView(new AccessedDatabaseInfoViewModel());
         frame.add(quizDatabaseView);
         frame.setVisible(true);
     }

@@ -21,12 +21,14 @@ public class Main {
                                             .addLocalMultiplayerView()
                                             .addAccessedQuizInfoView()
                                             .addPlaythroughView()
+                                            .addDatabaseView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addLocalMultiplayerUseCase()
                                             .addAccessQuizUseCase()
+                                            .addAccessQuizDatabaseUseCase()
                                             .addQuizGenerationUseCase()
                                             .build();
 

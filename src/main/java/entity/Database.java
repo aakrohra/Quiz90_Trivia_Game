@@ -8,12 +8,6 @@ import java.util.Map;
  */
 public interface Database<T> {
     /**
-     * Returns user of database.
-     * @return the user of database
-     */
-    User getUser();
-
-    /**
      * Returns an item given a unique key.
      * @param key of item
      * @return item
