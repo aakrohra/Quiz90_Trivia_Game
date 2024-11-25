@@ -1,10 +1,7 @@
 
 package entity;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * An implementation of the Database interface.
@@ -12,7 +9,7 @@ import java.util.Map;
  */
 public class PlayerQuizDatabase implements Database {
     private User user;
-    private Map<String, PlayerCreatedQuiz> quizMap = new HashMap<>();
+    private Map<String, PlayerCreatedQuiz> quizMap;
     private Map<String, String> titleToKeyMap = new HashMap<>();
 
     public PlayerQuizDatabase(User user, Map<String, PlayerCreatedQuiz> quizMap) {
@@ -35,12 +32,22 @@ public class PlayerQuizDatabase implements Database {
         return user;
     }
 
+    /**
+     * Returns a quiz that matches the given key.
+     * @param key of quiz
+     * @return quiz object
+     */
     @Override
     public Quiz getByKey(String key) {
         final Quiz quiz = quizMap.get(key);
         return quiz;
     }
 
+    /**
+     * Returns a map of quizzes that contains a substring title in their titles.
+     * @param title substring to search for
+     * @return map of quizzes keyed to their key
+     */
     //    private int getOrd(char chr) {
     //        final int result;
     //        if (97 <= chr && chr <= 122) {
@@ -72,11 +79,19 @@ public class PlayerQuizDatabase implements Database {
         return quizzes;
     }
 
+    /**
+     * Returns all quiz objects for a given user keyed to quiz key.
+     * @return map of quiz objects
+     */
     @Override
     public Map<String, PlayerCreatedQuiz> getAll() {
         return quizMap;
     }
 
+    /**
+     * Returns number of quizzes for a user.
+     * @return number of quizzes
+     */
     @Override
     public int getNumberOfItems() {
         return quizMap.size();
