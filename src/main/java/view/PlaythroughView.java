@@ -5,6 +5,7 @@ import entity.Question;
 import entity.Quiz;
 import interface_adapter.playthrough.PlaythroughState;
 import interface_adapter.playthrough.PlaythroughViewModel;
+import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -12,12 +13,19 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.*;
+import java.util.List;
 
 /**
  * The PlaythroughView class creates a simple quiz interface extending JPanel.
  * It includes a question label and four answer buttons.
  */
 public class PlaythroughView extends JPanel implements PropertyChangeListener {
+
+    private static final int OPTION_ONE_INDEX = 0;
+    private static final int OPTION_TWO_INDEX = 1;
+    private static final int OPTION_THREE_INDEX = 2;
+    private static final int OPTION_FOUR_INDEX = 3;
 
     private final String viewName = "playthrough";
     private final PlaythroughViewModel playthroughViewModel;
@@ -28,6 +36,8 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private final JButton button3;
     private final JButton button4;
     private final JButton nextButton;
+
+    private Map<Integer, Pair<String, Boolean>> playerInfo = new HashMap<>();
 
     public PlaythroughView(PlaythroughViewModel playthroughViewModel) {
         this.playthroughViewModel = playthroughViewModel;
@@ -66,6 +76,9 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         button4.addActionListener(evt -> handleButtonClick(button4));
 
         nextButton = new JButton("Next");
+        nextButton.setOpaque(false);
+
+        nextButton.addActionListener(evt -> handleNextClick());
 
         // Add components to the panel
         this.addComp(question, 0, 0, 5, GridBagConstraints.CENTER, gbc);
@@ -109,21 +122,41 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
      * @param selectedButton the button that was clicked
      */
     private void handleButtonClick(JButton selectedButton) {
+        final PlaythroughState state = this.playthroughViewModel.getState();
+
         // Disable all buttons after one of them has been clicked
         button1.setEnabled(false);
         button2.setEnabled(false);
         button3.setEnabled(false);
         button4.setEnabled(false);
 
-        // Change the background color of the selected button
-        selectedButton.setBackground(Color.GREEN);
+        if (state.getCurrentQuestion().getCorrectAnswer().equals(selectedButton.getText())) {
+            selectedButton.setBackground(Color.GREEN);
+            playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+        }
+        else {
+            selectedButton.setBackground(Color.RED);
+            playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+        }
 
         // Change the border color to blue
         final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
         selectedButton.setBorder(blueBorder);
 
+        nextButton.setOpaque(true);
+
         // Print out the selected button
         System.out.println("Selected: " + selectedButton.getText());
+    }
+
+    /**
+     * Handles clicking next button to go to next question.
+     */
+    private void handleNextClick() {
+        final PlaythroughState state = this.playthroughViewModel.getState();
+        nextButton.setOpaque(false);
+        state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
+        this.playthroughViewModel.firePropertyChanged();
     }
 
     /**
@@ -145,7 +178,6 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         return viewName;
     }
 
-    // TODO: fully implement propertyChange (the code right now is temporary showing the state change worked)
     /**
      * Property change handler.
      * Prints a message when the state changes.
@@ -154,18 +186,21 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         final PlaythroughState state = (PlaythroughState) evt.getNewValue();
         final Quiz quiz = state.getCurrentQuiz();
-        final Question question1 = quiz.getQuestions().get(0);
+        final Question question1 = quiz.getQuestions().get(state.getCurrentQuestionIndex());
 
         question.setText(question1.getQuestionText());
-        button1.setText(question1.getCorrectAnswer());
-        button2.setText(question1.getIncorrectAnswers().get(0));
-        button3.setText(question1.getIncorrectAnswers().get(1));
-        button4.setText(question1.getIncorrectAnswers().get(2));
-    }
 
-    // TODO: Whoever makes playthroughController implement this
-    public void setPlaythroughController(){
+        final List<String> options = new ArrayList<>();
+        options.add(question1.getCorrectAnswer());
+        options.add(question1.getIncorrectAnswers().get(0));
+        options.add(question1.getIncorrectAnswers().get(1));
+        options.add(question1.getIncorrectAnswers().get(2));
 
+        Collections.shuffle(options);
+        button1.setText(options.get(OPTION_ONE_INDEX));
+        button2.setText(options.get(OPTION_TWO_INDEX));
+        button3.setText(options.get(OPTION_THREE_INDEX));
+        button4.setText(options.get(OPTION_FOUR_INDEX));
     }
 
     public static void main(String[] args) {
