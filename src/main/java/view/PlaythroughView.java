@@ -151,10 +151,24 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         }
         else {
             selectedButton.setBackground(Color.RED);
+
+            if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                button1.setBackground(Color.GREEN);
+            }
+            else if (button2.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                button2.setBackground(Color.GREEN);
+            }
+            else if (button3.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                button3.setBackground(Color.GREEN);
+            }
+            else if (button4.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                button4.setBackground(Color.GREEN);
+            }
+
             playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
         }
 
-
+        System.out.println(playerInfo.toString());
 
         // Change the border color to blue
         final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
@@ -172,7 +186,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private void handleNextClick() {
         final PlaythroughState state = this.playthroughViewModel.getState();
         nextButton.setVisible(false);
-        if (state.getCurrentQuestionIndex() == state.getQuiz().getListOfQuestions().length()) {
+        if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
             System.out.println("done");
             // this is where you would call a controller for a summary use case and pass in the updated map of data
         }

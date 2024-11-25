@@ -26,6 +26,7 @@ public interface AccessQuizOutputBoundary {
 
     /**
      * Play Accessed Quiz.
+     * @param quizObject the quiz to be played
      */
     void playAccessedQuiz(PlayerCreatedQuiz quizObject);
 }
