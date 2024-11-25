@@ -7,7 +7,7 @@ import interface_adapter.ViewModel;
  */
 public class QuizGenerationViewModel extends ViewModel<QuizGenerationState> {
 
-    public static final String TITLE_LABEL = "Quiz Generation!";
+    public static final String TITLE_LABEL = "Quiz Generation";
     public static final String CATEGORY_LABEL = "Select Category: ";
     public static final String QUESTIONS_LABEL = "Select # Of Questions: ";
     public static final String DIFFICULTY_LABEL = "Select Difficulty: ";

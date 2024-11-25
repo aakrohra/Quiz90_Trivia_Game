@@ -10,8 +10,12 @@ public class Constants {
     // Frame constants
     public static final int FRAMEHEIGHT = 720;
     public static final int FRAMEWIDTH = FRAMEHEIGHT * 16 / 9;
+    public static final int PANELHEIGHT = FRAMEHEIGHT / 8;
+    public static final int PANELWIDTH = FRAMEWIDTH / 100;
     public static final int QUESTIONFONTSIZE = FRAMEHEIGHT / 20;
+    public static final int TITLEFONTSIZE = FRAMEHEIGHT / 18;
     public static final int QUESTIONMARGINDIVISOR = 20;
+
 
     // Button constants
     public static final int BUTTONWIDTH = FRAMEWIDTH / 3;
