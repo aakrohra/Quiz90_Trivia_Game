@@ -41,6 +41,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private final JButton playSharedQuiz;
     private final JButton localMultiplayer;
     private final JButton changePassword;
+    private final JButton createdQuizzes;
 
     public LoggedInView(LoggedInViewModel loggedInViewModel) {
         loggedInViewModel.addPropertyChangeListener(this);
@@ -71,7 +72,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         assembleButton1(buttons1, sharedQuizKeyFieldPanel);
 
         final JPanel buttons2 = new ButtonPanel();
-        final JButton createdQuizzes = new CustomButton("My Created Quizzes");
+        createdQuizzes = new CustomButton("My Created Quizzes");
+
         localMultiplayer = new CustomButton("Local Multiplayer");
 
         assemble2Buttons(buttons2, createdQuizzes, localMultiplayer);
@@ -136,7 +138,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     private void actionAndInterfaceHelpers(LoggedInViewModel loggedInViewModel, JTextField sharedQuizKeyField, JButton createdQuizzes) {
         sharedQuizKeyActionAndInterface(loggedInViewModel, sharedQuizKeyField);
-        createdQuizzesAction(loggedInViewModel, createdQuizzes);
+        createdQuizzesAction(loggedInViewModel);
+        changePasswordAction(loggedInViewModel);
         logOutAction(loggedInViewModel);
         normalPlayAction();
         localMultiplayerAction();
@@ -173,14 +176,26 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         );
     }
 
-    private void createdQuizzesAction(LoggedInViewModel loggedInViewModel, JButton createdQuizzes) {
+    private void createdQuizzesAction(LoggedInViewModel loggedInViewModel) {
         createdQuizzes.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(createdQuizzes)) {
+                        final LoggedInState currentState = loggedInViewModel.getState();
+                        System.out.println("HELLO");
+//                        TODO implement myCreatedQuizzesController
+//                        this.myCreatedQuizzesController.execute();
+                    }
+                }
+        );
+    }
+
+    private void changePasswordAction (LoggedInViewModel loggedInViewModel) {
+        changePassword.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(changePassword)) {
                         final LoggedInState currentState = loggedInViewModel.getState();
 
-//                        TODO implement myCreatedQuizzesController
-//                        this.myCreatedQuizzesController.execute();
+                        changePasswordController.switchPasswordView();
                     }
                 }
         );

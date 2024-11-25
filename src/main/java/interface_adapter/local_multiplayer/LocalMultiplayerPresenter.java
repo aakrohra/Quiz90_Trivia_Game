@@ -1,7 +1,10 @@
 package interface_adapter.local_multiplayer;
 
+import entity.TriviaQuiz;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.playthrough.PlaythroughState;
+import interface_adapter.playthrough.PlaythroughViewModel;
 import use_case.local_multiplayer.LocalMultiplayerOutputBoundary;
 
 /**
@@ -12,13 +15,32 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
     private final ViewManagerModel viewManagerModel;
     private final LocalMultiplayerViewModel localMultiplayerViewModel;
     private final LoggedInViewModel loggedInViewModel;
+    private final PlaythroughViewModel playthroughViewModel;
 
     public LocalMultiplayerPresenter(ViewManagerModel viewManagerModel,
-                                   LocalMultiplayerViewModel localMultiplayerViewModel,
-                                     LoggedInViewModel loggedInViewModel) {
+                                     LocalMultiplayerViewModel localMultiplayerViewModel,
+                                     LoggedInViewModel loggedInViewModel,
+                                     PlaythroughViewModel playthroughViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.localMultiplayerViewModel = localMultiplayerViewModel;
         this.loggedInViewModel = loggedInViewModel;
+        this.playthroughViewModel = playthroughViewModel;
+    }
+
+    /**
+     * Presents the Quiz to be played.
+     */
+    @Override
+    public void prepareQuiz(TriviaQuiz triviaQuiz) {
+        final PlaythroughState playthroughState = playthroughViewModel.getState();
+        playthroughState.setQuiz(triviaQuiz);
+        playthroughViewModel.setState(playthroughState);
+
+        playthroughViewModel.firePropertyChanged();
+
+        // Switch to the Playthrough View
+        viewManagerModel.setState(playthroughViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 
     /**
