@@ -41,6 +41,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     public QuizDatabaseView(AccessedDatabaseInfoViewModel accessDatabaseViewModel) {
         this.accessedDatabaseInfoViewModel = accessDatabaseViewModel;
+        accessedDatabaseInfoViewModel.addPropertyChangeListener(this);
         this.setBackground(Constants.BGCOLOUR);
 
         searchPanel.setLayout(new GridBagLayout());
