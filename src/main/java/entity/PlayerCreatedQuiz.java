@@ -28,7 +28,8 @@ public class PlayerCreatedQuiz implements Quiz {
         return result.toString();
     }
 
-    public List<PlayerCreatedQuestion> getQuestions() {
+    @Override
+    public List<? extends Question> getQuestions() {
         return listOfQuestions;
     }
 

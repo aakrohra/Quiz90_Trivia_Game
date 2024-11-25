@@ -261,7 +261,7 @@ public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInt
     private JSONObject quizObjectToJSONObject(PlayerCreatedQuiz quiz) {
         final JSONObject quizJSONObject = new JSONObject();
         quizJSONObject.put(TITLE, quiz.getTitle());
-        final List<PlayerCreatedQuestion> questions = quiz.getQuestions();
+        final List<PlayerCreatedQuestion> questions = (List<PlayerCreatedQuestion>) quiz.getQuestions();
         final JSONArray questionsArray = new JSONArray();
         for (final PlayerCreatedQuestion question : questions) {
             final JSONObject questionObject = new JSONObject();

@@ -34,6 +34,7 @@ public class TriviaQuestion implements Question {
         return correctAnswer;
     }
 
+    @Override
     public List<String> getIncorrectAnswers() {
         return incorrectAnswers;
     }

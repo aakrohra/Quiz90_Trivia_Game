@@ -24,6 +24,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.playthrough.PlaythroughViewModel;
 import interface_adapter.quiz_generation.QuizGenerationController;
 import interface_adapter.quiz_generation.QuizGenerationPresenter;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
@@ -89,6 +90,8 @@ public class AppBuilder {
     private QuizGenerationView quizGenerationView;
     private LocalMultiplayerViewModel localMultiplayerViewModel;
     private LocalMultiplayerView localMultiplayerView;
+    private PlaythroughViewModel playthroughViewModel;
+    private PlaythroughView playthroughView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -146,6 +149,17 @@ public class AppBuilder {
         localMultiplayerViewModel = new LocalMultiplayerViewModel();
         localMultiplayerView = new LocalMultiplayerView(localMultiplayerViewModel);
         cardPanel.add(localMultiplayerView, localMultiplayerView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Playthrough View to the application.
+     * @return this builder
+     */
+    public AppBuilder addPlaythroughView() {
+        playthroughViewModel = new PlaythroughViewModel();
+        playthroughView = new PlaythroughView(playthroughViewModel);
+        cardPanel.add(playthroughView, playthroughView.getViewName());
         return this;
     }
 
@@ -267,6 +281,7 @@ public class AppBuilder {
         return this;
     }
 
+    // TODO: Add instance variable for PlaythroughViewModel
     /**
      * Adds the Quiz Generation Use Case to the application.
      * @return this builder
@@ -274,7 +289,8 @@ public class AppBuilder {
     public AppBuilder addQuizGenerationUseCase() {
         loggedInViewModel = new LoggedInViewModel();
         final QuizGenerationOutputBoundary quizGenerationPresenter =
-                new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel, loggedInViewModel);
+                new QuizGenerationPresenter(viewManagerModel, quizGenerationViewModel, loggedInViewModel,
+                        playthroughViewModel);
 
         final QuizGenerationInputBoundary quizGenerationInteractor =
                 new QuizGenerationInteractor(quizGenerationPresenter, triviaDataAccessObject);
