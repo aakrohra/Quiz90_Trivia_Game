@@ -1,22 +1,23 @@
 package view;
 
-import app.Constants;
-import interface_adapter.access_quiz.AccessQuizController;
-import interface_adapter.change_password.ChangePasswordController;
-import interface_adapter.logged_in.LoggedInState;
-import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.local_multiplayer.LocalMultiplayerController;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.quiz_generation.QuizGenerationController;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import app.Constants;
+import interface_adapter.access_quiz.AccessQuizController;
+import interface_adapter.change_password.ChangePasswordController;
+import interface_adapter.local_multiplayer.LocalMultiplayerController;
+import interface_adapter.logged_in.LoggedInState;
+import interface_adapter.logged_in.LoggedInViewModel;
+import interface_adapter.logout.LogoutController;
+import interface_adapter.quiz_generation.QuizGenerationController;
 
 /**
  * The View for when the user is logged into the program.
@@ -148,8 +149,8 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
                     if (evt.getSource().equals(changePassword)) {
                         final LoggedInState currentState = loggedInViewModel.getState();
 
-//                        TODO implement myCreatedQuizzesController
-//                        this.myCreatedQuizzesController.execute();
+                        // TODO implement myCreatedQuizzesController
+                        // this.myCreatedQuizzesController.execute();
                     }
                 }
         );

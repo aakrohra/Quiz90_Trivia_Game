@@ -1,7 +1,5 @@
 package view;
 
-import app.Constants;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -11,6 +9,8 @@ import java.awt.GridBagLayout;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import app.Constants;
 
 /**
  * A panel containing a panel which contains the title specified.
@@ -22,7 +22,7 @@ class TitlePanel extends JPanel {
         nestedPanel.setPreferredSize(new Dimension(Constants.BOXX, Constants.BOXY));
 
         final JLabel labelTitle = new JLabel(title);
-        labelTitle.setFont(new Font(labelTitle.getFont().getName(), Font.BOLD, Constants.FONTSIZE));
+        labelTitle.setFont(new Font(labelTitle.getFont().getName(), Font.BOLD, Constants.QUESTIONFONTSIZE));
         labelTitle.setAlignmentX(Component.CENTER_ALIGNMENT);
         labelTitle.setAlignmentY(Component.CENTER_ALIGNMENT);
 

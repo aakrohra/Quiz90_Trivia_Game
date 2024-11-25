@@ -1,6 +1,10 @@
 package view;
 
 // TODO: fix imports for checkstyle
+import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.*;
 
 import app.Constants;
@@ -8,10 +12,6 @@ import entity.Quiz;
 import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.access_quiz.AccessedQuizInfoState;
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
-
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 /**
  * The view for when a quiz has been accessed and its information must be shown.

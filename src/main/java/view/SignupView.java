@@ -1,27 +1,20 @@
 package view;
 
-import app.Constants;
-import interface_adapter.signup.SignupController;
-import interface_adapter.signup.SignupState;
-import interface_adapter.signup.SignupViewModel;
-
-// TODO import statements in the right order
 import java.awt.Component;
 import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import org.jetbrains.annotations.NotNull;
+
+import app.Constants;
+import interface_adapter.signup.SignupController;
+import interface_adapter.signup.SignupState;
+import interface_adapter.signup.SignupViewModel;
 
 /**
  * The View for the Signup Use Case.
@@ -240,5 +233,16 @@ public class SignupView extends JPanel implements PropertyChangeListener {
 
     public void setSignupController(SignupController controller) {
         this.signupController = controller;
+    }
+
+    public static void main(String[] args) {
+        final JFrame frame = new JFrame("Sign up view");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
+        frame.setLocationRelativeTo(null);
+
+        final SignupView signupView = new SignupView(new SignupViewModel());
+        frame.add(signupView);
+        frame.setVisible(true);
     }
 }

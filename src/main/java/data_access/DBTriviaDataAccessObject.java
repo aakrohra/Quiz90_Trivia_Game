@@ -11,20 +11,23 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import entity.TriviaQuestion;
-import entity.TriviaResponse;
+import entity.TriviaQuiz;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import use_case.quiz_generation.QuizGenerationDataAccessInterface;
+import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
  * A Data Access Object (DAO) that handles retrieving trivia questions from an external API.
  */
-public class DBTriviaDataAccessObject {
+public class DBTriviaDataAccessObject implements QuizGenerationDataAccessInterface {
 
     private static final int SUCCESS_CODE = 0;
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String STATUS_CODE_LABEL = "response_code";
     private static final Map<String, String> HTMLENTITIES = new HashMap<>();
+    private static final Map<String, Integer> CATEGORY_MAPPING = new HashMap<>();
 
     static {
         HTMLENTITIES.put("&lt;", "<");
@@ -41,20 +44,58 @@ public class DBTriviaDataAccessObject {
         // Could also find a Java Library that does this automatically
     }
 
+    static {
+        CATEGORY_MAPPING.put("General Knowledge", 9);
+        CATEGORY_MAPPING.put("Entertainment: Books", 10);
+        CATEGORY_MAPPING.put("Entertainment: Film", 11);
+        CATEGORY_MAPPING.put("Entertainment: Music", 12);
+        CATEGORY_MAPPING.put("Entertainment: Musicals & Theatres", 13);
+        CATEGORY_MAPPING.put("Entertainment: Television", 14);
+        CATEGORY_MAPPING.put("Entertainment: Video Games", 15);
+        CATEGORY_MAPPING.put("Entertainment: Board Games", 16);
+        CATEGORY_MAPPING.put("Science & Nature", 17);
+        CATEGORY_MAPPING.put("Science: Computers", 18);
+        CATEGORY_MAPPING.put("Science: Mathematics", 19);
+        CATEGORY_MAPPING.put("Mythology", 20);
+        CATEGORY_MAPPING.put("Sports", 21);
+        CATEGORY_MAPPING.put("Geography", 22);
+        CATEGORY_MAPPING.put("History", 23);
+        CATEGORY_MAPPING.put("Politics", 24);
+        CATEGORY_MAPPING.put("Art", 25);
+        CATEGORY_MAPPING.put("Celebrities", 26);
+        CATEGORY_MAPPING.put("Animals", 27);
+        CATEGORY_MAPPING.put("Vehicles", 28);
+        CATEGORY_MAPPING.put("Entertainment: Comics", 29);
+        CATEGORY_MAPPING.put("Science: Gadgets", 30);
+        CATEGORY_MAPPING.put("Entertainment: Japanese Anime & Manga", 31);
+        CATEGORY_MAPPING.put("Entertainment: Animations & Cartoons", 32);
+    }
+
+    /**
+     * Returns the id of the category to use for retrieving from the API call.
+     * @param categoryName String of the category
+     * @return Returns the id of its category as a string
+     */
+    private static int getCategoryId(String categoryName) {
+        return CATEGORY_MAPPING.get(categoryName);
+    }
+
     /**
      * Retrieves a list of trivia questions from the external API.
      *
-     * @param amount The number of trivia questions to retrieve.
-     * @param difficulty The difficulty level of the trivia questions.
+     * @param quizData Contains the category, difficulty, and number of questions which are required to make
+     *                 an API call.
      * @return A TriviaResponse containing the list of TriviaQuestion objects.
      * @throws Exception If an error occurs during the API request or parsing the response.
      */
+    @Override
+    public TriviaQuiz getTrivia(QuizGenerationInputData quizData) {
 
-    public TriviaResponse getTrivia(int amount, int categoryID, String difficulty) throws Exception {
         // Construct URL with the given parameters
         final String urlString =
                 String.format("https://opentdb.com/api.php?amount=%d&category=%d&difficulty=%s&type=multiple",
-                        amount, categoryID, difficulty);
+                        quizData.getNumQuestions(), getCategoryId(quizData.getCategory()),
+                        quizData.getDifficulty());
 
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
@@ -72,14 +113,15 @@ public class DBTriviaDataAccessObject {
 
                 final List<TriviaQuestion> triviaQuestions =
                         parseTriviaQuestions(responseBody.getJSONArray("results"));
-                return new TriviaResponse(triviaQuestions);
+
+                return new TriviaQuiz(triviaQuestions);
             }
             else {
                 throw new RuntimeException();
             }
         }
         catch (IOException | JSONException ex) {
-            throw new Exception(ex);
+            throw new RuntimeException(ex);
         }
     }
 
