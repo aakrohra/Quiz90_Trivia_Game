@@ -24,10 +24,10 @@ public class AccessDatabaseInteractor {
             final Map<String, PlayerCreatedQuiz> quizMap = customQuizDataAccessObject.getAllUserQuizzes(user);
             final PlayerQuizDatabase database = new PlayerQuizDatabase(user, quizMap);
             final AccessDatabaseOutputData accessDatabaseOutputData = new AccessDatabaseOutputData(false, database);
-            accessDatabasePresenter.prepareSuccessView(accessDatabaseOutputData);
         }
-        else {
-            accessDatabasePresenter.prepareFailView("There is no user with the username " + user.getName() + ".");
-        }
+    }
+
+    public void switchToSignupView() {
+        accessDatabasePresenter.switchToMainMenuView();
     }
 }

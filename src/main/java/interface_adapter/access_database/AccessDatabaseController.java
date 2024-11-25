@@ -16,4 +16,8 @@ public class AccessDatabaseController {
         final AccessDatabaseInputData accessDatabaseInputData = new AccessDatabaseInputData(user);
         accessDatabaseInteractor.execute(accessDatabaseInputData);
     }
+
+    public void switchToMainMenuView() {
+        accessDatabaseInteractor.switchToMainMenuView();
+    }
 }
