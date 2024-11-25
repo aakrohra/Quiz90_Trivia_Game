@@ -1,26 +1,19 @@
 package view;
 
-<<<<<<< HEAD
 import app.Constants;
-import data_access.TriviaApp;
-import entity.TriviaQuestion;
-import entity.TriviaResponse;
+//import data_access.TriviaApp;
+//import entity.TriviaQuestion;
+//import entity.TriviaResponse;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 import javax.swing.*;
-=======
->>>>>>> origin
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
-
-import app.Constants;
-import interface_adapter.local_multiplayer.LocalMultiplayerController;
-import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
 
 /**
  * The View for when the user is playing Local Multiplayer.
@@ -89,29 +82,29 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
             System.out.println("Difficulty selected: " + difficultyComboBox.getSelectedItem());
         });
 
-        playButton.addActionListener(evt -> {
-            try {
-                // Convert user inputs as strings/integers
-                final String category = (String) categoryComboBox.getSelectedItem();
-                final int numQuestions = (int) questionComboBox.getSelectedItem();
-                final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
-                final String difficulty = difficultyUpper.toLowerCase();
-
-                // Fetch trivia
-                final TriviaApp triviaApp = new TriviaApp();
-                final TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
-
-                for (TriviaQuestion question : trivia.getQuestions()) {
-                    System.out.println("Question: " + question.getQuestion());
-                    System.out.println("Correct Answer: " + question.getCorrectAnswer());
-                    System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
-                    System.out.println();
-                }
-
-            } catch (Exception exp) {
-                exp.printStackTrace();
-            }
-        });
+//        playButton.addActionListener(evt -> {
+//            try {
+//                // Convert user inputs as strings/integers
+//                final String category = (String) categoryComboBox.getSelectedItem();
+//                final int numQuestions = (int) questionComboBox.getSelectedItem();
+//                final String difficultyUpper = (String) difficultyComboBox.getSelectedItem();
+//                final String difficulty = difficultyUpper.toLowerCase();
+//
+//                // Fetch trivia
+//                final TriviaApp triviaApp = new TriviaApp();
+//                final TriviaResponse trivia = triviaApp.fetchTrivia(numQuestions, category, difficulty);
+//
+//                for (TriviaQuestion question : trivia.getQuestions()) {
+//                    System.out.println("Question: " + question.getQuestion());
+//                    System.out.println("Correct Answer: " + question.getCorrectAnswer());
+//                    System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
+//                    System.out.println();
+//                }
+//
+//            } catch (Exception exp) {
+//                exp.printStackTrace();
+//            }
+//        });
 
         cancelButton.addActionListener(evt -> {
             if (evt.getSource().equals(cancelButton)) {
