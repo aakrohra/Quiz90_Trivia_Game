@@ -20,16 +20,6 @@ public class PlaythroughViewModel extends ViewModel<PlaythroughState> {
     // TODO: I added them as a more convenient way to use State functions.
 
     /**
-     * Updates the current quiz in the state.
-     * @param quiz The quiz to set.
-     */
-    public void setQuiz(entity.Quiz quiz) {
-        final PlaythroughState currentState = getState();
-        currentState.setQuiz(quiz);
-        setState(currentState);
-    }
-
-    /**
      * Updates the selected answer in the state.
      * @param selectedAnswer The selected answer to set.
      */

@@ -30,6 +30,7 @@ public class Main {
                                             .addLocalMultiplayerView()
                                             .addAccessedQuizInfoView()
                                             .addPlaythroughView()
+                                            .addSummaryView()
                                             .addDatabaseView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
@@ -39,6 +40,7 @@ public class Main {
                                             .addAccessQuizUseCase()
                                             .addAccessQuizDatabaseUseCase()
                                             .addQuizGenerationUseCase()
+                                            .addSummaryUseCase()
                                             .build();
 
         application.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));

@@ -9,11 +9,10 @@ import entity.Quiz;
 public class PlaythroughState {
     private Quiz quiz;
     private int currentQuestionIndex;
+    private int numberOfCorrectAnswers;
     private String selectedAnswer = "";
 
-    public Quiz getQuiz() {
-        return quiz;
-    }
+
 
     /**
      * Sets the current quiz and resets the state for a new quiz.
@@ -24,15 +23,28 @@ public class PlaythroughState {
         this.quiz = quiz;
         // Reset the state for a new quiz
         this.currentQuestionIndex = 0;
+        this.numberOfCorrectAnswers = 0;
         this.selectedAnswer = "";
     }
 
-    public Quiz getCurrentQuiz() {
+    public Quiz getQuiz() {
         return quiz;
     }
 
     public int getCurrentQuestionIndex() {
         return currentQuestionIndex;
+    }
+
+    /**
+     * Adds one two the total number of correct answers.
+     * Should be used each time a question is answers correctly
+     */
+    public void updateNumberOfCorrectAnswers() {
+        this.numberOfCorrectAnswers++;
+    }
+
+    public int getNumberOfCorrectAnswers() {
+        return numberOfCorrectAnswers;
     }
 
     public void setCurrentQuestionIndex(int currentQuestionIndex) {

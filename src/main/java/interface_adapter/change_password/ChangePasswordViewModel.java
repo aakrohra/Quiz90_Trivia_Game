@@ -6,10 +6,10 @@ import interface_adapter.ViewModel;
  * The ViewModel for the Change Password View.
  */
 public class ChangePasswordViewModel extends ViewModel<ChangePasswordState> {
-    public static final String TITLE_LABEL = "Change Password";
+    public static final String CHANGE_PASSWORD_LABEL = "Change Password";
 
     public ChangePasswordViewModel() {
-        super("Change Password");
+        super("change password");
         setState(new ChangePasswordState());
     }
 }
