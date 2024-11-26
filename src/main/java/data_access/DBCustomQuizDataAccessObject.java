@@ -22,13 +22,13 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import use_case.access_database.AccessDatabaseUserDataAccessInterface;
-import use_case.access_quiz.AccessQuizUserDataAccessInterface;
+import use_case.access_quiz.AccessQuizDataAccessInterface;
 import use_case.create_quiz.CreateQuizUserDataAccessInterface;
 
 /**
  * The DAO for accessing custom quiz data.
  */
-public class DBCustomQuizDataAccessObject implements AccessQuizUserDataAccessInterface,
+public class DBCustomQuizDataAccessObject implements AccessQuizDataAccessInterface,
         AccessDatabaseUserDataAccessInterface,
         CreateQuizUserDataAccessInterface {
 

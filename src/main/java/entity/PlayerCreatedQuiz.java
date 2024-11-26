@@ -23,7 +23,7 @@ public class PlayerCreatedQuiz implements Quiz {
     public String getListOfQuestions() {
         final StringBuilder result = new StringBuilder();
         for (PlayerCreatedQuestion question : this.listOfQuestions) {
-            result.append(question).append("\n");
+            result.append(question.getQuestionText()).append("\n");
         }
         return result.toString();
     }

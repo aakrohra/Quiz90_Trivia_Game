@@ -1,14 +1,29 @@
 package use_case.local_multiplayer;
 
+import entity.TriviaQuiz;
+import use_case.quiz_generation.QuizGenerationDataAccessInterface;
+import use_case.quiz_generation.QuizGenerationInputData;
+
 /**
  * Interactor for Local Multiplayer Use Case.
  */
 public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary {
 
     private final LocalMultiplayerOutputBoundary localMultiplayerPresenter;
+    private final QuizGenerationDataAccessInterface triviaDataAccessObject;
 
-    public LocalMultiplayerInteractor(LocalMultiplayerOutputBoundary localMultiplayerPresenter) {
+    public LocalMultiplayerInteractor(LocalMultiplayerOutputBoundary localMultiplayerPresenter, QuizGenerationDataAccessInterface triviaDataAccessObject) {
         this.localMultiplayerPresenter = localMultiplayerPresenter;
+        this.triviaDataAccessObject = triviaDataAccessObject;
+    }
+
+    /**
+     * Executes quiz generation for Local Multiplayer.
+     */
+    @Override
+    public void execute(QuizGenerationInputData localMultiplayerInputData) {
+        final TriviaQuiz trivia = triviaDataAccessObject.getTrivia(localMultiplayerInputData);
+        localMultiplayerPresenter.prepareQuiz(trivia);
     }
 
     /**
@@ -17,7 +32,6 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
     @Override
     public void switchToLocalMultiplayerView() {
         localMultiplayerPresenter.switchToLocalMultiplayerView();
-        System.out.println("doing2");
     }
 
     /**
