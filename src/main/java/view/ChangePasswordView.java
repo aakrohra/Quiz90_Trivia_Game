@@ -1,6 +1,6 @@
 package view;
 
-import java.awt.Component;
+import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -23,43 +23,69 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
     private final ChangePasswordViewModel changePasswordViewModel;
     private final JLabel passwordErrorField = new JLabel();
     private ChangePasswordController changePasswordController;
-    private LogoutController logoutController;
 
     private final JLabel username;
 
     private final JButton cancel;
 
-    private final JTextField passwordInputField = new JTextField(15);
+    private final JTextField passwordInputField;
     private final JButton changePassword;
 
-    public ChangePasswordView(ChangePasswordViewModel ChangePasswordViewModel) {
-        this.changePasswordViewModel = ChangePasswordViewModel;
+    public ChangePasswordView(ChangePasswordViewModel changePasswordViewModel) {
+        this.changePasswordViewModel = changePasswordViewModel;
         this.changePasswordViewModel.addPropertyChangeListener(this);
 
-        final JLabel title = new JLabel("Logged In Screen");
+        // Title
+        final JLabel title = createLabel("Change Password Screen");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final LabelTextPanel passwordInfo = new LabelTextPanel(
-                new JLabel("Password"), passwordInputField);
-
-        final JLabel usernameInfo = new JLabel("Currently logged in: ");
+        // Username Info
+        final JLabel usernameInfo = createLabel("Currently logged in: ");
+        usernameInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
         username = new JLabel();
+        username.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+        // Text Field
+        passwordInputField = new JTextField(15);
+        passwordInputField.setPreferredSize(new Dimension(Constants.TEXTPANELWIDTH,
+                Constants.TEXTPANELHEIGHT / 3));
+        passwordInputField.setFont(new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE));
+
+        // Password Input
+        final JLabel passwordInfoLabel = createLabel("Password");
+        final LabelTextPanel passwordInfo = new LabelTextPanel(passwordInfoLabel, passwordInputField);
+        passwordInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Buttons Panel
         final JPanel buttons = new JPanel();
-        cancel = new JButton("Cancel");
-        buttons.add(cancel);
+        buttons.setLayout(new BoxLayout(buttons, BoxLayout.X_AXIS));
+        buttons.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        changePassword = new JButton("Change Password");
+        cancel = createButton("Cancel");
+        changePassword = createButton("Change Password");
+
+        buttons.add(Box.createHorizontalGlue());
         buttons.add(changePassword);
+        buttons.add(Box.createHorizontalStrut(Constants.BUTTONMARGIN));
+        buttons.add(cancel);
+        buttons.add(Box.createHorizontalGlue());
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        this.add(Box.createVerticalGlue());
+        this.add(title);
+        this.add(usernameInfo);
+        this.add(username);
+        this.add(passwordInfo);
+        this.add(buttons);
 
         passwordInputField.getDocument().addDocumentListener(new DocumentListener() {
 
             private void documentListenerHelper() {
-                final ChangePasswordState currentState = ChangePasswordViewModel.getState();
+                final ChangePasswordState currentState = changePasswordViewModel.getState();
                 currentState.setPassword(passwordInputField.getText());
-                ChangePasswordViewModel.setState(currentState);
+                changePasswordViewModel.setState(currentState);
             }
 
             @Override
@@ -82,7 +108,7 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
                 // This creates an anonymous subclass of ActionListener and instantiates it.
                 evt -> {
                     if (evt.getSource().equals(changePassword)) {
-                        final ChangePasswordState currentState = ChangePasswordViewModel.getState();
+                        final ChangePasswordState currentState = changePasswordViewModel.getState();
 
                         this.changePasswordController.execute(
                                 currentState.getUsername(),
@@ -100,14 +126,28 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
                     }
                 }
         );
-
+        this.add(Box.createVerticalGlue());
         this.add(title);
         this.add(usernameInfo);
         this.add(username);
-
         this.add(passwordInfo);
         this.add(passwordErrorField);
         this.add(buttons);
+        this.add(Box.createVerticalGlue());
+    }
+
+    private JButton createButton(String text) {
+        final JButton button = new JButton(text);
+        button.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE / Constants.THREE * 2));
+        button.setForeground(Color.BLACK);
+        return button;
+    }
+
+    private JLabel createLabel(String text) {
+        final JLabel label = new JLabel(text);
+        label.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
+        label.setForeground(Color.BLACK);
+        return label;
     }
 
     @Override
