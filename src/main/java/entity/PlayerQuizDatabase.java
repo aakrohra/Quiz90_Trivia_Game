@@ -8,12 +8,10 @@ import java.util.*;
  * Entity that represents a quiz database attached to a Player user
  */
 public class PlayerQuizDatabase implements Database {
-    private User user;
     private Map<String, PlayerCreatedQuiz> quizMap;
     private Map<String, String> titleToKeyMap = new HashMap<>();
 
-    public PlayerQuizDatabase(User user, Map<String, PlayerCreatedQuiz> quizMap) {
-        this.user = user;
+    public PlayerQuizDatabase(Map<String, PlayerCreatedQuiz> quizMap) {
         this.quizMap = quizMap;
         this.titleToKeyMap = this.titleToKeyMapBuilder();
     }
@@ -25,11 +23,6 @@ public class PlayerQuizDatabase implements Database {
             titleToKeyMap.put(quiz.getTitle(), keys.next());
         }
         return titleToKeyMap;
-    }
-
-    @Override
-    public User getUser() {
-        return user;
     }
 
     /**

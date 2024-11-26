@@ -11,6 +11,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
 import app.Constants;
+import interface_adapter.access_database.AccessDatabaseController;
 import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
@@ -30,6 +31,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
     private AccessQuizController accessQuizController;
     private LogoutController logoutController;
     private QuizGenerationController quizGenerationController;
+    private AccessDatabaseController accessedDatabaseController;
 
     private final JLabel username;
 
@@ -182,10 +184,11 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         createdQuizzes.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(createdQuizzes)) {
+                        System.out.println("button");
                         final LoggedInState currentState = loggedInViewModel.getState();
-                        System.out.println("HELLO");
-//                        TODO implement myCreatedQuizzesController
-//                        this.myCreatedQuizzesController.execute();
+                        final String user = currentState.getUsername();
+                        System.out.println("user: " + user);
+                        accessedDatabaseController.execute(user);
                     }
                 }
         );
@@ -266,6 +269,7 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("HELLO");
         if (evt.getPropertyName().equals("state")) {
             final LoggedInState state = (LoggedInState) evt.getNewValue();
             username.setText(state.getUsername());
@@ -286,6 +290,10 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
 
     public void setLogoutController(LogoutController logoutController) {
         this.logoutController = logoutController;
+    }
+
+    public void setAccessedQuizDatabaseController(AccessDatabaseController accessedDatabaseController) {
+        this.accessedDatabaseController = accessedDatabaseController;
     }
 
     public void setAccessQuizController(AccessQuizController accessQuizController) {

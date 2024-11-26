@@ -4,13 +4,13 @@ import entity.User;
 
 public class AccessDatabaseInputData {
 
-    private final User user;
+    private final String username;
 
-    public AccessDatabaseInputData(User user) {
-        this.user = user;
+    public AccessDatabaseInputData(String username) {
+        this.username = username;
     }
 
-    User getUser() {
-        return user;
+    String getUsername() {
+        return username;
     }
 }

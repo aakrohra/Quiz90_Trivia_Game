@@ -10,6 +10,9 @@ import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.access_database.AccessDatabaseController;
+import interface_adapter.access_database.AccessDatabasePresenter;
+import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
 import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.access_quiz.AccessQuizPresenter;
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
@@ -32,6 +35,9 @@ import interface_adapter.quiz_generation.QuizGenerationViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import use_case.access_database.AccessDatabaseInputBoundary;
+import use_case.access_database.AccessDatabaseInteractor;
+import use_case.access_database.AccessDatabaseOutputBoundary;
 import use_case.access_quiz.AccessQuizInputBoundary;
 import use_case.access_quiz.AccessQuizInteractor;
 import use_case.access_quiz.AccessQuizOutputBoundary;
@@ -83,6 +89,7 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel;
     private AccessedQuizInfoViewModel accessedQuizInfoViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
@@ -93,6 +100,7 @@ public class AppBuilder {
     private LocalMultiplayerView localMultiplayerView;
     private PlaythroughViewModel playthroughViewModel;
     private PlaythroughView playthroughView;
+    private QuizDatabaseView quizDatabaseView;
     private ChangePasswordViewModel changePasswordViewModel;
     private ChangePasswordView changePasswordView;
 
@@ -174,6 +182,13 @@ public class AppBuilder {
         playthroughViewModel = new PlaythroughViewModel();
         playthroughView = new PlaythroughView(playthroughViewModel);
         cardPanel.add(playthroughView, playthroughView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addDatabaseView() {
+        accessedDatabaseInfoViewModel = new AccessedDatabaseInfoViewModel();
+        quizDatabaseView = new QuizDatabaseView(accessedDatabaseInfoViewModel);
+        cardPanel.add(quizDatabaseView, quizDatabaseView.getViewName());
         return this;
     }
 
@@ -273,6 +288,19 @@ public class AppBuilder {
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
+        return this;
+    }
+
+    public AppBuilder addAccessQuizDatabaseUseCase() {
+
+        final AccessDatabaseOutputBoundary accessDatabaseOutputBoundary = new AccessDatabasePresenter(
+                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel);
+
+        final AccessDatabaseInputBoundary accessDatabaseInteractor =
+                new AccessDatabaseInteractor(customQuizDataAccessObject, accessDatabaseOutputBoundary);
+
+        final AccessDatabaseController accessDatabaseController = new AccessDatabaseController(accessDatabaseInteractor);
+        loggedInView.setAccessedQuizDatabaseController(accessDatabaseController);
         return this;
     }
 
