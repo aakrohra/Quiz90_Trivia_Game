@@ -107,12 +107,13 @@ public class DBCustomQuizDataAccessObject implements AccessQuizDataAccessInterfa
     }
 
     @Override
-    public boolean existsByName(User user) {
+    public boolean existsByName(String username) {
+
         final OkHttpClient client = new OkHttpClient().newBuilder()
                 .build();
         final Request request = new Request.Builder()
                 .url(String.format(API_USER_EXISTS_CALL,
-                        user.getName()))
+                        username))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
         try {
@@ -158,11 +159,11 @@ public class DBCustomQuizDataAccessObject implements AccessQuizDataAccessInterfa
      * @throws RuntimeException if there is an issue
      */
     @Override
-    public Map<String, PlayerCreatedQuiz> getAllUserQuizzes(User user) throws RuntimeException {
+    public Map<String, PlayerCreatedQuiz> getAllUserQuizzes(String username) throws RuntimeException {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
                 .url(String.format(API_INFO_CALL,
-                        user.getName()))
+                        username))
                 .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
                 .build();
 

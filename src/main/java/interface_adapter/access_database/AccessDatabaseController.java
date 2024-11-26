@@ -20,7 +20,7 @@ public class AccessDatabaseController {
      * Executes the use case for accessing the database with the provided user data.
      * @param user the user whose data is being accessed in the database
      */
-    public void execute(User user) {
+    public void execute(String user) {
         final AccessDatabaseInputData accessDatabaseInputData = new AccessDatabaseInputData(user);
         accessDatabaseInteractor.execute(accessDatabaseInputData);
     }

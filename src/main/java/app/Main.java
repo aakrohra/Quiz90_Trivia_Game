@@ -30,13 +30,17 @@ public class Main {
                                             .addLocalMultiplayerView()
                                             .addAccessedQuizInfoView()
                                             .addPlaythroughView()
+                                            .addSummaryView()
+                                            .addDatabaseView()
                                             .addSignupUseCase()
                                             .addLoginUseCase()
                                             .addChangePasswordUseCase()
                                             .addLogoutUseCase()
                                             .addLocalMultiplayerUseCase()
                                             .addAccessQuizUseCase()
+                                            .addAccessQuizDatabaseUseCase()
                                             .addQuizGenerationUseCase()
+                                            .addSummaryUseCase()
                                             .build();
 
         application.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));

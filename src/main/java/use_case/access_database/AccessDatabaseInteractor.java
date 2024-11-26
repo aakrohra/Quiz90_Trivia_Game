@@ -13,7 +13,7 @@ import entity.User;
  * via an output boundary.
  */
 
-public class AccessDatabaseInteractor {
+public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary{
     private final AccessDatabaseUserDataAccessInterface customQuizDataAccessObject;
     private final AccessDatabaseOutputBoundary accessDatabasePresenter;
 
@@ -31,16 +31,19 @@ public class AccessDatabaseInteractor {
      */
 
     public void execute(AccessDatabaseInputData accessDatabaseInputData) {
-        final User user = accessDatabaseInputData.getUser();
+        final String username = accessDatabaseInputData.getUsername();
 
-        if (customQuizDataAccessObject.existsByName(user)) {
-            final Map<String, PlayerCreatedQuiz> quizMap = customQuizDataAccessObject.getAllUserQuizzes(user);
-            final PlayerQuizDatabase database = new PlayerQuizDatabase(user, quizMap);
+        if (customQuizDataAccessObject.existsByName(username)) {
+            final Map<String, PlayerCreatedQuiz> quizMap = customQuizDataAccessObject.getAllUserQuizzes(username);
+            final PlayerQuizDatabase database = new PlayerQuizDatabase(quizMap);
             final AccessDatabaseOutputData accessDatabaseOutputData = new AccessDatabaseOutputData(false, database);
+
+            System.out.println("it works");
+            accessDatabasePresenter.prepareSuccessView(accessDatabaseOutputData);
         }
     }
 
-    public void switchToSignupView() {
+    public void switchToMainMenuView() {
         accessDatabasePresenter.switchToMainMenuView();
     }
 }

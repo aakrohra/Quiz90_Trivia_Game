@@ -10,6 +10,9 @@ import data_access.DBUserDataAccessObject;
 import entity.CommonUserFactory;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.access_database.AccessDatabaseController;
+import interface_adapter.access_database.AccessDatabasePresenter;
+import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
 import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.access_quiz.AccessQuizPresenter;
 import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
@@ -32,6 +35,12 @@ import interface_adapter.quiz_generation.QuizGenerationViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.summary.SummaryController;
+import interface_adapter.summary.SummaryPresenter;
+import interface_adapter.summary.SummaryViewModel;
+import use_case.access_database.AccessDatabaseInputBoundary;
+import use_case.access_database.AccessDatabaseInteractor;
+import use_case.access_database.AccessDatabaseOutputBoundary;
 import use_case.access_quiz.AccessQuizInputBoundary;
 import use_case.access_quiz.AccessQuizInteractor;
 import use_case.access_quiz.AccessQuizOutputBoundary;
@@ -53,6 +62,9 @@ import use_case.quiz_generation.QuizGenerationOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.summary.SummaryInputBoundary;
+import use_case.summary.SummaryInteractor;
+import use_case.summary.SummaryOutputBoundary;
 import view.*;
 
 /**
@@ -83,6 +95,7 @@ public class AppBuilder {
     private SignupViewModel signupViewModel;
     private LoginViewModel loginViewModel;
     private LoggedInViewModel loggedInViewModel;
+    private AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel;
     private AccessedQuizInfoViewModel accessedQuizInfoViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
@@ -93,8 +106,11 @@ public class AppBuilder {
     private LocalMultiplayerView localMultiplayerView;
     private PlaythroughViewModel playthroughViewModel;
     private PlaythroughView playthroughView;
+    private QuizDatabaseView quizDatabaseView;
     private ChangePasswordViewModel changePasswordViewModel;
     private ChangePasswordView changePasswordView;
+    private SummaryViewModel summaryViewModel;
+    private SummaryView summaryView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -177,6 +193,13 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addDatabaseView() {
+        accessedDatabaseInfoViewModel = new AccessedDatabaseInfoViewModel();
+        quizDatabaseView = new QuizDatabaseView(accessedDatabaseInfoViewModel);
+        cardPanel.add(quizDatabaseView, quizDatabaseView.getViewName());
+        return this;
+    }
+
     /**
      * Adds the Local Multiplayer Use Case to the application.
      * This method initializes and wires up the components required for the
@@ -209,6 +232,17 @@ public class AppBuilder {
         accessedQuizInfoViewModel = new AccessedQuizInfoViewModel();
         accessedQuizInfoView = new AccessedQuizInfoView(accessedQuizInfoViewModel);
         cardPanel.add(accessedQuizInfoView, accessedQuizInfoView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Summary View to the application.
+     * @return this builder
+     */
+    public AppBuilder addSummaryView() {
+        summaryViewModel = new SummaryViewModel();
+        summaryView = new SummaryView(summaryViewModel);
+        cardPanel.add(summaryView, summaryView.getViewName());
         return this;
     }
 
@@ -276,6 +310,19 @@ public class AppBuilder {
         return this;
     }
 
+    public AppBuilder addAccessQuizDatabaseUseCase() {
+
+        final AccessDatabaseOutputBoundary accessDatabaseOutputBoundary = new AccessDatabasePresenter(
+                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel);
+
+        final AccessDatabaseInputBoundary accessDatabaseInteractor =
+                new AccessDatabaseInteractor(customQuizDataAccessObject, accessDatabaseOutputBoundary);
+
+        final AccessDatabaseController accessDatabaseController = new AccessDatabaseController(accessDatabaseInteractor);
+        loggedInView.setAccessedQuizDatabaseController(accessDatabaseController);
+        return this;
+    }
+
     /**
      * Adds the Access Quiz Use Case to the application.
      * @return this builder
@@ -314,6 +361,21 @@ public class AppBuilder {
         quizGenerationView.setQuizGenerationController(quizGenerationController);
         return this;
 
+    }
+
+    /**
+     * Adds the Summary Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addSummaryUseCase() {
+        final SummaryOutputBoundary summaryPresenter = new SummaryPresenter(
+                viewManagerModel, summaryViewModel, loggedInViewModel);
+        final SummaryInputBoundary summaryInteractor = new SummaryInteractor(summaryPresenter);
+
+        final SummaryController summarycontroller = new SummaryController(summaryInteractor);
+        playthroughView.setSummaryController(summarycontroller);
+        summaryView.setSummaryController(summarycontroller);
+        return this;
     }
 
     /**

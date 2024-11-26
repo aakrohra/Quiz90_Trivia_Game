@@ -11,14 +11,6 @@ public class AccessDatabaseOutputData {
         this.quizDatabase = quizDatabase;
     }
 
-    public int getNumQuizzes() {
-        return quizDatabase.getNumberOfItems();
-    }
-
-    public String getAuthor() {
-        return quizDatabase.getUser().getName();
-    }
-
     public PlayerQuizDatabase getQuizDatabase() {
         return quizDatabase;
     }

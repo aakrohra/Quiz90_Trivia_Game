@@ -17,7 +17,7 @@ public interface AccessDatabaseUserDataAccessInterface {
      * @param user the given user
      * @return map with key, quiz pairing
      */
-    Map<String, PlayerCreatedQuiz> getAllUserQuizzes(User user);
+    Map<String, PlayerCreatedQuiz> getAllUserQuizzes(String username);
 
     /**
      * Gets user info including username, password, and quizzes and returns as a JSONObject.
@@ -27,5 +27,5 @@ public interface AccessDatabaseUserDataAccessInterface {
      */
     JSONObject getUserInfo(User user);
 
-    boolean existsByName(User user);
+    boolean existsByName(String username);
 }
