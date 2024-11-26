@@ -35,6 +35,9 @@ import interface_adapter.quiz_generation.QuizGenerationViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
+import interface_adapter.summary.SummaryController;
+import interface_adapter.summary.SummaryPresenter;
+import interface_adapter.summary.SummaryViewModel;
 import use_case.access_database.AccessDatabaseInputBoundary;
 import use_case.access_database.AccessDatabaseInteractor;
 import use_case.access_database.AccessDatabaseOutputBoundary;
@@ -59,6 +62,9 @@ import use_case.quiz_generation.QuizGenerationOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
+import use_case.summary.SummaryInputBoundary;
+import use_case.summary.SummaryInteractor;
+import use_case.summary.SummaryOutputBoundary;
 import view.*;
 
 /**
@@ -103,6 +109,8 @@ public class AppBuilder {
     private QuizDatabaseView quizDatabaseView;
     private ChangePasswordViewModel changePasswordViewModel;
     private ChangePasswordView changePasswordView;
+    private SummaryViewModel summaryViewModel;
+    private SummaryView summaryView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -228,6 +236,17 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Summary View to the application.
+     * @return this builder
+     */
+    public AppBuilder addSummaryView() {
+        summaryViewModel = new SummaryViewModel();
+        summaryView = new SummaryView(summaryViewModel);
+        cardPanel.add(summaryView, summaryView.getViewName());
+        return this;
+    }
+
+    /**
      * Adds the Signup Use Case to the application.
      * @return this builder
      */
@@ -342,6 +361,20 @@ public class AppBuilder {
         quizGenerationView.setQuizGenerationController(quizGenerationController);
         return this;
 
+    }
+
+    /**
+     * Adds the Summary Use Case to the application.
+     * @return this builder
+     */
+    public AppBuilder addSummaryUseCase() {
+        final SummaryOutputBoundary summaryPresenter = new SummaryPresenter(viewManagerModel, summaryViewModel);
+        final SummaryInputBoundary summaryInteractor = new SummaryInteractor(summaryPresenter);
+
+        final SummaryController summarycontroller = new SummaryController(summaryInteractor);
+        playthroughView.setSummaryController(summarycontroller);
+        summaryView.setSummaryController(summarycontroller);
+        return this;
     }
 
     /**

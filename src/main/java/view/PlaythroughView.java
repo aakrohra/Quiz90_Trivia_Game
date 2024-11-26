@@ -5,6 +5,7 @@ import entity.Question;
 import entity.Quiz;
 import interface_adapter.playthrough.PlaythroughState;
 import interface_adapter.playthrough.PlaythroughViewModel;
+import interface_adapter.summary.SummaryController;
 import kotlin.Pair;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,6 +29,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private static final int OPTION_FOUR_INDEX = 3;
 
     private final PlaythroughViewModel playthroughViewModel;
+    private SummaryController summaryController;
 
     private final JTextPane question;
     private final JButton button1;
@@ -60,6 +62,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         question.setFocusable(false);
         question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
 
+        // TODO: Should this be removed?
         question.setBackground(Color.red);
         question.setText("By definition, where does an abyssopelagic animal live ahahahahahah adaaaaaaaaaaaadddddddddddddddddddddddddddddddddddddddddddd da aaaaaaaaaaaaaaaaaaaaaaaaaaaaa  dad ahah ah hah ah ahhahhahah haha hha?");
         question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE)); // Maximum size
@@ -147,6 +150,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
 
         if (state.getCurrentQuestion().getCorrectAnswer().equals(selectedButton.getText())) {
             selectedButton.setBackground(Color.GREEN);
+            state.updateNumberOfCorrectAnswers();
             playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
         }
         else {
@@ -164,7 +168,6 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
             else if (button4.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
                 button4.setBackground(Color.GREEN);
             }
-
             playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
         }
 
@@ -188,6 +191,9 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         nextButton.setVisible(false);
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
             System.out.println("done");
+            // TODO: Work here
+            summaryController.prepareSummaryView(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerInfo);
+            System.out.println("Number of correct answers: " + state.getNumberOfCorrectAnswers());
             // this is where you would call a controller for a summary use case and pass in the updated map of data
         }
         else {
@@ -216,6 +222,10 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         return "playthrough";
     }
 
+    public void setSummaryController(SummaryController summaryController) {
+        this.summaryController = summaryController;
+    }
+
     /**
      * Property change handler.
      * Prints a message when the state changes.
@@ -223,7 +233,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final PlaythroughState state = (PlaythroughState) evt.getNewValue();
-        final Quiz quiz = state.getCurrentQuiz();
+        final Quiz quiz = state.getQuiz();
         final Question question1 = quiz.getQuestions().get(state.getCurrentQuestionIndex());
 
         question.setText(question1.getQuestionText());
