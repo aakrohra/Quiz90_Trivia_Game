@@ -54,17 +54,17 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
                 0, 2, 1, GridBagConstraints.WEST, gbc);
         addComponent(categoryComboBox, 1, 2, 1, GridBagConstraints.WEST, gbc);
 
-        // Number of questions
-        questionComboBox = createComboBox(Constants.NUM_QUESTION, comboBoxSize);
-        addComponent(createLabel(QuizGenerationViewModel.QUESTIONS_LABEL, optionFont, SwingConstants.LEFT),
-                0, 3, 1, GridBagConstraints.WEST, gbc);
-        addComponent(questionComboBox, 1, 3, 1, GridBagConstraints.WEST, gbc);
-
         // Difficulties
         difficultyComboBox = createComboBox(Constants.DIFFICULTIES, comboBoxSize);
         addComponent(createLabel(QuizGenerationViewModel.DIFFICULTY_LABEL, optionFont, SwingConstants.LEFT),
+                0, 3, 1, GridBagConstraints.WEST, gbc);
+        addComponent(difficultyComboBox, 1, 3, 1, GridBagConstraints.WEST, gbc);
+
+        // Number of questions
+        questionComboBox = createComboBox(Constants.NUM_QUESTION, comboBoxSize);
+        addComponent(createLabel(QuizGenerationViewModel.QUESTIONS_LABEL, optionFont, SwingConstants.LEFT),
                 0, 4, 1, GridBagConstraints.WEST, gbc);
-        addComponent(difficultyComboBox, 1, 4, 1, GridBagConstraints.WEST, gbc);
+        addComponent(questionComboBox, 1, 4, 1, GridBagConstraints.WEST, gbc);
 
         // Play and Cancel buttons
         final JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 0));
@@ -145,7 +145,6 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
         comboBox.setPreferredSize(dimension);
         return comboBox;
     }
-
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

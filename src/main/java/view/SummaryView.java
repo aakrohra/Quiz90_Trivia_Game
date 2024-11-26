@@ -55,8 +55,7 @@ public class SummaryView extends JPanel implements PropertyChangeListener {
 
         // Action Listeners
         returnButton.addActionListener(evt -> {
-            System.out.println("Return to Main Menu button clicked");
-            // Call controller action (if implemented)
+            summaryController.switchToMainMenuView();
         });
     }
 

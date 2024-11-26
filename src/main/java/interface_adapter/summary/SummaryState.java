@@ -1,8 +1,9 @@
 package interface_adapter.summary;
 
-import entity.Quiz;
 import java.util.HashMap;
 import java.util.Map;
+
+import entity.Quiz;
 import kotlin.Pair;
 
 /**

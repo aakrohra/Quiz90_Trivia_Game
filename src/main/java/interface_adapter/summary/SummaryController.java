@@ -32,6 +32,6 @@ public class SummaryController {
      * Executes the action to switch to the Main Menu view.
      */
     public void switchToMainMenuView() {
-        System.out.println("Controller: Switching to Main Menu View...");
+        summaryInteractor.switchToMainMenuView();
     }
 }

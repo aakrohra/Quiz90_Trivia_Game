@@ -29,6 +29,6 @@ public class SummaryInteractor implements SummaryInputBoundary {
      */
     @Override
     public void switchToMainMenuView() {
-        System.out.println("Switching to the Main Menu View.");
+        summaryPresenter.switchToMainMenuView();
     }
 }

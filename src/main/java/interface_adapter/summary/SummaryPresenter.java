@@ -2,6 +2,7 @@ package interface_adapter.summary;
 
 import entity.Quiz;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.logged_in.LoggedInViewModel;
 import kotlin.Pair;
 import use_case.summary.SummaryOutputBoundary;
 
@@ -13,10 +14,12 @@ import java.util.Map;
 public class SummaryPresenter implements SummaryOutputBoundary {
     private final ViewManagerModel viewManagerModel;
     private final SummaryViewModel summaryViewModel;
+    private final LoggedInViewModel loggedInViewModel;
 
-    public SummaryPresenter(ViewManagerModel viewManagerModel, SummaryViewModel summaryViewModel) {
+    public SummaryPresenter(ViewManagerModel viewManagerModel, SummaryViewModel summaryViewModel, LoggedInViewModel loggedInViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.summaryViewModel = summaryViewModel;
+        this.loggedInViewModel = loggedInViewModel;
     }
 
     /**
@@ -41,6 +44,7 @@ public class SummaryPresenter implements SummaryOutputBoundary {
      */
     @Override
     public void switchToMainMenuView() {
-        System.out.println("Switching to Main Menu View...");
+        viewManagerModel.setState(loggedInViewModel.getViewName());
+        viewManagerModel.firePropertyChanged();
     }
 }

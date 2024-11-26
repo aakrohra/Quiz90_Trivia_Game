@@ -368,7 +368,8 @@ public class AppBuilder {
      * @return this builder
      */
     public AppBuilder addSummaryUseCase() {
-        final SummaryOutputBoundary summaryPresenter = new SummaryPresenter(viewManagerModel, summaryViewModel);
+        final SummaryOutputBoundary summaryPresenter = new SummaryPresenter(
+                viewManagerModel, summaryViewModel, loggedInViewModel);
         final SummaryInputBoundary summaryInteractor = new SummaryInteractor(summaryPresenter);
 
         final SummaryController summarycontroller = new SummaryController(summaryInteractor);

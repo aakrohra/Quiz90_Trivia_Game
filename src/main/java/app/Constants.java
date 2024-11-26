@@ -1,6 +1,7 @@
 package app;
 
-import java.awt.Color;
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Defines project constants.
@@ -92,4 +93,5 @@ public class Constants {
     public static final Integer[] NUM_QUESTION = {5, 10, 20};
 
     public static final int RANDOMKEYSIZE = 10;
+
 }
