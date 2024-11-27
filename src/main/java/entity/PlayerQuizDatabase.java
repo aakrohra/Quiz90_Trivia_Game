@@ -36,28 +36,6 @@ public class PlayerQuizDatabase implements Database {
         return quiz;
     }
 
-    /**
-     * Returns a map of quizzes that contains a substring title in their titles.
-     * @param title substring to search for
-     * @return map of quizzes keyed to their key
-     */
-    //    private int getOrd(char chr) {
-    //        final int result;
-    //        if (97 <= chr && chr <= 122) {
-    //            result = chr - 97;
-    //        }
-    //        else if (65 <= chr && chr <= 90) {
-    //            result = chr - 65;
-    //        }
-    //        else if (48 <= chr && chr <= 57) {
-    //            result = chr - 22;
-    //        }
-    //        else {
-    //            result = 57 - 22;
-    //        }
-    //        return result;
-    //    }
-
     @Override
     public Map<String, PlayerCreatedQuiz> getByTitle(String title) {
         final Map<String, PlayerCreatedQuiz> quizzes = new HashMap<>();
@@ -79,6 +57,11 @@ public class PlayerQuizDatabase implements Database {
     @Override
     public Map<String, PlayerCreatedQuiz> getAll() {
         return quizMap;
+    }
+
+    @Override
+    public Map<String, String> getTitleByKey() {
+        return titleToKeyMap;
     }
 
     /**
