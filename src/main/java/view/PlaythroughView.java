@@ -47,13 +47,13 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         this.setLayout(new GridBagLayout());
         final GridBagConstraints gbc = createGbc();
 
-        GridBagConstraints tempGbc = new GridBagConstraints();
+        final GridBagConstraints tempGbc = new GridBagConstraints();
         tempGbc.gridx = 0;
         tempGbc.gridy = 0;
-        tempGbc.weightx = 1.0;  // Allow horizontal growth
-        tempGbc.weighty = 1.0;  // Center vertically
-        tempGbc.anchor = GridBagConstraints.CENTER;  // Center the component
-        tempGbc.fill = GridBagConstraints.NONE;  // Don't stretch
+        tempGbc.weightx = 1.0;
+        tempGbc.weighty = 1.0;
+        tempGbc.anchor = GridBagConstraints.CENTER;
+        tempGbc.fill = GridBagConstraints.NONE;
         tempGbc.insets = new Insets(10, 10, 10, 10);
 
         // Create the JTextField or JTextPane
