@@ -40,7 +40,7 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Title
-        final JLabel title = new JLabel("Change Password", SwingConstants.CENTER);
+        final JLabel title = new JLabel(ChangePasswordViewModel.CHANGE_PASSWORD_LABEL, SwingConstants.CENTER);
         title.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, 20));
         title.setForeground(Color.WHITE);
         gbc.gridx = 0;
@@ -90,7 +90,7 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
         buttonPanel.setBackground(Constants.BGCOLOUR);
 
         cancelButton = new JButton("Cancel");
-        changePasswordButton = new JButton("Change Password");
+        changePasswordButton = new JButton(ChangePasswordViewModel.CHANGE_PASSWORD_LABEL);
 
         buttonPanel.add(cancelButton);
         buttonPanel.add(changePasswordButton);
