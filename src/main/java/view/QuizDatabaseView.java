@@ -339,7 +339,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private void reset() {
         defaultDatabaseView();
-    }
+}
 
     public static void main(String[] args) {
         final JFrame frame = new JFrame("test");
