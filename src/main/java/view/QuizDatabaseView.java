@@ -6,66 +6,79 @@ import entity.*;
 import interface_adapter.access_database.AccessDatabaseController;
 import interface_adapter.access_database.AccessedDatabaseInfoState;
 import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
-import interface_adapter.logged_in.LoggedInState;
-import interface_adapter.logged_in.LoggedInViewModel;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.sql.Array;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
-import static data_access.DBCustomQuizDataAccessObject.*;
+/**
+ * The View for when the user is accessing their database.
+ */
 
 public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
-
     private static final String API_INFO_CALL = "http://vm003.teach.cs.toronto.edu:20112/user?username=%s";
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
     private static final String CONTENT_TYPE_JSON = "application/json";
-
+    private static final int QUIZ_ROW_HEIGHT = 60;
+    private static final double QUIZ_PANEL_SIZE_MODIFIER = 0.9;
+    private static final double SEARCH_FIELDS_WIDTH_MODIFIER = 0.6;
+    private static final int GENERAL_ELEMENT_HEIGHT = 30;
+    private static final int SEARCH_KEY_GRID_WIDTH = 4;
+    private static final String SEARCH_KEY_PLACEHOLDER = "Enter Quiz Key";
+    private static final String SEARCH_QUIZ_PLACEHOLDER = "Enter Quiz Title";
+    private static final int RIGHT_GRID_X = 5;
+    private static final String CREATE_QUIZ_BUTTON_PLACEHOLDER = "Create new quiz";
+    private static final String EMPTY_DATABASE_PLACEHOLDER = "Empty Database, you have no quizzes.";
+    private static final double SCROLL_PANEL_HEIGHT_MODIFIER = 0.8;
+    private static final String INDENTATION_PLACEHOLDER = "   ";
+    private static final String COPY_PLACEHOLDER = "Copy & Share!";
+    private static final String PLAY_PLACEHOLDER = "Play";
+    private static final String QUIZ_TITLE_BG_COLOUR = "#a4c2f4";
+    private static final String QUESTION_COUNT_BG_COLOUR = "#dd7e6b";
+    private static final double ROW_MEDIUM_WIDTH_MODIFIER = 0.2;
+    private static final String QUIZ_KEY_BG_COLOUR = "#fce4cd";
+    private static final double ROW_LARGE_WIDTH_MODIFIER = 0.3;
+    private static final double ROW_SMALL_WIDTH_MODIFIER = 0.1;
+    private static final int GRIDX_MAX = 3;
+    private static final String CLIPBOARD_SUCCESSFUL_PLACEHOLDER = " successfully copied to clipboard! Make sure to share with your friends!";
+    private static final int MAX_ROW_SIZE = 9;
+    private static final int SCROLL_PANEL_WIDTH_MODIFIER = 1;
 
     private final String viewName = "access database";
 
     private final AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel;
     private int quizMapSize;
-    private int numberOfPages;
     private ArrayList<String[][]> displayInfo;
     private Map<String, PlayerCreatedQuiz> quizMap;
-    private Database database;
-    GridBagConstraints c = new GridBagConstraints();
-    final JPanel searchPanel = new JPanel();
-    final JTextField searchKeyField = new JTextField();
-    final JButton searchKeyButton = new JButton("Search");
-    final JTextField searchTitleField = new JTextField();
-    final JButton searchTitleButton = new JButton("Search");
-    final JButton resetButton = new JButton("Reset");
-    final JButton mainMenuButton = new JButton("Main Menu");
-    final Dimension windowSize = new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
-    private Map<String, String> titleToKeyMap;
-    private ArrayList<JPanel> quizPanels = new ArrayList<>();
-    private JPanel currentPage = new JPanel(new GridLayout(7, 1, 5, 5));
-    int windowWidth = windowSize.width;
-    int windowHeight = windowSize.height;
-    JPanel bottomPanel = new JPanel();
-    private int pageNumber = 0;
-    private JButton pageIndicator = new JButton(Integer.toString(pageNumber + 1));
+    private PlayerQuizDatabase database;
+    private GridBagConstraints c = new GridBagConstraints();
+    private final JPanel searchPanel = new JPanel();
+    private final JTextField searchKeyField = new JTextField();
+    private final JButton searchKeyButton = new JButton("Search");
+    private final JTextField searchTitleField = new JTextField();
+    private final JButton searchTitleButton = new JButton("Search");
+    private final JButton resetButton = new JButton("Reset");
+    private final JButton mainMenuButton = new JButton("Main Menu");
+    private final Dimension windowSize = new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
+    private final int windowWidth = windowSize.width;
+    private final int windowHeight = windowSize.height;
+    private final JPanel bottomPanel = new JPanel();
+    private final JScrollPane scrollPanel = new JScrollPane();
     private AccessDatabaseController accessDatabaseController;
+    private final JLabel empty = new JLabel();
 
     public QuizDatabaseView(AccessedDatabaseInfoViewModel accessDatabaseViewModel) {
         this.accessedDatabaseInfoViewModel = accessDatabaseViewModel;
@@ -73,43 +86,77 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         this.setBackground(Constants.BGCOLOUR);
 
         searchPanel.setLayout(new GridBagLayout());
+        searchPanel.setPreferredSize(new Dimension((int) (windowWidth * QUIZ_PANEL_SIZE_MODIFIER), QUIZ_ROW_HEIGHT));
 
-        System.out.println(windowSize);
-        searchPanel.setPreferredSize(new Dimension((int) (windowWidth * 0.9), 60));
-
-        searchKeyField.setPreferredSize(new Dimension((int) (windowWidth * 0.6), 30));
-        searchTitleField.setPreferredSize(new Dimension((int) (windowWidth * 0.6), 30));
+        searchKeyField.setPreferredSize(new Dimension((int) (windowWidth * SEARCH_FIELDS_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        searchTitleField.setPreferredSize(new Dimension((int) (windowWidth * SEARCH_FIELDS_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 0;
-        c.gridwidth = 4;
+        c.gridwidth = SEARCH_KEY_GRID_WIDTH;
         searchPanel.add(searchKeyField, c);
 
-        searchKeyField.setText("Enter Quiz Key");
-        searchTitleField.setText("Enter Quiz Title");
+        searchKeyField.setText(SEARCH_KEY_PLACEHOLDER);
+        searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
 
-        c.gridx = 4;
+        searchKeyField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (searchKeyField.getText().equals(SEARCH_KEY_PLACEHOLDER)) {
+                    searchKeyField.setText("");
+                    searchKeyField.setForeground(Color.GRAY);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (searchKeyField.getText().isEmpty()) {
+                    searchKeyField.setText(SEARCH_KEY_PLACEHOLDER);
+                    searchKeyField.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        searchTitleField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (searchTitleField.getText().equals(SEARCH_QUIZ_PLACEHOLDER)) {
+                    searchTitleField.setText("");
+                    searchTitleField.setForeground(Color.GRAY);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (searchTitleField.getText().isEmpty()) {
+                    searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
+                    searchTitleField.setForeground(Color.GRAY);
+                }
+            }
+        });
+
+        c.gridx = SEARCH_KEY_GRID_WIDTH;
         c.gridy = 0;
         c.gridwidth = 1;
         searchPanel.add(searchKeyButton, c);
 
-        c.gridx = 5;
+        c.gridx = RIGHT_GRID_X;
         c.gridy = 0;
         c.gridwidth = 1;
         searchPanel.add(resetButton, c);
 
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 4;
+        c.gridwidth = SEARCH_KEY_GRID_WIDTH;
         searchPanel.add(searchTitleField, c);
 
-        c.gridx = 4;
+        c.gridx = SEARCH_KEY_GRID_WIDTH;
         c.gridy = 1;
         c.gridwidth = 1;
         searchPanel.add(searchTitleButton, c);
 
-        c.gridx = 5;
+        c.gridx = RIGHT_GRID_X;
         c.gridy = 1;
         c.gridwidth = 1;
         searchPanel.add(mainMenuButton, c);
@@ -117,17 +164,17 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         System.out.println(quizMapSize);
 
         mainMenuButton.addActionListener(evt -> backToMainMenu());
+        searchKeyButton.addActionListener(evt -> searchByKey());
+        resetButton.addActionListener(evt -> reset());
+        searchTitleButton.addActionListener(evt -> searchByTitle());
 
-        JButton createQuizButton = new JButton("Create new quiz");
-        JPanel navigationPanel = new JPanel();
+        final JButton createQuizButton = new JButton(CREATE_QUIZ_BUTTON_PLACEHOLDER);
+        final JPanel navigationPanel = new JPanel();
         navigationPanel.setLayout(new FlowLayout());
-
-        pageIndicator.setEnabled(false);
 
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.add(createQuizButton, BorderLayout.WEST);
 
-        this.add(searchPanel, BorderLayout.NORTH);
     }
 
     public String getViewName() {
@@ -136,120 +183,59 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("working");
         final AccessedDatabaseInfoState state = (AccessedDatabaseInfoState) evt.getNewValue();
-
+        this.removeAll();
         this.database = state.getDatabase();
         this.quizMap = this.database.getAll();
         this.quizMapSize = this.database.getNumberOfItems();
-        this.numberOfPages = (int) Math.ceil(this.quizMapSize / 2);
-        this.titleToKeyMap = this.database.getTitleByKey();
-        System.out.println(quizMapSize);
-        System.out.println(quizMap.toString());
-        System.out.println("QUIZ MAPPPP" + quizMap);
-        System.out.println("NUMBEROFPAGES" + numberOfPages);
+        this.add(searchPanel, BorderLayout.NORTH);
+        defaultDatabaseView();
+        this.add(bottomPanel, BorderLayout.SOUTH);
+    }
 
-        String[][] quizzes = new String[quizMapSize][3];
+    private void defaultDatabaseView() {
+        createDatabaseView(quizMap);
+    }
+
+    private void createDatabaseView(Map<String, PlayerCreatedQuiz> quizToKeyMap) {
+        final int mapSize = quizToKeyMap.size();
+        final String[][] quizzes = new String[mapSize][GRIDX_MAX];
         int temp = 0;
-        List<String> keys = new ArrayList<>(quizMap.keySet());
-        for (PlayerCreatedQuiz quiz : quizMap.values()) {
+        final List<String> keys = new ArrayList<>(quizToKeyMap.keySet());
+        for (PlayerCreatedQuiz quiz : quizToKeyMap.values()) {
             quizzes[temp][0] = quiz.getTitle();
-            quizzes[temp][1] = "Questions: " + Integer.toString(quiz.getNumQuestions());
+            quizzes[temp][1] = "Questions: " + quiz.getNumQuestions();
             quizzes[temp][2] = keys.get(temp);
             temp++;
-        }
-        for (int j = 0; j < quizzes.length; j++) {
-            for (int k = 0; k < quizzes[j].length; k++) {
-                System.out.println("Element at [" + j + "][" + k + "] = " + quizzes[j][k]);
-            }
         }
 
         final JPanel quizListPanel = new JPanel();
         quizListPanel.setLayout(new BoxLayout(quizListPanel, BoxLayout.Y_AXIS));
-        // quizListPanel.setLayout(new GridLayout(quizMapSize, 1, 5, 5));
         for (int i = 0; i < quizzes.length; i++) {
-            JPanel row = new JPanel();
-            row.setLayout(new GridBagLayout());
-            JLabel quizTitle = new JLabel("   " + quizzes[i][0]);
-            JLabel quizQuestionCount = new JLabel("   " + quizzes[i][1]);
-            JLabel quizKey = new JLabel("   " + quizzes[i][2]);
-            JButton copyButton = new JButton("Copy & Share!");
-            JButton playButton = new JButton("Play");
-
-            row.setPreferredSize(new Dimension((int) (windowWidth * 0.9), 60));
-            c.gridheight = 1;
-            c.weighty = 2;
-            c.gridx = 0;
-            c.gridy = 0;
-            c.gridwidth = 4;
-            quizTitle.setPreferredSize(new Dimension((int) (windowWidth * 0.9), 30));
-            quizTitle.setBackground(Color.decode("#a4c2f4"));
-            quizTitle.setOpaque(true);
-            row.add(quizTitle, c);
-
-            quizQuestionCount.setPreferredSize(new Dimension((int) (windowWidth * 0.2), 30));
-            quizQuestionCount.setBackground(Color.decode("#dd7e6b"));
-            quizQuestionCount.setOpaque(true);
-            c.gridx = 0;
-            c.gridy = 1;
-            c.gridwidth = 1;
-            row.add(quizQuestionCount, c);
-
-            quizKey.setPreferredSize(new Dimension((int) (windowWidth * 0.3), 30));
-            quizKey.setBackground(Color.decode("#fce4cd"));
-            quizKey.setOpaque(true);
-            c.gridx = 1;
-            c.gridy = 1;
-            c.gridwidth = 1;
-            row.add(quizKey, c);
-
-            copyButton.setBackground(Color.decode("#fce4cd"));
-            copyButton.setPreferredSize(new Dimension((int) (windowWidth * 0.1), 30));
-            copyButton.setOpaque(true);
-            c.gridx = 2;
-            c.gridy = 1;
-            c.gridwidth = 1;
-            row.add(copyButton, c);
-
-            playButton.setPreferredSize(new Dimension((int) (windowWidth * 0.2), 30));
-            playButton.setBackground(Color.decode("#f9cb9c"));
-            playButton.setOpaque(true);
-            c.gridx = 3;
-            c.gridy = 1;
-            c.gridwidth = 1;
-            row.add(playButton, c);
-
-            String message = quizzes[i][2];
-
-            copyButton.addActionListener(e -> {
-                String textToCopy = message;
-                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-                clipboard.setContents(new StringSelection(textToCopy), null);
-
-                JOptionPane.showMessageDialog(QuizDatabaseView.this, textToCopy + " successfully copied to clipboard! Make sure to share with your friends!");
-            });
-
+            final JPanel row = rowItemFromQuizString(quizzes[i]);
+            row.setPreferredSize(new Dimension(windowWidth, QUIZ_ROW_HEIGHT));
             quizListPanel.add(row);
+            quizListPanel.add(Box.createVerticalStrut(RIGHT_GRID_X));
         }
-        if (quizMapSize <= 9) {
-            quizListPanel.add(Box.createVerticalStrut((int) (windowHeight * 0.8 - quizMapSize * 60)));
+
+        if (mapSize <= MAX_ROW_SIZE && mapSize > 0) {
+            quizListPanel.add(Box.createVerticalStrut((int) (windowHeight * SCROLL_PANEL_HEIGHT_MODIFIER - mapSize * QUIZ_ROW_HEIGHT)));
         }
-        if (quizMapSize == 0) {
-            System.out.println("EMPTY");
-            JLabel empty = new JLabel("Empty Database, you have no quizzes.");
+
+        if (mapSize == 0) {
+            empty.setText(EMPTY_DATABASE_PLACEHOLDER);
             this.add(empty, BorderLayout.CENTER);
         }
+
         else {
-            currentPage = quizListPanel;
-            System.out.println(currentPage);
-            JScrollPane scrollPane = new JScrollPane(currentPage);
-            currentPage.setAutoscrolls(true);
-            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-            scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-            scrollPane.setPreferredSize(new Dimension(windowWidth, (int) (windowHeight * 0.8)));
-            this.add(scrollPane, BorderLayout.CENTER);
+            scrollPanel.setViewportView(quizListPanel);
+            quizListPanel.setAutoscrolls(true);
+            scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+            scrollPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            scrollPanel.setPreferredSize(new Dimension((int) (windowWidth * SCROLL_PANEL_WIDTH_MODIFIER), (int) (windowHeight * SCROLL_PANEL_HEIGHT_MODIFIER)));
+            scrollPanel.repaint();
+            this.add(scrollPanel, BorderLayout.CENTER);
         }
-        this.add(bottomPanel, BorderLayout.SOUTH);
     }
 
     private void backToMainMenu() {
@@ -258,6 +244,101 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     public void setAccessDatabaseController(AccessDatabaseController accessDatabaseController) {
         this.accessDatabaseController = accessDatabaseController;
+    }
+
+    private JPanel rowItemFromQuizString(String[] quizString) {
+        final JPanel row = new JPanel();
+        row.setLayout(new GridBagLayout());
+        final JLabel quizTitle = new JLabel(INDENTATION_PLACEHOLDER + quizString[0]);
+        final JLabel quizQuestionCount = new JLabel(INDENTATION_PLACEHOLDER + quizString[1]);
+        final JLabel quizKey = new JLabel(INDENTATION_PLACEHOLDER + quizString[2]);
+        final JButton copyButton = new JButton(COPY_PLACEHOLDER);
+        final JButton playButton = new JButton(PLAY_PLACEHOLDER);
+        row.setPreferredSize(new Dimension((int) (windowWidth * QUIZ_PANEL_SIZE_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+
+        c.gridheight = 1;
+        c.weighty = 2;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = SEARCH_KEY_GRID_WIDTH;
+        quizTitle.setPreferredSize(new Dimension((int) (windowWidth * QUIZ_PANEL_SIZE_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        quizTitle.setBackground(Color.decode(QUIZ_TITLE_BG_COLOUR));
+        quizTitle.setOpaque(true);
+        row.add(quizTitle, c);
+
+        quizQuestionCount.setPreferredSize(new Dimension((int) (windowWidth * ROW_MEDIUM_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        quizQuestionCount.setBackground(Color.decode(QUESTION_COUNT_BG_COLOUR));
+        quizQuestionCount.setOpaque(true);
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        row.add(quizQuestionCount, c);
+
+        quizKey.setPreferredSize(new Dimension((int) (windowWidth * ROW_LARGE_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        quizKey.setBackground(Color.decode(QUIZ_KEY_BG_COLOUR));
+        quizKey.setOpaque(true);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        row.add(quizKey, c);
+
+        copyButton.setBackground(Color.decode(QUIZ_KEY_BG_COLOUR));
+        copyButton.setPreferredSize(new Dimension((int) (windowWidth * ROW_SMALL_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        copyButton.setOpaque(true);
+        c.gridx = 2;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        row.add(copyButton, c);
+
+        playButton.setPreferredSize(new Dimension((int) (windowWidth * ROW_MEDIUM_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        playButton.setBackground(Color.decode("#f9cb9c"));
+        playButton.setOpaque(true);
+        c.gridx = GRIDX_MAX;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        row.add(playButton, c);
+
+        final String message = quizString[2];
+
+        copyButton.addActionListener(event -> {
+            final String textToCopy = message;
+            final Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+            clipboard.setContents(new StringSelection(textToCopy), null);
+
+            JOptionPane.showMessageDialog(QuizDatabaseView.this, textToCopy + CLIPBOARD_SUCCESSFUL_PLACEHOLDER);
+        });
+        return row;
+    }
+
+    private void searchByKey() {
+        final String key = searchKeyField.getText();
+        PlayerCreatedQuiz quiz = database.getByKey(key);
+        if (quiz != null) {
+            final String[] quizString = new String[GRIDX_MAX];
+            quizString[0] = quiz.getTitle();
+            quizString[1] = "Questions: " + quiz.getNumQuestions();
+            quizString[2] = key;
+            final JPanel jPanel = new JPanel();
+            jPanel.setLayout(new BoxLayout(jPanel, BoxLayout.Y_AXIS));
+            final JPanel rowItem = rowItemFromQuizString(quizString);
+            rowItem.setPreferredSize(new Dimension((int) (windowWidth * QUIZ_PANEL_SIZE_MODIFIER), QUIZ_ROW_HEIGHT));
+            jPanel.add(rowItem);
+            jPanel.add(Box.createVerticalStrut((int) (windowHeight * SCROLL_PANEL_HEIGHT_MODIFIER - QUIZ_ROW_HEIGHT)));
+            scrollPanel.setViewportView(jPanel);
+            scrollPanel.revalidate();
+        }
+    }
+
+    private void searchByTitle() {
+        final String title = searchTitleField.getText();
+        final Map<String, PlayerCreatedQuiz> titleMap = database.getByTitle(title);
+        if (titleMap != null) {
+            createDatabaseView(titleMap);
+        }
+    }
+
+    private void reset() {
+        defaultDatabaseView();
     }
 
     public static void main(String[] args) {
@@ -275,7 +356,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         DBCustomQuizDataAccessObject quizDataAccessObject = new DBCustomQuizDataAccessObject();
         CommonUserFactory commonUserFactory = new CommonUserFactory();
         User user = commonUserFactory.create("loop2", "loop2");
-        String quizTitle = "snoopy";
+        String quizTitle = "snoopy6";
         List<PlayerCreatedQuestion> listOfQuestions = new ArrayList<>();
         List<String> answerOptions = new ArrayList<>();
         answerOptions.add("Yes");
@@ -303,7 +384,5 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         catch (IOException e) {
             throw new RuntimeException();
         }
-
-        System.out.println(quizDataAccessObject.getAllUserQuizzes("loop2"));
     }
 }

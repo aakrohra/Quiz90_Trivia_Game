@@ -31,8 +31,8 @@ public class PlayerQuizDatabase implements Database {
      * @return quiz object
      */
     @Override
-    public Quiz getByKey(String key) {
-        final Quiz quiz = quizMap.get(key);
+    public PlayerCreatedQuiz getByKey(String key) {
+        final PlayerCreatedQuiz quiz = quizMap.get(key);
         return quiz;
     }
 
@@ -40,12 +40,15 @@ public class PlayerQuizDatabase implements Database {
     public Map<String, PlayerCreatedQuiz> getByTitle(String title) {
         final Map<String, PlayerCreatedQuiz> quizzes = new HashMap<>();
         final String str = title.toLowerCase().replaceAll("\\s+", "");
+        int i = 0;
+        List<String> keys = new ArrayList<>(quizMap.keySet());
         for (PlayerCreatedQuiz quiz : quizMap.values()) {
             final String quizTitle = quiz.getTitle().toLowerCase().replaceAll("\\s+", "");
             if (quizTitle.contains(str)) {
-                final String key = titleToKeyMap.get(quizTitle);
+                final String key = keys.get(i);
                 quizzes.put(key, quiz);
             }
+            i++;
         }
         return quizzes;
     }

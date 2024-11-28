@@ -1,16 +1,17 @@
 package interface_adapter.access_database;
 
 import entity.Database;
+import entity.PlayerQuizDatabase;
 import entity.User;
 
 public class AccessedDatabaseInfoState {
-    private Database database;
+    private PlayerQuizDatabase database;
 
-    public Database getDatabase() {
+    public PlayerQuizDatabase getDatabase() {
         return database;
     }
 
-    public void setDatabase(Database database) {
+    public void setDatabase(PlayerQuizDatabase database) {
         this.database = database;
     }
 }
