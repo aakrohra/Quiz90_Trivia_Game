@@ -7,31 +7,14 @@ public class QuizGenerationState {
     private String selectedCategory = "";
     private String selectedNumberOfQuestions = "";
     private String selectedDifficulty = "";
+    private String error;
 
-    // Getters
-    public String getSelectedCategory() {
-        return selectedCategory;
+    public String getError() {
+        return error;
     }
 
-    public String getSelectedNumberOfQuestions() {
-        return selectedNumberOfQuestions;
-    }
-
-    public String getSelectedDifficulty() {
-        return selectedDifficulty;
-    }
-
-    // Setters
-    public void setSelectedCategory(String selectedCategory) {
-        this.selectedCategory = selectedCategory;
-    }
-
-    public void setSelectedNumberOfQuestions(String selectedNumberOfQuestions) {
-        this.selectedNumberOfQuestions = selectedNumberOfQuestions;
-    }
-
-    public void setSelectedDifficulty(String selectedDifficulty) {
-        this.selectedDifficulty = selectedDifficulty;
+    public void setError(String error) {
+        this.error = error;
     }
 
     @Override
@@ -40,6 +23,7 @@ public class QuizGenerationState {
                 + "selectedCategory='" + selectedCategory + '\''
                 + ", selectedNumberOfQuestions='" + selectedNumberOfQuestions + '\''
                 + ", selectedDifficulty='" + selectedDifficulty + '\''
+                + ", error='" + error + '\''
                 + '}';
     }
 }

@@ -15,5 +15,5 @@ public interface QuizGenerationDataAccessInterface {
      * @return A TriviaQuiz object containing a list of TriviaQuestion objects.
      * @throws Exception If an error occurs during the API request or response parsing.
      */
-    TriviaQuiz getTrivia(QuizGenerationInputData quizData);
+    TriviaQuiz getTrivia(QuizGenerationInputData quizData) throws Exception;
 }

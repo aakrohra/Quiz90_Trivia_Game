@@ -65,6 +65,7 @@ public class Constants {
     // Normal Play
     public static final String[] CATEGORIES = {
         "Animals",
+        "Art",
         "Celebrities",
         "Entertainment: Board Games",
         "Entertainment: Books",
@@ -73,6 +74,7 @@ public class Constants {
         "Entertainment: Film",
         "Entertainment: Japanese Anime & Manga",
         "Entertainment: Music",
+        "Entertainment: Musicals & Theatres",
         "Entertainment: Television",
         "Entertainment: Video Games",
         "General Knowledge",
@@ -82,12 +84,13 @@ public class Constants {
         "Politics",
         "Science & Nature",
         "Science: Computers",
+        "Science: Gadgets",
         "Science: Mathematics",
         "Sports",
         "Vehicles",
     };
     public static final String[] DIFFICULTIES = {"Easy", "Medium", "Hard"};
-    public static final Integer[] NUM_QUESTION = {5, 10, 15};
+    public static final Integer[] NUM_QUESTION = {5, 10, 15, 20};
 
     public static final int RANDOMKEYSIZE = 10;
 
