@@ -62,7 +62,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         question.setFocusable(false);
         question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
 
-        question.setBackground(Color.WHITE);
+        question.setBackground(Constants.LIGHTERBGCOLOUR);
         question.setText("Question");
         question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
         question.setLineWrap(true);
