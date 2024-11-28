@@ -42,21 +42,29 @@ public class QuizGenerationInteractor implements QuizGenerationInputBoundary {
      */
     @Override
     public void execute(QuizGenerationInputData quizData) {
-        final TriviaQuiz trivia = triviaDataAccessObject.getTrivia(quizData);
+        try {
+            // Attempt to fetch trivia questions
+            final TriviaQuiz trivia = triviaDataAccessObject.getTrivia(quizData);
 
-        // Output the trivia questions
-        System.out.println("Fetching Trivia");
-        System.out.println(
-                "Number of Questions: " + quizData.getNumQuestions()
-                        + ", Category: " + quizData.getCategory()
-                        + ", Difficulty: " + quizData.getDifficulty());
-        for (Question question : trivia.getQuestions()) {
-            System.out.println("Question: " + question.getQuestionText());
-            System.out.println("Correct Answer: " + question.getCorrectAnswer());
-            System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
-            System.out.println();
+            // Log trivia details
+            System.out.println("Fetching Trivia");
+            System.out.println(
+                    "Number of Questions: " + quizData.getNumQuestions()
+                            + ", Category: " + quizData.getCategory()
+                            + ", Difficulty: " + quizData.getDifficulty());
+            for (Question question : trivia.getQuestions()) {
+                System.out.println("Question: " + question.getQuestionText());
+                System.out.println("Correct Answer: " + question.getCorrectAnswer());
+                System.out.println("Incorrect Answers: " + String.join(", ", question.getIncorrectAnswers()));
+                System.out.println();
+            }
+
+            // Prepare success view
+            quizGenerationPresenter.prepareSuccessView(trivia);
+        } catch (Exception ex) {
+            // Handle the failure case
+            quizGenerationPresenter.prepareFailView(ex.getMessage());
         }
-
-        quizGenerationPresenter.prepareSuccessView(trivia);
     }
+
 }

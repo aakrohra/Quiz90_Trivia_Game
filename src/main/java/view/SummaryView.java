@@ -5,12 +5,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import app.Constants;
+import entity.Question;
 import interface_adapter.summary.SummaryController;
 import interface_adapter.summary.SummaryState;
 import interface_adapter.summary.SummaryViewModel;
+import kotlin.Pair;
 
 /**
- * The view for the Summary screen, displaying the quiz results.
+ * The view for the Summary screen, displaying the quiz results in detail.
  */
 public class SummaryView extends JPanel implements PropertyChangeListener {
 
@@ -20,57 +22,129 @@ public class SummaryView extends JPanel implements PropertyChangeListener {
 
     private final JLabel resultText;
     private final JButton returnButton;
-
+    private final JPanel questionsPanel;
 
     public SummaryView(SummaryViewModel summaryViewModel) {
         this.summaryViewModel = summaryViewModel;
         summaryViewModel.addPropertyChangeListener(this);
 
-        // Set the layout and background color
+        // Set layout and background color
         this.setBackground(Constants.BGCOLOUR);
-        this.setLayout(new GridBagLayout());
-        final GridBagConstraints gbc = createGbc();
+        this.setLayout(new BorderLayout());
 
-        // Title
+        // Title Panel and Text
+        final JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+        headerPanel.setBackground(Constants.BGCOLOUR);
+
+        // Title centered
         final JLabel title = createLabel("Summary View",
                 new Font(Constants.FONTSTYLE, Font.BOLD, Constants.TITLEFONTSIZE),
                 SwingConstants.CENTER, Color.WHITE);
-        gbc.insets = new Insets(
-                Constants.MARGINS, Constants.MARGINS, Constants.MARGINS * 2, Constants.MARGINS);
-        addComponent(title, 0, 0, 2, GridBagConstraints.CENTER, gbc);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(title);
 
-        // Result Text
+        // Vertical strut to add space between title and resultText
+        headerPanel.add(Box.createVerticalStrut(Constants.MARGINS));
+
+        // Result Text centered under the title
         resultText = createLabel("You got: ",
                 new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
                 SwingConstants.CENTER, Color.WHITE);
-        gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS * 2, Constants.MARGINS);
-        addComponent(resultText, 0, 1, 2, GridBagConstraints.CENTER, gbc);
+        resultText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(resultText);
 
-        // Return to Main Menu Button
+        this.add(headerPanel, BorderLayout.NORTH);
+
+        // Scrollable Panel
+        questionsPanel = new JPanel();
+        questionsPanel.setLayout(new BoxLayout(questionsPanel, BoxLayout.Y_AXIS));
+        questionsPanel.setBackground(Constants.BGCOLOUR);
+
+        final JScrollPane scrollPane = new JScrollPane(questionsPanel);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.add(scrollPane, BorderLayout.CENTER);
+
+        // Buttons
+        final JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Constants.BGCOLOUR);
+
         returnButton = new JButton("Return To Main Menu");
-        returnButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH, Constants.BUTTONHEIGHT));
-        returnButton.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
-        gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
-        addComponent(returnButton, 0, 2, 2, GridBagConstraints.CENTER, gbc);
+        returnButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH / 2,
+                Constants.BUTTONHEIGHT / 2));
+        returnButton.setFont(new Font(Constants.FONTSTYLE, Font.BOLD,
+                Constants.BUTTONFONTSIZE * 2 / Constants.THREE));
+        returnButton.addActionListener(evt -> summaryController.switchToMainMenuView());
 
-        // Action Listeners
-        returnButton.addActionListener(evt -> {
-            summaryController.switchToMainMenuView();
-        });
+        buttonPanel.add(returnButton);
+        this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private GridBagConstraints createGbc() {
-        final GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        return gbc;
-    }
+    /**
+     * Updates the view when the state changes.
+     */
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        final SummaryState state = (SummaryState) evt.getNewValue();
+        resultText.setText("You got: " + state.getNumberOfCorrectAnswers() + " / " + state.getNumberOfQuestions());
 
-    private void addComponent(Component comp, int x_axis, int y_axis, int width, int anchor, GridBagConstraints gbc) {
-        gbc.gridx = x_axis;
-        gbc.gridy = y_axis;
-        gbc.gridwidth = width;
-        gbc.anchor = anchor;
-        this.add(comp, gbc);
+        // TODO: Clear the questions panel for replay? Not sure yet
+        questionsPanel.removeAll();
+
+        for (int i = 0; i < state.getNumberOfQuestions(); i++) {
+            final Question question = state.getQuiz().getQuestions().get(i);
+            final Pair<String, Boolean> playerAnswer = state.getPlayerInfo().get(i);
+
+            final String correctAnswer = question.getCorrectAnswer();
+            final String playerCurrentAnswer = playerAnswer.getFirst();
+            final boolean isCorrect = playerAnswer.getSecond();
+
+            final JPanel questionPanel = new JPanel();
+            questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
+            questionPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+            if (isCorrect) {
+                questionPanel.setBackground(Constants.CORRECTGREENBG);
+            }
+            else {
+                questionPanel.setBackground(Constants.INCORRECTREDBG);
+            }
+
+            final JLabel questionText = createLabel("Q" + (i + 1) + ": " + question.getQuestionText(),
+                    new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE),
+                    SwingConstants.LEFT, Color.WHITE);
+
+            questionPanel.add(questionText);
+
+            if (isCorrect) {
+                final JLabel correct = createLabel("Correct!",
+                        new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
+                        SwingConstants.LEFT, Color.WHITE);
+
+                final JLabel correctText = createLabel("Correct Answer: " + correctAnswer,
+                        new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
+                        SwingConstants.LEFT, Color.WHITE);
+
+                questionPanel.add(correct);
+                questionPanel.add(correctText);
+            }
+            else {
+                final JLabel correctText = createLabel("Correct Answer: " + correctAnswer,
+                        new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
+                        SwingConstants.LEFT, Color.WHITE);
+
+                final JLabel userText = createLabel("Your Answer: " + playerCurrentAnswer,
+                        new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
+                        SwingConstants.LEFT, Color.WHITE);
+
+                questionPanel.add(correctText);
+                questionPanel.add(userText);
+            }
+
+            questionsPanel.add(questionPanel);
+            questionsPanel.add(Box.createVerticalStrut(Constants.MARGINS));
+        }
     }
 
     private JLabel createLabel(String text, Font font, int alignment, Color color) {
@@ -87,23 +161,4 @@ public class SummaryView extends JPanel implements PropertyChangeListener {
     public void setSummaryController(SummaryController summaryController) {
         this.summaryController = summaryController;
     }
-
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        final SummaryState state = (SummaryState) evt.getNewValue();
-        resultText.setText("You got: " + state.getNumberOfCorrectAnswers() + " / " + state.getNumberOfQuestions());
-    }
-
-    // Main method to test SummaryView
-    public static void main(String[] args) {
-        final JFrame frame = new JFrame("Summary View");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
-        frame.setLocationRelativeTo(null);
-
-        final SummaryView summaryView = new SummaryView(new SummaryViewModel());
-        frame.add(summaryView);
-        frame.setVisible(true);
-    }
-
 }

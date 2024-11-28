@@ -24,6 +24,9 @@ import use_case.quiz_generation.QuizGenerationInputData;
 public class DBTriviaDataAccessObject implements QuizGenerationDataAccessInterface {
 
     private static final int SUCCESS_CODE = 0;
+    private static final int NO_RESULTS_CODE = 1;
+    private static final int RATE_LIMIT_CODE = 5;
+    private static final String MESSAGE = "message";
     private static final String CONTENT_TYPE_JSON = "application/json";
     private static final String STATUS_CODE_LABEL = "response_code";
     private static final Map<String, String> HTMLENTITIES = new HashMap<>();
@@ -39,6 +42,7 @@ public class DBTriviaDataAccessObject implements QuizGenerationDataAccessInterfa
         HTMLENTITIES.put("&#039;", "'");
         HTMLENTITIES.put("&rsquo;", "'");
         HTMLENTITIES.put("&lsquo;", "'");
+        HTMLENTITIES.put("&eacute;", "é");
         HTMLENTITIES.put("&amp;", "&");
         // Add more entities if there are any more that you find
         // Could also find a Java Library that does this automatically
@@ -89,7 +93,7 @@ public class DBTriviaDataAccessObject implements QuizGenerationDataAccessInterfa
      * @throws Exception If an error occurs during the API request or parsing the response.
      */
     @Override
-    public TriviaQuiz getTrivia(QuizGenerationInputData quizData) {
+    public TriviaQuiz getTrivia(QuizGenerationInputData quizData) throws Exception {
 
         // Construct URL with the given parameters
         final String urlString =
@@ -116,12 +120,21 @@ public class DBTriviaDataAccessObject implements QuizGenerationDataAccessInterfa
 
                 return new TriviaQuiz(triviaQuestions);
             }
+
+            else if (responseBody.getInt(STATUS_CODE_LABEL) == NO_RESULTS_CODE) {
+                throw new Exception("Not enough trivia questions for the selected options.\n "
+                        + "Please adjust your choices.");
+            }
+            else if (responseBody.getInt(STATUS_CODE_LABEL) == RATE_LIMIT_CODE) {
+                throw new Exception("Woah! Slow down there!\n "
+                        + "Please wait a few seconds in between calls.");
+            }
             else {
-                throw new RuntimeException();
+                throw new Exception("ERROR: " + responseBody.getString(MESSAGE));
             }
         }
         catch (IOException | JSONException ex) {
-            throw new RuntimeException(ex);
+            throw new Exception(ex);
         }
     }
 

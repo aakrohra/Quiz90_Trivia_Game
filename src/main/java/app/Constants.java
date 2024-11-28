@@ -1,6 +1,5 @@
 package app;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -16,7 +15,6 @@ public class Constants {
     public static final int QUESTIONFONTSIZE = FRAMEHEIGHT / 20;
     public static final int TITLEFONTSIZE = FRAMEHEIGHT / 18;
     public static final int QUESTIONMARGINDIVISOR = 20;
-
 
     // Button constants
     public static final int BUTTONWIDTH = FRAMEWIDTH / 3;
@@ -57,6 +55,8 @@ public class Constants {
     public static final Color BGCOLOUR = new Color(56, 113, 194);
     public static final Color LIGHTERBGCOLOUR = new Color(111, 161, 232);
     public static final int MAGICTHREE = 3;
+    public static final Color CORRECTGREENBG = new Color(102, 191, 57);
+    public static final Color INCORRECTREDBG = new Color(255, 51, 85);
 
     // Grid Coordinates
     public static final int THREE = 3;
@@ -90,7 +90,7 @@ public class Constants {
         "Vehicles",
     };
     public static final String[] DIFFICULTIES = {"Easy", "Medium", "Hard"};
-    public static final Integer[] NUM_QUESTION = {5, 10, 20};
+    public static final Integer[] NUM_QUESTION = {5, 10, 15, 20};
 
     public static final int RANDOMKEYSIZE = 10;
 

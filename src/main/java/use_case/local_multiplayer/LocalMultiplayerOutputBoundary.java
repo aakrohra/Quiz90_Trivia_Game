@@ -24,4 +24,9 @@ public interface LocalMultiplayerOutputBoundary {
      * Prepares the view to switch to the Main Menu view.
      */
     void switchToMainMenuView();
+
+    /**
+     * Prepares the fail view.
+     */
+    void prepareFailView();
 }
