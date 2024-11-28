@@ -22,8 +22,13 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
      */
     @Override
     public void execute(QuizGenerationInputData localMultiplayerInputData) {
-        final TriviaQuiz trivia = triviaDataAccessObject.getTrivia(localMultiplayerInputData);
-        localMultiplayerPresenter.prepareQuiz(trivia);
+        try {
+            final TriviaQuiz trivia = triviaDataAccessObject.getTrivia(localMultiplayerInputData);
+            localMultiplayerPresenter.prepareQuiz(trivia);
+        } catch (Exception ex) {
+            // Log the exception or handle it based on your use case
+            localMultiplayerPresenter.prepareFailView();
+        }
     }
 
     /**

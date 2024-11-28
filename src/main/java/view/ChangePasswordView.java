@@ -36,7 +36,7 @@ public class ChangePasswordView extends JPanel implements PropertyChangeListener
         this.setLayout(new GridBagLayout());
         this.setBackground(Constants.BGCOLOUR);
         final GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
         // Title

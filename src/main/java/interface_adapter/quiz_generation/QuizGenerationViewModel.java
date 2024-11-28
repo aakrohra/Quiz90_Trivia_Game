@@ -19,30 +19,4 @@ public class QuizGenerationViewModel extends ViewModel<QuizGenerationState> {
         super("quiz generation");
         setState(new QuizGenerationState());
     }
-
-    // Getters for the state values
-    public String getSelectedCategory() {
-        return getState().getSelectedCategory();
-    }
-
-    public String getSelectedNumberOfQuestions() {
-        return getState().getSelectedNumberOfQuestions();
-    }
-
-    public String getSelectedDifficulty() {
-        return getState().getSelectedDifficulty();
-    }
-
-    // Setters for the state values
-    public void setSelectedCategory(String category) {
-        getState().setSelectedCategory(category);
-    }
-
-    public void setSelectedNumberOfQuestions(String numberOfQuestions) {
-        getState().setSelectedNumberOfQuestions(numberOfQuestions);
-    }
-
-    public void setSelectedDifficulty(String difficulty) {
-        getState().setSelectedDifficulty(difficulty);
-    }
 }
