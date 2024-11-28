@@ -320,6 +320,7 @@ public class AppBuilder {
 
         final AccessDatabaseController accessDatabaseController = new AccessDatabaseController(accessDatabaseInteractor);
         loggedInView.setAccessedQuizDatabaseController(accessDatabaseController);
+        quizDatabaseView.setAccessDatabaseController(accessDatabaseController);
         return this;
     }
 
