@@ -1,18 +1,12 @@
 package view;
 
-import app.Constants;
-import data_access.DBCustomQuizDataAccessObject;
-import entity.*;
-import interface_adapter.access_database.AccessDatabaseController;
-import interface_adapter.access_database.AccessedDatabaseInfoState;
-import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.json.JSONObject;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.FocusAdapter;
@@ -20,9 +14,35 @@ import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.IOException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+
+import org.json.JSONObject;
+
+import app.Constants;
+import data_access.DBCustomQuizDataAccessObject;
+import entity.CommonUserFactory;
+import entity.PlayerCreatedQuestion;
+import entity.PlayerCreatedQuiz;
+import entity.PlayerQuizDatabase;
+import entity.Quiz;
+import entity.User;
+import interface_adapter.access_database.AccessDatabaseController;
+import interface_adapter.access_database.AccessedDatabaseInfoState;
+import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * The View for when the user is accessing their database.
@@ -61,10 +81,9 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private final AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel;
     private int quizMapSize;
-    private ArrayList<String[][]> displayInfo;
     private Map<String, PlayerCreatedQuiz> quizMap;
     private PlayerQuizDatabase database;
-    private GridBagConstraints c = new GridBagConstraints();
+    private final GridBagConstraints c = new GridBagConstraints();
     private final JPanel searchPanel = new JPanel();
     private final JTextField searchKeyField = new JTextField();
     private final JButton searchKeyButton = new JButton("Search");
@@ -90,51 +109,32 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
         searchKeyField.setPreferredSize(new Dimension((int) (windowWidth * SEARCH_FIELDS_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
         searchTitleField.setPreferredSize(new Dimension((int) (windowWidth * SEARCH_FIELDS_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+
+        searchKeyField.setText(SEARCH_KEY_PLACEHOLDER);
+        searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
+        searchKeyField.setForeground(Color.GRAY);
+        searchTitleField.setForeground(Color.GRAY);
+
+        keyFieldActionListeners();
+
+        searchPanelOrganisation();
+
+        final JButton createQuizButton = new JButton(CREATE_QUIZ_BUTTON_PLACEHOLDER);
+        final JPanel navigationPanel = new JPanel();
+        navigationPanel.setLayout(new FlowLayout());
+
+        bottomPanel.setLayout(new BorderLayout());
+        bottomPanel.add(createQuizButton, BorderLayout.WEST);
+
+    }
+
+    private void searchPanelOrganisation() {
         c.fill = GridBagConstraints.HORIZONTAL;
         c.weightx = 1;
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = SEARCH_KEY_GRID_WIDTH;
         searchPanel.add(searchKeyField, c);
-
-        searchKeyField.setText(SEARCH_KEY_PLACEHOLDER);
-        searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
-
-        searchKeyField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (searchKeyField.getText().equals(SEARCH_KEY_PLACEHOLDER)) {
-                    searchKeyField.setText("");
-                    searchKeyField.setForeground(Color.GRAY);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (searchKeyField.getText().isEmpty()) {
-                    searchKeyField.setText(SEARCH_KEY_PLACEHOLDER);
-                    searchKeyField.setForeground(Color.GRAY);
-                }
-            }
-        });
-
-        searchTitleField.addFocusListener(new FocusAdapter() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                if (searchTitleField.getText().equals(SEARCH_QUIZ_PLACEHOLDER)) {
-                    searchTitleField.setText("");
-                    searchTitleField.setForeground(Color.GRAY);
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                if (searchTitleField.getText().isEmpty()) {
-                    searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
-                    searchTitleField.setForeground(Color.GRAY);
-                }
-            }
-        });
 
         c.gridx = SEARCH_KEY_GRID_WIDTH;
         c.gridy = 0;
@@ -161,20 +161,36 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         c.gridwidth = 1;
         searchPanel.add(mainMenuButton, c);
 
-        System.out.println(quizMapSize);
-
         mainMenuButton.addActionListener(evt -> backToMainMenu());
         searchKeyButton.addActionListener(evt -> searchByKey());
         resetButton.addActionListener(evt -> reset());
         searchTitleButton.addActionListener(evt -> searchByTitle());
+    }
 
-        final JButton createQuizButton = new JButton(CREATE_QUIZ_BUTTON_PLACEHOLDER);
-        final JPanel navigationPanel = new JPanel();
-        navigationPanel.setLayout(new FlowLayout());
+    private void keyFieldActionListeners() {
+        focusKeyFieldAdapter(searchKeyField, SEARCH_KEY_PLACEHOLDER);
 
-        bottomPanel.setLayout(new BorderLayout());
-        bottomPanel.add(createQuizButton, BorderLayout.WEST);
+        focusKeyFieldAdapter(searchTitleField, SEARCH_QUIZ_PLACEHOLDER);
+    }
 
+    private void focusKeyFieldAdapter(JTextField textField, String textFieldPlaceholder) {
+        textField.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (textField.getText().equals(textFieldPlaceholder)) {
+                    textField.setText("");
+                    textField.setForeground(Color.GRAY);
+                }
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (textField.getText().isEmpty()) {
+                    textField.setText(textFieldPlaceholder);
+                    textField.setForeground(Color.GRAY);
+                }
+            }
+        });
     }
 
     public String getViewName() {
@@ -298,6 +314,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         c.gridwidth = 1;
         row.add(playButton, c);
 
+        final String titleCopy = quizString[0];
         final String message = quizString[2];
 
         copyButton.addActionListener(event -> {
@@ -306,6 +323,12 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
             clipboard.setContents(new StringSelection(textToCopy), null);
 
             JOptionPane.showMessageDialog(QuizDatabaseView.this, textToCopy + CLIPBOARD_SUCCESSFUL_PLACEHOLDER);
+        });
+
+        playButton.addActionListener(event -> {
+            final String key = message;
+            final Quiz quiz = quizMap.get(key);
+            accessDatabaseController.switchToPlaythroughView(quiz);
         });
         return row;
     }
@@ -339,6 +362,8 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private void reset() {
         defaultDatabaseView();
+        searchKeyField.setText(SEARCH_KEY_PLACEHOLDER);
+        searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
 }
 
     public static void main(String[] args) {
@@ -356,13 +381,16 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         DBCustomQuizDataAccessObject quizDataAccessObject = new DBCustomQuizDataAccessObject();
         CommonUserFactory commonUserFactory = new CommonUserFactory();
         User user = commonUserFactory.create("loop2", "loop2");
-        String quizTitle = "snoopy6";
+        String quizTitle = "snoopysnoopy";
         List<PlayerCreatedQuestion> listOfQuestions = new ArrayList<>();
         List<String> answerOptions = new ArrayList<>();
         answerOptions.add("Yes");
         answerOptions.add("No");
         answerOptions.add("Yes1");
         answerOptions.add("No1");
+        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
+        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
+        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
         listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
         String author = "loop2";
         PlayerCreatedQuiz quizz = new PlayerCreatedQuiz(quizTitle, listOfQuestions, author);
