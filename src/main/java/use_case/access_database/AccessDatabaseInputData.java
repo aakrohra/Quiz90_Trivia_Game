@@ -1,7 +1,8 @@
 package use_case.access_database;
 
-import entity.User;
-
+/**
+ * The input data for the access database use case.
+ */
 public class AccessDatabaseInputData {
 
     private final String username;
