@@ -1,8 +1,11 @@
 package interface_adapter.access_database;
 
+import entity.Quiz;
 import entity.User;
+import org.json.JSONObject;
 import use_case.access_database.AccessDatabaseInputBoundary;
 import use_case.access_database.AccessDatabaseInputData;
+import use_case.access_database.AccessDatabaseInteractor;
 
 /**
  * The controller for handling the interaction between the Access Database use case
@@ -27,5 +30,9 @@ public class AccessDatabaseController {
 
     public void switchToMainMenuView() {
         accessDatabaseInteractor.switchToMainMenuView();
+    }
+
+    public void switchToPlaythroughView(Quiz quiz) {
+        accessDatabaseInteractor.switchToPlaythroughView(quiz);
     }
 }
