@@ -46,10 +46,10 @@ public class QuizGenerationInteractor implements QuizGenerationInputBoundary {
 
             // Prepare success view
             quizGenerationPresenter.prepareSuccessView(trivia);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             // Handle the failure case
             quizGenerationPresenter.prepareFailView(ex.getMessage());
         }
     }
-
 }

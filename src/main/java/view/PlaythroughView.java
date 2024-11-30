@@ -191,11 +191,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         final PlaythroughState state = this.playthroughViewModel.getState();
         nextButton.setVisible(false);
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
-            System.out.println("done");
-            // TODO: Work here
             summaryController.prepareSummaryView(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerInfo);
-            System.out.println("Number of correct answers: " + state.getNumberOfCorrectAnswers());
-            // this is where you would call a controller for a summary use case and pass in the updated map of data
         }
         else {
             state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
