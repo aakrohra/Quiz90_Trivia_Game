@@ -341,7 +341,7 @@ public class AppBuilder {
         return this;
     }
 
-    // TODO: Add instance variable for PlaythroughViewModel
+    // TODO: Add instance variable for LocalMultiplayerPlaythroughViewModel
     /**
      * Adds the Quiz Generation Use Case to the application.
      * @return this builder

@@ -1,4 +1,4 @@
-package interface_adapter.playthrough;
+package interface_adapter.local_multiplayer_playthrough;
 
 import entity.Question;
 import entity.Quiz;
@@ -6,7 +6,7 @@ import entity.Quiz;
 /**
  * The state for the Playthrough View Model.
  */
-public class PlaythroughState {
+public class LocalMultiplayerPlaythroughState {
     private Quiz quiz;
     private int currentQuestionIndex;
     private int numberOfCorrectAnswers;

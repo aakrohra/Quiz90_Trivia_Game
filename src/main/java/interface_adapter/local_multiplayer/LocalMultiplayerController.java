@@ -1,7 +1,6 @@
 package interface_adapter.local_multiplayer;
 
 import use_case.local_multiplayer.LocalMultiplayerInputBoundary;
-import use_case.local_multiplayer.LocalMultiplayerInputData;
 import use_case.quiz_generation.QuizGenerationInputData;
 
 /**

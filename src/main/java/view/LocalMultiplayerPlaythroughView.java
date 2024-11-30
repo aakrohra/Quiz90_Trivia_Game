@@ -15,14 +15,14 @@ import javax.swing.border.Border;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 /**
  * The PlaythroughView class creates a simple quiz interface extending JPanel.
  * It includes a question label and four answer buttons.
  */
-public class PlaythroughView extends JPanel implements PropertyChangeListener {
+public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyChangeListener {
 
     private static final int OPTION_ONE_INDEX = 0;
     private static final int OPTION_TWO_INDEX = 1;
@@ -31,6 +31,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
 
     private final PlaythroughViewModel playthroughViewModel;
     private SummaryController summaryController;
+    private LocalMultiplayerController localMultiplayerController;
 
     private final JTextPane question;
     private final JButton button1;
@@ -39,9 +40,12 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private final JButton button4;
     private final JButton nextButton;
 
-    private Map<Integer, Pair<String, Boolean>> playerInfo = new HashMap<>();
+    private Boolean stealTurn = false;
+    private Boolean currentPlayerIsOne = true;
+    private Map<Integer, Pair<String, Boolean>> playerOneInfo = new HashMap<>();
+    private Map<Integer, Pair<String, Boolean>> playerTwoInfo = new HashMap<>();
 
-    public PlaythroughView(PlaythroughViewModel playthroughViewModel) {
+    public LocalMultiplayerPlaythroughView(PlaythroughViewModel playthroughViewModel) {
         this.playthroughViewModel = playthroughViewModel;
         this.playthroughViewModel.addPropertyChangeListener(this);
 
@@ -64,9 +68,9 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
 
         // TODO: Should this be removed?
-        question.setBackground(Color.red);
+        question.setBackground(Constants.LIGHTERBGCOLOUR);
         question.setText("By definition, where does an abyssopelagic animal live ahahahahahah adaaaaaaaaaaaadddddddddddddddddddddddddddddddddddddddddddd da aaaaaaaaaaaaaaaaaaaaaaaaaaaaa  dad ahah ah hah ah ahhahhahah haha hha?");
-        question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE)); // Maximum size
+        question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         // Wrap in a JPanel with BoxLayout for better size enforcement
         final JPanel questionPanel = new JPanel();
@@ -143,45 +147,117 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private void handleButtonClick(JButton selectedButton) {
         final PlaythroughState state = this.playthroughViewModel.getState();
 
-        // Disable all buttons after one of them has been clicked
-        button1.setEnabled(false);
-        button2.setEnabled(false);
-        button3.setEnabled(false);
-        button4.setEnabled(false);
+//        // Disable all buttons after one of them has been clicked
+//        button1.setEnabled(false);
+//        button2.setEnabled(false);
+//        button3.setEnabled(false);
+//        button4.setEnabled(false);
 
-        if (state.getCurrentQuestion().getCorrectAnswer().equals(selectedButton.getText())) {
-            selectedButton.setBackground(Color.GREEN);
-            state.updateNumberOfCorrectAnswers();
-            playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+        Boolean showNext = true;
+
+        // determine which playerInfo to update
+        final Map<Integer, Pair<String, Boolean>> playerInfo;
+        if (currentPlayerIsOne) {
+            playerInfo = playerOneInfo;
         }
         else {
-            selectedButton.setBackground(Color.RED);
-
-            if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
-                button1.setBackground(Color.GREEN);
-            }
-            else if (button2.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
-                button2.setBackground(Color.GREEN);
-            }
-            else if (button3.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
-                button3.setBackground(Color.GREEN);
-            }
-            else if (button4.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
-                button4.setBackground(Color.GREEN);
-            }
-            playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+            playerInfo = playerTwoInfo;
         }
 
-        System.out.println(playerInfo.toString());
+        // correct answer
+        if (state.getCurrentQuestion().getCorrectAnswer().equals(selectedButton.getText())) {
+            // disable all buttons
+            button1.setEnabled(false);
+            button2.setEnabled(false);
+            button3.setEnabled(false);
+            button4.setEnabled(false);
 
-        // Change the border color to blue
-        final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
-        selectedButton.setBorder(blueBorder);
+            // update state and playerInfo
+            selectedButton.setBackground(Color.GREEN);
+            state.updateNumberOfCorrectAnswers();
+            if (currentPlayerIsOne) {
+                playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+            }
+            else {
+                playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+            }
+            // Change the border color of selected button to blue
+            final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
+            selectedButton.setBorder(blueBorder);
 
-        nextButton.setVisible(true);
+            // shows next button
+            showNext = true;
+        }
 
-        // Print out the selected button
-        System.out.println("Selected: " + selectedButton.getText());
+        // incorrect answer
+        else {
+            // if wrong answer on stolen turn
+            if (stealTurn) {
+                // disable all buttons
+                button1.setEnabled(false);
+                button2.setEnabled(false);
+                button3.setEnabled(false);
+                button4.setEnabled(false);
+
+                // show correct button
+                if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                    button1.setBackground(Color.GREEN);
+                }
+                else if (button2.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                    button2.setBackground(Color.GREEN);
+                }
+                else if (button3.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                    button3.setBackground(Color.GREEN);
+                }
+                else if (button4.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+                    button4.setBackground(Color.GREEN);
+                }
+
+                // save who got it wrong
+                if (currentPlayerIsOne) {
+                    playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+                }
+                else {
+                    playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+                }
+                // Change the border color of selected button to blue
+                final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
+                selectedButton.setBorder(blueBorder);
+
+                // stealTurn is false
+                stealTurn = false;
+
+                // show next button
+                showNext = true;
+            }
+
+            // wrong answer on regular turn
+            else {
+                // disable the selected button
+                selectedButton.setBackground(Color.RED);
+                selectedButton.setEnabled(false);
+                // TODO enable "steal available" text
+
+                // Change the border color of selected button to blue
+                final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
+                selectedButton.setBorder(blueBorder);
+
+                // set + update player that got wrong answer
+                if (currentPlayerIsOne) {
+                    playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+                }
+                else {
+                    playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+                }
+                showNext = false;
+                stealTurn = true;   // TODO integrate into state so it updates and saves correctly
+            }
+        }
+
+        if (showNext) {
+            nextButton.setVisible(true);
+        }
+
     }
 
     /**
@@ -190,16 +266,23 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private void handleNextClick() {
         final PlaythroughState state = this.playthroughViewModel.getState();
         nextButton.setVisible(false);
+
+        // finished last question
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
-            System.out.println("done");
-            // TODO: Work here
-            summaryController.prepareSummaryView(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerInfo);
-            System.out.println("Number of correct answers: " + state.getNumberOfCorrectAnswers());
-            // this is where you would call a controller for a summary use case and pass in the updated map of data
+
+            // TODO need different view probably
+//            summaryController.prepareSummaryView(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerOneInfo, playerTwoInfo);
         }
         else {
             state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
             this.playthroughViewModel.firePropertyChanged();
+        }
+
+        if (currentPlayerIsOne) {
+            currentPlayerIsOne = false;
+        }
+        else {
+            currentPlayerIsOne = true;
         }
     }
 
@@ -220,7 +303,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     }
 
     public String getViewName() {
-        return "playthrough";
+        return "local multiplayer playthrough";
     }
 
     public void setSummaryController(SummaryController summaryController) {
@@ -270,7 +353,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
         frame.setLocationRelativeTo(null);
-        frame.setContentPane(new PlaythroughView(new PlaythroughViewModel()));
+        frame.setContentPane(new LocalMultiplayerPlaythroughView(new PlaythroughViewModel()));
         frame.setVisible(true);
     }
 }

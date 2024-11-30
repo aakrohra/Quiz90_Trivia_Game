@@ -30,13 +30,13 @@ public class QuizGenerationPresenter implements QuizGenerationOutputBoundary {
 
     /**
      * Prepares the view for the Playthrough screen.
-     * Updates the PlaythroughState with the trivia quiz and notifies the view.
+     * Updates the LocalMultiplayerPlaythroughState with the trivia quiz and notifies the view.
      *
      * @param triviaQuiz The quiz to display in the playthrough view.
      */
     @Override
     public void prepareSuccessView(Quiz triviaQuiz) {
-        // Update the PlaythroughState with the provided quiz
+        // Update the LocalMultiplayerPlaythroughState with the provided quiz
         final PlaythroughState playthroughState = playthroughViewModel.getState();
         playthroughState.setQuiz(triviaQuiz);
         playthroughViewModel.setState(playthroughState);

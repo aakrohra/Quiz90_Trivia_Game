@@ -24,6 +24,8 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
 
     private final LocalMultiplayerViewModel localMultiplayerViewModel;
 
+    private final Boolean localMultiplayerBoolean = true;
+
     private final JComboBox<?> categoryComboBox;
     private final JComboBox<?> questionComboBox;
     private final JComboBox<?> difficultyComboBox;
