@@ -155,7 +155,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
             playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
         }
         else {
-            selectedButton.setBackground(Color.RED);
+            selectedButton.setBackground(Constants.INCORRECTREDBG);
 
             if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
                 button1.setBackground(Color.GREEN);
@@ -214,7 +214,6 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         button.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
-        button.setMaximumSize(new Dimension(10000, 1000));
         button.setMaximumSize(new Dimension(10000, 1000));
         return button;
     }

@@ -1,14 +1,11 @@
 package interface_adapter.quiz_generation;
 
+import entity.Quiz;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.playthrough.PlaythroughState;
 import interface_adapter.playthrough.PlaythroughViewModel;
 import use_case.quiz_generation.QuizGenerationOutputBoundary;
-import entity.Quiz;
-import view.PlaythroughView;
-
-import javax.swing.*;
 
 /**
  * The Presenter for switching to the Quiz Generation View.
