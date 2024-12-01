@@ -7,8 +7,7 @@ import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
 
-import app.Constants;
-import entity.PlayerCreatedQuiz;
+import entity.RetrievedQuiz;
 import entity.Quiz;
 import interface_adapter.access_quiz.AccessQuizController;
 import interface_adapter.access_quiz.AccessedQuizInfoState;
@@ -73,7 +72,7 @@ public class AccessedQuizInfoView extends JPanel implements PropertyChangeListen
                 // below is temp code, quizObject should be passed somewhere to be played
                 evt -> {
                     if (evt.getSource().equals(play)) {
-                        accessQuizController.playAccessedQuiz((PlayerCreatedQuiz) quizObject);
+                        accessQuizController.playAccessedQuiz((RetrievedQuiz) quizObject);
                     }
                 }
         );

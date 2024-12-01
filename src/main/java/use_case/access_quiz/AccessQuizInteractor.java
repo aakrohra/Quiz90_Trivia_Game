@@ -6,8 +6,8 @@ import java.util.List;
 import org.json.JSONObject;
 
 import entity.PlayerCreatedQuestion;
-import entity.PlayerCreatedQuiz;
-import entity.PlayerCreatedQuizFactory;
+import entity.RetrievedQuiz;
+import entity.RetrievedQuizFactory;
 
 /**
  * The Access Quiz Interactor.
@@ -29,9 +29,9 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
         final String key = accessQuizInputData.getKey();
 
         if (customQuizDataAccessObject.existsByKey(key)) {
-            final PlayerCreatedQuizFactory quizFactory = new PlayerCreatedQuizFactory();
+            final RetrievedQuizFactory quizFactory = new RetrievedQuizFactory();
             final JSONObject quizData = customQuizDataAccessObject.getQuizFromKey(key);
-            final PlayerCreatedQuiz quizObject = quizFactory.create(quizData, key);
+            final RetrievedQuiz quizObject = quizFactory.create(quizData, key);
 
             final AccessQuizOutputData accessQuizOutputData = new AccessQuizOutputData(
                     false, quizObject);
@@ -41,7 +41,7 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
         // this is here for easy testing and can be removed later if wanted
         else if ("testing".equals(key)) {
             final List<PlayerCreatedQuestion> temp2 = new ArrayList<>();
-            final PlayerCreatedQuiz temp = new PlayerCreatedQuiz("title", temp2, "author");
+            final RetrievedQuiz temp = new RetrievedQuiz("title", temp2, "author");
             final AccessQuizOutputData accessQuizOutputData = new AccessQuizOutputData(
                     false, temp);
 
@@ -58,7 +58,7 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
     }
 
     @Override
-    public void playAccessedQuiz(PlayerCreatedQuiz quizObject) {
+    public void playAccessedQuiz(RetrievedQuiz quizObject) {
         accessQuizPresenter.playAccessedQuiz(quizObject);
     }
 }

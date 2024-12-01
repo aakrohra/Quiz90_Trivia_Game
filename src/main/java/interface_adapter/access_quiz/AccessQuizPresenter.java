@@ -1,6 +1,6 @@
 package interface_adapter.access_quiz;
 
-import entity.PlayerCreatedQuiz;
+import entity.RetrievedQuiz;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -60,7 +60,7 @@ public class AccessQuizPresenter implements AccessQuizOutputBoundary {
     }
 
     @Override
-    public void playAccessedQuiz(PlayerCreatedQuiz quizObject) {
+    public void playAccessedQuiz(RetrievedQuiz quizObject) {
         final PlaythroughState playthroughState = playthroughViewModel.getState();
         playthroughState.setQuiz(quizObject);
         playthroughViewModel.setState(playthroughState);

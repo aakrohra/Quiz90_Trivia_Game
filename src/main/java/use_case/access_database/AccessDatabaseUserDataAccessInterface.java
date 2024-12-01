@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.json.JSONObject;
 
-import entity.PlayerCreatedQuiz;
+import entity.RetrievedQuiz;
 import entity.User;
 
 /**
@@ -17,7 +17,7 @@ public interface AccessDatabaseUserDataAccessInterface {
      * @param user the given user
      * @return map with key, quiz pairing
      */
-    Map<String, PlayerCreatedQuiz> getAllUserQuizzes(String username);
+    Map<String, RetrievedQuiz> getAllUserQuizzes(String username);
 
     /**
      * Gets user info including username, password, and quizzes and returns as a JSONObject.

@@ -2,10 +2,8 @@ package use_case.access_database;
 
 import java.util.Map;
 
-import entity.PlayerCreatedQuiz;
+import entity.RetrievedQuiz;
 import entity.PlayerQuizDatabase;
-import entity.Quiz;
-import entity.User;
 
 /**
  * The interactor class for accessing a user's quiz data from the database.
@@ -34,7 +32,7 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary{
         final String username = accessDatabaseInputData.getUsername();
 
         if (customQuizDataAccessObject.existsByName(username)) {
-            final Map<String, PlayerCreatedQuiz> quizMap = customQuizDataAccessObject.getAllUserQuizzes(username);
+            final Map<String, RetrievedQuiz> quizMap = customQuizDataAccessObject.getAllUserQuizzes(username);
             final PlayerQuizDatabase database = new PlayerQuizDatabase(quizMap);
             final AccessDatabaseOutputData accessDatabaseOutputData = new AccessDatabaseOutputData(false, database);
 
