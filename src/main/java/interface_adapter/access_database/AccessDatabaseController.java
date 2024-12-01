@@ -28,4 +28,12 @@ public class AccessDatabaseController {
     public void switchToMainMenuView() {
         accessDatabaseInteractor.switchToMainMenuView();
     }
+
+    /**
+     * Switches to create question view.
+     * @param username the currently logged in user's username
+     */
+    public void switchToCreateQuestionView(String username) {
+        accessDatabaseInteractor.switchToCreateQuestionView(username);
+    }
 }

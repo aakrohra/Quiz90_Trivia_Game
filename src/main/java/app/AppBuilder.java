@@ -261,7 +261,7 @@ public class AppBuilder {
      */
     public AppBuilder addQuizCreationUseCase() {
         final QuizCreationOutputBoundary quizCreationOutputBoundary = new QuizCreationPresenter(
-                viewManagerModel, quizCreationViewModel);
+                viewManagerModel, quizCreationViewModel, accessedDatabaseInfoViewModel);
         final QuizCreationInputBoundary quizCreationInputBoundary = new QuizCreationInteractor(
                 customQuizDataAccessObject, userDataAccessObject, quizCreationOutputBoundary);
         final QuizCreationController quizCreationController = new QuizCreationController(
@@ -382,13 +382,14 @@ public class AppBuilder {
     public AppBuilder addAccessQuizDatabaseUseCase() {
 
         final AccessDatabaseOutputBoundary accessDatabaseOutputBoundary = new AccessDatabasePresenter(
-                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel);
+                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel, questionCreationViewModel);
 
         final AccessDatabaseInputBoundary accessDatabaseInteractor =
                 new AccessDatabaseInteractor(customQuizDataAccessObject, accessDatabaseOutputBoundary);
 
         final AccessDatabaseController accessDatabaseController = new AccessDatabaseController(accessDatabaseInteractor);
         loggedInView.setAccessedQuizDatabaseController(accessDatabaseController);
+        quizDatabaseView.setAccessDatabaseController(accessDatabaseController);
         return this;
     }
 

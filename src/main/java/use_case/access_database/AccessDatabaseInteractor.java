@@ -34,14 +34,21 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary{
         if (customQuizDataAccessObject.existsByName(username)) {
             final Map<String, RetrievedQuiz> quizMap = customQuizDataAccessObject.getAllUserQuizzes(username);
             final PlayerQuizDatabase database = new PlayerQuizDatabase(quizMap);
-            final AccessDatabaseOutputData accessDatabaseOutputData = new AccessDatabaseOutputData(false, database);
+            final AccessDatabaseOutputData accessDatabaseOutputData =
+                    new AccessDatabaseOutputData(false, database, username);
 
             System.out.println("it works");
             accessDatabasePresenter.prepareSuccessView(accessDatabaseOutputData);
         }
     }
 
+    @Override
     public void switchToMainMenuView() {
         accessDatabasePresenter.switchToMainMenuView();
+    }
+
+    @Override
+    public void switchToCreateQuestionView(String username) {
+        accessDatabasePresenter.switchToCreateQuestionView(username);
     }
 }

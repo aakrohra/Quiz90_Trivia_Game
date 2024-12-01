@@ -6,6 +6,7 @@ import entity.Quiz;
 import interface_adapter.access_database.AccessDatabaseController;
 import interface_adapter.access_database.AccessedDatabaseInfoState;
 import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
+import interface_adapter.access_quiz.AccessedQuizInfoState;
 import interface_adapter.logged_in.LoggedInViewModel;
 
 import javax.swing.*;
@@ -26,6 +27,8 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private final String viewName = "access database";
 
+    private AccessDatabaseController accessDatabaseController;
+
     private final AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel;
     GridBagConstraints c = new GridBagConstraints();
     final JPanel searchPanel = new JPanel();
@@ -36,6 +39,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
     final JButton resetButton = new JButton("Reset");
     final JButton mainMenuButton = new JButton("Main Menu");
     final Dimension windowSize = new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
+    private JButton createQuizButton = new JButton("Create New Quiz");
     private Database database;
 
 
@@ -168,7 +172,6 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new BorderLayout());
-        JButton createQuizButton = new JButton("Create new quiz");
         JPanel navigationPanel = new JPanel();
         navigationPanel.setLayout(new FlowLayout());
         JButton prevButton = new JButton("⬅");
@@ -185,6 +188,19 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         this.add(searchPanel, BorderLayout.NORTH);
         this.add(quizListPanel, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
+
+        createQuizButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(createQuizButton)) {
+                        final AccessedDatabaseInfoState currentState = accessDatabaseViewModel.getState();
+                        accessDatabaseController.switchToCreateQuestionView(currentState.getUsername());
+                    }
+                }
+        );
+    }
+
+    public void setAccessDatabaseController(AccessDatabaseController accessDatabaseController) {
+        this.accessDatabaseController = accessDatabaseController;
     }
 
     public String getViewName(){

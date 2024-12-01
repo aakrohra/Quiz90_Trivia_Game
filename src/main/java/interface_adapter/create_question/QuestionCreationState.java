@@ -15,6 +15,7 @@ public class QuestionCreationState {
     private String wrongAnswer1 = "";
     private String wrongAnswer2 = "";
     private String wrongAnswer3 = "";
+    private String username = "";
 
     private List<PlayerCreatedQuestion> questionsSoFar;
 
@@ -71,6 +72,14 @@ public class QuestionCreationState {
 
     public void setWrongAnswer3(String wrongAnswer3) {
         this.wrongAnswer3 = wrongAnswer3;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getUsername() {
+        return username;
     }
 
 }

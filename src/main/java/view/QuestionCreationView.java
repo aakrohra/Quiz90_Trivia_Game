@@ -88,7 +88,7 @@ public class QuestionCreationView extends JPanel implements PropertyChangeListen
                     if (evt.getSource().equals(finish)) {
                         final QuestionCreationState currentState = questionCreationViewModel.getState();
                         final String quizTitle = JOptionPane.showInputDialog("What would you like to title your quiz?");
-                        quizCreationController.executeCreateQuiz(currentState.getQuestionsSoFar(), quizTitle);
+                        quizCreationController.executeCreateQuiz(currentState.getQuestionsSoFar(), quizTitle, currentState.getUsername());
                     }
                 }
         );

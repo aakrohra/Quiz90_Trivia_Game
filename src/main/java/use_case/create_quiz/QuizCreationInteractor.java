@@ -30,7 +30,7 @@ public class QuizCreationInteractor implements QuizCreationInputBoundary {
         final JSONObject jsonData = customQuizDAO.quizObjectToJSONObject(quizObject);
 
         // this needs to be changed to get currently logged in user somehow somewhere
-        final String key = customQuizDAO.addQuiz(jsonData, getUserDAO.get("loop2"));
+        final String key = customQuizDAO.addQuiz(jsonData, getUserDAO.get(inputData.getUsername()));
 
         final QuizCreationOutputData outputData = new QuizCreationOutputData(quizObject, key);
         quizCreationOutputBoundary.prepareSuccessView(outputData);

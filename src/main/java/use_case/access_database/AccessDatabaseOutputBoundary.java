@@ -4,4 +4,5 @@ public interface AccessDatabaseOutputBoundary {
 
     void prepareSuccessView(AccessDatabaseOutputData data);
     void switchToMainMenuView();
+    void switchToCreateQuestionView(String username);
 }
