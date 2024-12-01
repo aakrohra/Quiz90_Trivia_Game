@@ -1,8 +1,8 @@
 package use_case.create_quiz;
 
-import entity.PlayerCreatedQuestion;
-
 import java.util.List;
+
+import entity.PlayerCreatedQuestion;
 
 /**
  * The input data object for the quiz creation use case.

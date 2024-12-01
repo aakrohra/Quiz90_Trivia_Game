@@ -1,10 +1,10 @@
 package interface_adapter.create_quiz;
 
+import java.util.List;
+
 import entity.PlayerCreatedQuestion;
 import use_case.create_quiz.QuizCreationInputBoundary;
 import use_case.create_quiz.QuizCreationInputData;
-
-import java.util.List;
 
 /**
  * The controller for the quiz creation and summary use case.

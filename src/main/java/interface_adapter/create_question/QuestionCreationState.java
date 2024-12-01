@@ -1,9 +1,9 @@
 package interface_adapter.create_question;
 
-import entity.PlayerCreatedQuestion;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import entity.PlayerCreatedQuestion;
 
 /**
  * The state for the question creation view model.
@@ -80,6 +80,10 @@ public class QuestionCreationState {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setQuestionsSoFar(List<PlayerCreatedQuestion> questionsSoFar) {
+        this.questionsSoFar = questionsSoFar;
     }
 
 }

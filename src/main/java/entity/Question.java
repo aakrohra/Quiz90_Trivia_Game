@@ -24,6 +24,10 @@ public interface Question {
      */
     String getCorrectAnswer();
 
+    /**
+     * Returns the incorrect answers as a list.
+     * @return the incorrect answers
+     */
     List<String> getIncorrectAnswers();
 
 }

@@ -23,7 +23,8 @@ public class QuestionCreationController {
      * @param wrong3 wrong answer 3
      */
     public void executeCreateQuestion(String questionText, String answer, String wrong1, String wrong2, String wrong3) {
-        final QuestionCreationInputData questionCreationInputData = new QuestionCreationInputData(questionText, answer, wrong1, wrong2, wrong3);
+        final QuestionCreationInputData questionCreationInputData = new QuestionCreationInputData(
+                questionText, answer, wrong1, wrong2, wrong3);
 
         questionCreationInteractor.executeCreateQuestion(questionCreationInputData);
     }

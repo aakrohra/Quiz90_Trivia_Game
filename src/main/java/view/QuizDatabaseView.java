@@ -7,51 +7,30 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
-import app.Constants;
-import entity.*;
-import interface_adapter.access_database.AccessDatabaseController;
-import interface_adapter.access_database.AccessedDatabaseInfoState;
-import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
-import interface_adapter.access_quiz.AccessedQuizInfoState;
-import interface_adapter.logged_in.LoggedInViewModel;
-
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.json.JSONObject;
-
 import app.Constants;
-import data_access.DBCustomQuizDataAccessObject;
-import entity.Quiz;
+import entity.*;
 import interface_adapter.access_database.AccessDatabaseController;
 import interface_adapter.access_database.AccessedDatabaseInfoState;
 import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 /**
  * The View for when the user is accessing their database.

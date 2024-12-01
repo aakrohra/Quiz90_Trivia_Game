@@ -1,10 +1,11 @@
 package use_case.create_question;
 
-import entity.PlayerCreatedQuestionFactory;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
+import entity.PlayerCreatedQuestionFactory;
 
 /**
  * The interactor for the question creation use case.
@@ -31,7 +32,8 @@ public class QuestionCreationInteractor implements QuestionCreationInputBoundary
 
         questionJSONObject.put("correct", questionCreationInputData.getAnswer());
 
-        final QuestionCreationOutputData outputData = new QuestionCreationOutputData(questionFactory.create(questionJSONObject));
+        final QuestionCreationOutputData outputData = new QuestionCreationOutputData(
+                questionFactory.create(questionJSONObject));
         questionCreationPresenter.prepareSuccessView(outputData);
     }
 }

@@ -1,20 +1,22 @@
 package view;
 
-import app.Constants;
-import interface_adapter.create_question.QuestionCreationController;
-import interface_adapter.create_question.QuestionCreationState;
-import interface_adapter.create_question.QuestionCreationViewModel;
-import interface_adapter.create_quiz.QuizCreationController;
-import org.jetbrains.annotations.NotNull;
-
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+
+import org.jetbrains.annotations.NotNull;
+
+import app.Constants;
+import interface_adapter.create_question.QuestionCreationController;
+import interface_adapter.create_question.QuestionCreationState;
+import interface_adapter.create_question.QuestionCreationViewModel;
+import interface_adapter.create_quiz.QuizCreationController;
 
 /**
  * The view for question creation.
@@ -88,7 +90,8 @@ public class QuestionCreationView extends JPanel implements PropertyChangeListen
                     if (evt.getSource().equals(finish)) {
                         final QuestionCreationState currentState = questionCreationViewModel.getState();
                         final String quizTitle = JOptionPane.showInputDialog("What would you like to title your quiz?");
-                        quizCreationController.executeCreateQuiz(currentState.getQuestionsSoFar(), quizTitle, currentState.getUsername());
+                        quizCreationController.executeCreateQuiz(
+                                currentState.getQuestionsSoFar(), quizTitle, currentState.getUsername());
                     }
                 }
         );
@@ -198,14 +201,5 @@ public class QuestionCreationView extends JPanel implements PropertyChangeListen
             JOptionPane.showMessageDialog(this,
                     "Added question! Replace your old text for a new question, or press finish.");
         }
-    }
-
-    public static void main(String[] args) {
-        final JFrame frame = new JFrame("Quiz90");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
-        frame.setLocationRelativeTo(null);
-        frame.setContentPane(new QuestionCreationView(new QuestionCreationViewModel()));
-        frame.setVisible(true);
     }
 }

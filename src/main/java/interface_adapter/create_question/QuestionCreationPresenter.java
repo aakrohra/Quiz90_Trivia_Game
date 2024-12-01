@@ -1,7 +1,5 @@
 package interface_adapter.create_question;
 
-import interface_adapter.create_quiz.QuizCreationState;
-import interface_adapter.create_quiz.QuizCreationViewModel;
 import use_case.create_question.QuestionCreationOutputBoundary;
 import use_case.create_question.QuestionCreationOutputData;
 

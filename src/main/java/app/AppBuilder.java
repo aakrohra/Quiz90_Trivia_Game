@@ -124,7 +124,6 @@ public class AppBuilder {
     private QuestionCreationViewModel questionCreationViewModel;
     private QuestionCreationView questionCreationView;
     private QuizCreationViewModel quizCreationViewModel;
-    private CreatedQuizView createdQuizView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -230,17 +229,6 @@ public class AppBuilder {
     }
 
     /**
-     * Adds the created quiz summary view to the app.
-     * @return this builder
-     */
-    public AppBuilder addCreatedQuizView() {
-        quizCreationViewModel = new QuizCreationViewModel();
-        createdQuizView = new CreatedQuizView(quizCreationViewModel);
-        cardPanel.add(createdQuizView, createdQuizView.getViewName());
-        return this;
-    }
-
-    /**
      * Adds the Question Creation Use Case to the app.
      * @return this builder
      */
@@ -261,7 +249,7 @@ public class AppBuilder {
      */
     public AppBuilder addQuizCreationUseCase() {
         final QuizCreationOutputBoundary quizCreationOutputBoundary = new QuizCreationPresenter(
-                viewManagerModel, quizCreationViewModel, accessedDatabaseInfoViewModel);
+                viewManagerModel, accessedDatabaseInfoViewModel, questionCreationViewModel);
         final QuizCreationInputBoundary quizCreationInputBoundary = new QuizCreationInteractor(
                 customQuizDataAccessObject, userDataAccessObject, quizCreationOutputBoundary);
         final QuizCreationController quizCreationController = new QuizCreationController(
