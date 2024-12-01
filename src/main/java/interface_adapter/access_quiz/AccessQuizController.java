@@ -1,6 +1,6 @@
 package interface_adapter.access_quiz;
 
-import entity.PlayerCreatedQuiz;
+import entity.RetrievedQuiz;
 import use_case.access_quiz.AccessQuizInputBoundary;
 import use_case.access_quiz.AccessQuizInputData;
 
@@ -36,7 +36,7 @@ public class AccessQuizController {
      * Executes the Play Accessed Quiz Use Case.
      * @param quizObject the quiz object passed in
      */
-    public void playAccessedQuiz(PlayerCreatedQuiz quizObject) {
+    public void playAccessedQuiz(RetrievedQuiz quizObject) {
         accessQuizUseCaseInteractor.playAccessedQuiz(quizObject);
     }
 }

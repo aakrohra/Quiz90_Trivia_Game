@@ -35,4 +35,12 @@ public class AccessDatabaseController {
     public void switchToPlaythroughView(Quiz quiz) {
         accessDatabaseInteractor.switchToPlaythroughView(quiz);
     }
+
+    /**
+     * Switches to create question view.
+     * @param username the currently logged in user's username
+     */
+    public void switchToCreateQuestionView(String username) {
+        accessDatabaseInteractor.switchToCreateQuestionView(username);
+    }
 }

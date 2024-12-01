@@ -1,6 +1,6 @@
 package use_case.access_quiz;
 
-import entity.PlayerCreatedQuiz;
+import entity.RetrievedQuiz;
 
 /**
  * Output data for the Access Quiz use case.
@@ -8,9 +8,9 @@ import entity.PlayerCreatedQuiz;
 public class AccessQuizOutputData {
 
     private final boolean useCaseFailed;
-    private final PlayerCreatedQuiz quizObject;
+    private final RetrievedQuiz quizObject;
 
-    public AccessQuizOutputData(boolean useCaseFailed, PlayerCreatedQuiz quizObject) {
+    public AccessQuizOutputData(boolean useCaseFailed, RetrievedQuiz quizObject) {
         this.useCaseFailed = useCaseFailed;
         this.quizObject = quizObject;
     }
@@ -27,7 +27,7 @@ public class AccessQuizOutputData {
         return quizObject.getAuthor();
     }
 
-    public PlayerCreatedQuiz getQuizObject() {
+    public RetrievedQuiz getQuizObject() {
         return quizObject;
     }
 }
