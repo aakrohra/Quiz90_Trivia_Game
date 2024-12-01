@@ -28,10 +28,17 @@ public class AccessDatabaseController {
         accessDatabaseInteractor.execute(accessDatabaseInputData);
     }
 
+    /**
+     * Executes the switch to logged in view use case.
+     */
     public void switchToMainMenuView() {
         accessDatabaseInteractor.switchToMainMenuView();
     }
 
+    /**
+     * Executes the switch to playthrough view use case for the selected quiz.
+     * @param quiz the selected quiz
+     */
     public void switchToPlaythroughView(Quiz quiz) {
         accessDatabaseInteractor.switchToPlaythroughView(quiz);
     }

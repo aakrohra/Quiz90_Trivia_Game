@@ -1,9 +1,10 @@
 package interface_adapter.access_database;
 
-import entity.Database;
 import entity.PlayerQuizDatabase;
-import entity.User;
 
+/**
+ * The state information regarding the accessed database.
+ */
 public class AccessedDatabaseInfoState {
     private PlayerQuizDatabase database;
 

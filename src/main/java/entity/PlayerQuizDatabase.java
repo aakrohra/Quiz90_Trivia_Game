@@ -17,12 +17,12 @@ public class PlayerQuizDatabase implements Database {
     }
 
     private Map<String, String> titleToKeyMapBuilder() {
-        final Map<String, String> titleToKeyMap = new HashMap<>();
+        final Map<String, String> titleToKey = new HashMap<>();
         final Iterator<String> keys = quizMap.keySet().iterator();
         for (PlayerCreatedQuiz quiz : quizMap.values()) {
-            titleToKeyMap.put(quiz.getTitle(), keys.next());
+            titleToKey.put(quiz.getTitle(), keys.next());
         }
-        return titleToKeyMap;
+        return titleToKey;
     }
 
     /**
@@ -41,7 +41,7 @@ public class PlayerQuizDatabase implements Database {
         final Map<String, PlayerCreatedQuiz> quizzes = new HashMap<>();
         final String str = title.toLowerCase().replaceAll("\\s+", "");
         int i = 0;
-        List<String> keys = new ArrayList<>(quizMap.keySet());
+        final List<String> keys = new ArrayList<>(quizMap.keySet());
         for (PlayerCreatedQuiz quiz : quizMap.values()) {
             final String quizTitle = quiz.getTitle().toLowerCase().replaceAll("\\s+", "");
             if (quizTitle.contains(str)) {

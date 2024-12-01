@@ -47,7 +47,6 @@ import okhttp3.Response;
 /**
  * The View for when the user is accessing their database.
  */
-
 public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
     private static final String API_INFO_CALL = "http://vm003.teach.cs.toronto.edu:20112/user?username=%s";
     private static final String CONTENT_TYPE_LABEL = "Content-Type";
@@ -73,7 +72,8 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
     private static final double ROW_LARGE_WIDTH_MODIFIER = 0.3;
     private static final double ROW_SMALL_WIDTH_MODIFIER = 0.1;
     private static final int GRIDX_MAX = 3;
-    private static final String CLIPBOARD_SUCCESSFUL_PLACEHOLDER = " successfully copied to clipboard! Make sure to share with your friends!";
+    private static final String CLIPBOARD_SUCCESSFUL_PLACEHOLDER =
+            " successfully copied to clipboard! Make sure to share with your friends!";
     private static final int MAX_ROW_SIZE = 9;
     private static final int SCROLL_PANEL_WIDTH_MODIFIER = 1;
 
@@ -107,8 +107,10 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         searchPanel.setLayout(new GridBagLayout());
         searchPanel.setPreferredSize(new Dimension((int) (windowWidth * QUIZ_PANEL_SIZE_MODIFIER), QUIZ_ROW_HEIGHT));
 
-        searchKeyField.setPreferredSize(new Dimension((int) (windowWidth * SEARCH_FIELDS_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
-        searchTitleField.setPreferredSize(new Dimension((int) (windowWidth * SEARCH_FIELDS_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        searchKeyField.setPreferredSize(new Dimension((int)
+                (windowWidth * SEARCH_FIELDS_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        searchTitleField.setPreferredSize(new Dimension((int)
+                (windowWidth * SEARCH_FIELDS_WIDTH_MODIFIER), GENERAL_ELEMENT_HEIGHT));
 
         searchKeyField.setText(SEARCH_KEY_PLACEHOLDER);
         searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
@@ -314,7 +316,6 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         c.gridwidth = 1;
         row.add(playButton, c);
 
-        final String titleCopy = quizString[0];
         final String message = quizString[2];
 
         copyButton.addActionListener(event -> {
@@ -335,7 +336,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private void searchByKey() {
         final String key = searchKeyField.getText();
-        PlayerCreatedQuiz quiz = database.getByKey(key);
+        final PlayerCreatedQuiz quiz = database.getByKey(key);
         if (quiz != null) {
             final String[] quizString = new String[GRIDX_MAX];
             quizString[0] = quiz.getTitle();
