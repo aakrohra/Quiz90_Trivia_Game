@@ -32,7 +32,6 @@ public class Main {
                                             .addPlaythroughView()
                                             .addSummaryView()
                                             .addDatabaseView()
-                                            .addCreatedQuizView()
                                             .addQuestionCreationView()
                                             .addQuestionCreationUseCase()
                                             .addQuizCreationUseCase()

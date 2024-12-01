@@ -16,7 +16,8 @@ public class ChangePasswordPresenter implements ChangePasswordOutputBoundary {
     private final LoggedInViewModel loggedInViewModel;
 
     public ChangePasswordPresenter(ViewManagerModel viewManagerModel,
-                                   ChangePasswordViewModel changePasswordViewmodel, LoggedInViewModel loggedInViewModel) {
+                                   ChangePasswordViewModel changePasswordViewmodel,
+                                   LoggedInViewModel loggedInViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.changePasswordViewModel = changePasswordViewmodel;
         this.loggedInViewModel = loggedInViewModel;

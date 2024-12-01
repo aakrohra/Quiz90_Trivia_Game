@@ -1,10 +1,9 @@
 package use_case.create_quiz;
 
+import org.json.JSONObject;
+
 import data_access.DBCustomQuizDataAccessObject;
 import entity.CreatedQuiz;
-import entity.User;
-import interface_adapter.logged_in.LoggedInState;
-import org.json.JSONObject;
 
 /**
  * The interactor for the quiz creation use case.
