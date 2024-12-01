@@ -15,8 +15,7 @@ import interface_adapter.quiz_generation.QuizGenerationViewModel;
  * The view for quiz generation, allowing users to select quiz parameters
  * such as category, number of question, and difficulty.
  */
-public class QuizGenerationView extends JPanel implements PropertyChangeListener  {
-
+public class QuizGenerationView extends JPanel implements PropertyChangeListener {
     private final String viewName = "quiz generation";
     private final JComboBox<?> categoryComboBox;
     private final JComboBox<?> questionComboBox;
@@ -43,7 +42,7 @@ public class QuizGenerationView extends JPanel implements PropertyChangeListener
 
         // Labels and ComboBox boxes
 
-        // Reset Instets
+        // Reset Insets
         gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
         // Categories
         final Font optionFont = new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE);
@@ -87,17 +86,6 @@ public class QuizGenerationView extends JPanel implements PropertyChangeListener
         buttonPanel.add(cancelButton);
         addComponent(buttonPanel, 0, Constants.FOUR, 2, GridBagConstraints.CENTER, gbc);
 
-        // Action Listeners
-        categoryComboBox.addActionListener(evt -> {
-            System.out.println("Category selected: " + categoryComboBox.getSelectedItem());
-        });
-        difficultyComboBox.addActionListener(evt -> {
-            System.out.println("Difficulty selected: " + difficultyComboBox.getSelectedItem());
-        });
-        questionComboBox.addActionListener(evt -> {
-            System.out.println("Number of questions selected: " + questionComboBox.getSelectedItem());
-        });
-
         playButton.addActionListener(evt -> {
             // Convert user inputs as strings/integers
             final String category = (String) categoryComboBox.getSelectedItem();
@@ -128,9 +116,6 @@ public class QuizGenerationView extends JPanel implements PropertyChangeListener
         gbc.anchor = anchor;
         this.add(comp, gbc);
     }
-
-    // TODO: The createLabel and createComboBox methods are useful to other views.
-    // TODO: Refactor the code to make them accessible to all views.
 
     // Helper method for creating a JLabel with custom font size and alignment
     private JLabel createLabel(String text, Font font, int alignment) {

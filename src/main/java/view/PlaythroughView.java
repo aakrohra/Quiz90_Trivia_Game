@@ -155,7 +155,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
             playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
         }
         else {
-            selectedButton.setBackground(Color.RED);
+            selectedButton.setBackground(Constants.INCORRECTREDBG);
 
             if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
                 button1.setBackground(Color.GREEN);
@@ -191,11 +191,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         final PlaythroughState state = this.playthroughViewModel.getState();
         nextButton.setVisible(false);
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
-            System.out.println("done");
-            // TODO: Work here
-            summaryController.prepareSummaryView(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerInfo);
-            System.out.println("Number of correct answers: " + state.getNumberOfCorrectAnswers());
-            // this is where you would call a controller for a summary use case and pass in the updated map of data
+            summaryController.execute(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerInfo);
         }
         else {
             state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
@@ -214,7 +210,6 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         button.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
-        button.setMaximumSize(new Dimension(10000, 1000));
         button.setMaximumSize(new Dimension(10000, 1000));
         return button;
     }
