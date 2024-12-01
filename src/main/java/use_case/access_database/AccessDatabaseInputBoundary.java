@@ -29,4 +29,6 @@ public interface AccessDatabaseInputBoundary {
      * @param username the currently logged in user's username
      */
     void switchToCreateQuestionView(String username);
+
+    void updateDatabase(String username);
 }
