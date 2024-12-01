@@ -313,13 +313,14 @@ public class AppBuilder {
     public AppBuilder addAccessQuizDatabaseUseCase() {
 
         final AccessDatabaseOutputBoundary accessDatabaseOutputBoundary = new AccessDatabasePresenter(
-                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel);
+                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel, playthroughViewModel);
 
         final AccessDatabaseInputBoundary accessDatabaseInteractor =
                 new AccessDatabaseInteractor(customQuizDataAccessObject, accessDatabaseOutputBoundary);
 
         final AccessDatabaseController accessDatabaseController = new AccessDatabaseController(accessDatabaseInteractor);
         loggedInView.setAccessedQuizDatabaseController(accessDatabaseController);
+        quizDatabaseView.setAccessDatabaseController(accessDatabaseController);
         return this;
     }
 

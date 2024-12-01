@@ -109,6 +109,9 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         this.addComp(buttonRow2, 1, 2, 2, GridBagConstraints.CENTER, gbc);
         this.addComp(nextButton, 2, 3, 3, GridBagConstraints.CENTER, gbc);
 
+
+        this.setBackground(Color.green);
+
     }
 
     private GridBagConstraints createGbc() {

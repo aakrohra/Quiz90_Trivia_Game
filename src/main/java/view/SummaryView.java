@@ -36,12 +36,18 @@ public class SummaryView extends JPanel implements PropertyChangeListener {
         final JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
         headerPanel.setBackground(Constants.BGCOLOUR);
+
+        // Title centered
         final JLabel title = createLabel("Summary View",
                 new Font(Constants.FONTSTYLE, Font.BOLD, Constants.TITLEFONTSIZE),
-                SwingConstants.LEFT, Color.WHITE);
+                SwingConstants.CENTER, Color.WHITE);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
         headerPanel.add(title);
 
-        // Return to Main Menu Button
+        // Vertical strut to add space between title and resultText
+        headerPanel.add(Box.createVerticalStrut(Constants.MARGINS));
+
+        // Result Text centered under the title
         resultText = createLabel("You got: ",
                 new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
                 SwingConstants.CENTER, Color.WHITE);
@@ -57,7 +63,7 @@ public class SummaryView extends JPanel implements PropertyChangeListener {
 
         final JScrollPane scrollPane = new JScrollPane(questionsPanel);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         this.add(scrollPane, BorderLayout.CENTER);
 
         // Buttons

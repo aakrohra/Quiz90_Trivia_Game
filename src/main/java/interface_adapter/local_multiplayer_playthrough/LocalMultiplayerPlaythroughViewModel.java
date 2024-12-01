@@ -3,7 +3,7 @@ package interface_adapter.local_multiplayer_playthrough;
 import interface_adapter.ViewModel;
 
 /**
- * The ViewModel for the Playthrough View.
+ * The ViewModel for the LocalMultiplayerPlaythrough View.
  */
 public class LocalMultiplayerPlaythroughViewModel extends ViewModel<LocalMultiplayerPlaythroughState> {
 
@@ -12,7 +12,7 @@ public class LocalMultiplayerPlaythroughViewModel extends ViewModel<LocalMultipl
     public static final String INCORRECT_ANSWER_MESSAGE = "Incorrect.";
 
     public LocalMultiplayerPlaythroughViewModel() {
-        super("playthrough");
+        super("local multiplayer playthrough");
         setState(new LocalMultiplayerPlaythroughState());
     }
 

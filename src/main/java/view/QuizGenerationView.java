@@ -1,18 +1,21 @@
 package view;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
 
 import app.Constants;
 import interface_adapter.quiz_generation.QuizGenerationController;
+import interface_adapter.quiz_generation.QuizGenerationState;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 /**
  * The view for quiz generation, allowing users to select quiz parameters
  * such as category, number of question, and difficulty.
  */
-public class QuizGenerationView extends JPanel {
+public class QuizGenerationView extends JPanel implements PropertyChangeListener  {
 
     private final String viewName = "quiz generation";
     private final JComboBox<?> categoryComboBox;
@@ -25,7 +28,7 @@ public class QuizGenerationView extends JPanel {
 
     public QuizGenerationView(QuizGenerationViewModel quizGenerationViewModel) {
         this.quizGenerationViewModel = quizGenerationViewModel;
-        // quizGenerationViewModel.addPropertyChangeListener(this);
+        this.quizGenerationViewModel.addPropertyChangeListener(this);
 
         this.setBackground(Constants.BGCOLOUR);
         this.setLayout(new GridBagLayout());
@@ -159,6 +162,15 @@ public class QuizGenerationView extends JPanel {
 
     public void setQuizGenerationController(QuizGenerationController quizGenerationController) {
         this.quizGenerationController = quizGenerationController;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        final QuizGenerationState state = (QuizGenerationState) evt.getNewValue();
+        if (state.getError() != null) {
+            JOptionPane.showMessageDialog(this, state.getError(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Main method to run and test the QuizGenerationView in a JFrame

@@ -32,7 +32,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private final PlaythroughViewModel playthroughViewModel;
     private SummaryController summaryController;
 
-    private final JTextPane question;
+    private final JTextArea question;
     private final JButton button1;
     private final JButton button2;
     private final JButton button3;
@@ -48,25 +48,26 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         this.setLayout(new GridBagLayout());
         final GridBagConstraints gbc = createGbc();
 
-        GridBagConstraints tempGbc = new GridBagConstraints();
+        final GridBagConstraints tempGbc = new GridBagConstraints();
         tempGbc.gridx = 0;
         tempGbc.gridy = 0;
-        tempGbc.weightx = 1.0;  // Allow horizontal growth
-        tempGbc.weighty = 1.0;  // Center vertically
-        tempGbc.anchor = GridBagConstraints.CENTER;  // Center the component
-        tempGbc.fill = GridBagConstraints.NONE;  // Don't stretch
-        tempGbc.insets = new Insets(10, 10, 10, 10);
+        tempGbc.weightx = 1.0;
+        tempGbc.weighty = 1.0;
+        tempGbc.anchor = GridBagConstraints.CENTER;
+        tempGbc.fill = GridBagConstraints.NONE;
+        tempGbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
 
         // Create the JTextField or JTextPane
-        question = new JTextPane();
+        question = new JTextArea();
         question.setEditable(false);
         question.setFocusable(false);
         question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
 
-        // TODO: Should this be removed?
-        question.setBackground(Color.red);
-        question.setText("By definition, where does an abyssopelagic animal live ahahahahahah adaaaaaaaaaaaadddddddddddddddddddddddddddddddddddddddddddd da aaaaaaaaaaaaaaaaaaaaaaaaaaaaa  dad ahah ah hah ah ahhahhahah haha hha?");
-        question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE)); // Maximum size
+        question.setBackground(Constants.LIGHTERBGCOLOUR);
+        question.setText("Question");
+        question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        question.setLineWrap(true);
+        question.setWrapStyleWord(true);
 
         // Wrap in a JPanel with BoxLayout for better size enforcement
         final JPanel questionPanel = new JPanel();

@@ -8,6 +8,8 @@ import use_case.quiz_generation.QuizGenerationOutputBoundary;
 import entity.Quiz;
 import view.PlaythroughView;
 
+import javax.swing.*;
+
 /**
  * The Presenter for switching to the Quiz Generation View.
  */
@@ -30,13 +32,14 @@ public class QuizGenerationPresenter implements QuizGenerationOutputBoundary {
 
     /**
      * Prepares the view for the Playthrough screen.
-     * Updates the LocalMultiplayerPlaythroughState with the trivia quiz and notifies the view.
+     * Updates the PlaythroughState with the trivia quiz and notifies the view.
      *
      * @param triviaQuiz The quiz to display in the playthrough view.
      */
     @Override
     public void prepareSuccessView(Quiz triviaQuiz) {
-        // Update the LocalMultiplayerPlaythroughState with the provided quiz
+        quizGenerationViewModel.getState().setError(null);
+        // Update the PlaythroughState with the provided quiz
         final PlaythroughState playthroughState = playthroughViewModel.getState();
         playthroughState.setQuiz(triviaQuiz);
         playthroughViewModel.setState(playthroughState);
@@ -66,5 +69,14 @@ public class QuizGenerationPresenter implements QuizGenerationOutputBoundary {
         // Update the state in the ViewManagerModel
         viewManagerModel.setState(loggedInViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+    }
+
+    /**
+     * Prepares the fail view.
+     */
+    @Override
+    public void prepareFailView(String errorMessage) {
+        quizGenerationViewModel.getState().setError(errorMessage);
+        quizGenerationViewModel.firePropertyChanged();
     }
 }

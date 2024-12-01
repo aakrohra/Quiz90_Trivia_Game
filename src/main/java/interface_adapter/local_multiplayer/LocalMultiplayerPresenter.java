@@ -61,4 +61,15 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
         viewManagerModel.setState(loggedInViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
+
+    /**
+     * Prepares the fail view.
+     */
+    @Override
+    public void prepareFailView() {
+        // TODO: implement prepareFailView similar to how its done for QuizGeneration
+        // Currently when the getTrivia method throws an exception prepareFailView just prints to the console
+        // Take a look at QuizGenerationPresenter and the PropertyChange method in the QuizGenerationView
+        System.out.println("Not enough questions");
+    }
 }

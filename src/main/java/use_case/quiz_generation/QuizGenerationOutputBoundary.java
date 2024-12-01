@@ -24,4 +24,10 @@ public interface QuizGenerationOutputBoundary {
      * Prepares the view to switch to the Main Menu screen.
      */
     void switchToMainMenuView();
+
+    /**
+     * Prepares the fail view.
+     * @param errorMessage the error message to be displayed.
+     */
+    void prepareFailView(String errorMessage);
 }

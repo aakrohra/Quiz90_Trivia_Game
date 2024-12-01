@@ -4,7 +4,7 @@ import entity.Question;
 import entity.Quiz;
 
 /**
- * The state for the Playthrough View Model.
+ * The state for the LocalMultiplayerPlaythrough View Model.
  */
 public class LocalMultiplayerPlaythroughState {
     private Quiz quiz;
