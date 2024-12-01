@@ -1,19 +1,21 @@
 package view;
 
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.*;
 
 import app.Constants;
 import interface_adapter.quiz_generation.QuizGenerationController;
+import interface_adapter.quiz_generation.QuizGenerationState;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 /**
  * The view for quiz generation, allowing users to select quiz parameters
  * such as category, number of question, and difficulty.
  */
-public class QuizGenerationView extends JPanel {
-
+public class QuizGenerationView extends JPanel implements PropertyChangeListener {
     private final String viewName = "quiz generation";
     private final JComboBox<?> categoryComboBox;
     private final JComboBox<?> questionComboBox;
@@ -25,7 +27,7 @@ public class QuizGenerationView extends JPanel {
 
     public QuizGenerationView(QuizGenerationViewModel quizGenerationViewModel) {
         this.quizGenerationViewModel = quizGenerationViewModel;
-        // quizGenerationViewModel.addPropertyChangeListener(this);
+        this.quizGenerationViewModel.addPropertyChangeListener(this);
 
         this.setBackground(Constants.BGCOLOUR);
         this.setLayout(new GridBagLayout());
@@ -40,7 +42,7 @@ public class QuizGenerationView extends JPanel {
 
         // Labels and ComboBox boxes
 
-        // Reset Instets
+        // Reset Insets
         gbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
         // Categories
         final Font optionFont = new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE);
@@ -84,17 +86,6 @@ public class QuizGenerationView extends JPanel {
         buttonPanel.add(cancelButton);
         addComponent(buttonPanel, 0, Constants.FOUR, 2, GridBagConstraints.CENTER, gbc);
 
-        // Action Listeners
-        categoryComboBox.addActionListener(evt -> {
-            System.out.println("Category selected: " + categoryComboBox.getSelectedItem());
-        });
-        difficultyComboBox.addActionListener(evt -> {
-            System.out.println("Difficulty selected: " + difficultyComboBox.getSelectedItem());
-        });
-        questionComboBox.addActionListener(evt -> {
-            System.out.println("Number of questions selected: " + questionComboBox.getSelectedItem());
-        });
-
         playButton.addActionListener(evt -> {
             // Convert user inputs as strings/integers
             final String category = (String) categoryComboBox.getSelectedItem();
@@ -126,9 +117,6 @@ public class QuizGenerationView extends JPanel {
         this.add(comp, gbc);
     }
 
-    // TODO: The createLabel and createComboBox methods are useful to other views.
-    // TODO: Refactor the code to make them accessible to all views.
-
     // Helper method for creating a JLabel with custom font size and alignment
     private JLabel createLabel(String text, Font font, int alignment) {
         final JLabel label = new JLabel(text, alignment);
@@ -159,6 +147,15 @@ public class QuizGenerationView extends JPanel {
 
     public void setQuizGenerationController(QuizGenerationController quizGenerationController) {
         this.quizGenerationController = quizGenerationController;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        final QuizGenerationState state = (QuizGenerationState) evt.getNewValue();
+        if (state.getError() != null) {
+            JOptionPane.showMessageDialog(this, state.getError(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     // Main method to run and test the QuizGenerationView in a JFrame

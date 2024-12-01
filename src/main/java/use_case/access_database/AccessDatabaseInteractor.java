@@ -4,14 +4,14 @@ import java.util.Map;
 
 import entity.RetrievedQuiz;
 import entity.PlayerQuizDatabase;
+import entity.Quiz;
 
 /**
  * The interactor class for accessing a user's quiz data from the database.
  * It interacts with a data access object to fetch user-specific quiz data and presents the result
  * via an output boundary.
  */
-
-public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary{
+public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary {
     private final AccessDatabaseUserDataAccessInterface customQuizDataAccessObject;
     private final AccessDatabaseOutputBoundary accessDatabasePresenter;
 
@@ -24,10 +24,8 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary{
     /**
      * Executes the logic to retrieve and present the user's quiz data from the database.
      * If the user exists, the quizzes are retrieved and passed to the presenter.
-     * If the user does not exist, an error message is sent to the presenter.
      * @param accessDatabaseInputData the input data containing the user information for the query
      */
-
     public void execute(AccessDatabaseInputData accessDatabaseInputData) {
         final String username = accessDatabaseInputData.getUsername();
 
@@ -37,14 +35,24 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary{
             final AccessDatabaseOutputData accessDatabaseOutputData =
                     new AccessDatabaseOutputData(false, database, username);
 
-            System.out.println("it works");
             accessDatabasePresenter.prepareSuccessView(accessDatabaseOutputData);
         }
     }
 
+    /**
+     * Executes the logic to return to the logged in view use case.
+     */
     @Override
     public void switchToMainMenuView() {
         accessDatabasePresenter.switchToMainMenuView();
+    }
+
+    /**
+     * Executes the logic to playthrough use case view using the selected quiz object.
+     * @param quiz selected quiz object
+     */
+    public void switchToPlaythroughView(Quiz quiz) {
+        accessDatabasePresenter.preparePlaythroughView(quiz);
     }
 
     @Override

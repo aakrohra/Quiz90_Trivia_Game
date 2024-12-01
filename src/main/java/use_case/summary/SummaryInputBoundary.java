@@ -17,7 +17,7 @@ public interface SummaryInputBoundary {
      * @param numOfCorrectAnswers The number of correct answers achieved by the user.
      * @param playerInfo A map of player information.
      */
-    void prepareSummaryView(Quiz quiz, int numOfCorrectAnswers, Map<Integer, Pair<String, Boolean>> playerInfo);
+    void execute(Quiz quiz, int numOfCorrectAnswers, Map<Integer, Pair<String, Boolean>> playerInfo);
 
     /**
      * Executes the action to switch to the Main Menu view.

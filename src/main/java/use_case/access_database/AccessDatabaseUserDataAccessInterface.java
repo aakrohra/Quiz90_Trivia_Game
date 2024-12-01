@@ -14,7 +14,7 @@ public interface AccessDatabaseUserDataAccessInterface {
 
     /**
      * Returns all quiz objects associated with the given user mapped to their key.
-     * @param user the given user
+     * @param username the given username
      * @return map with key, quiz pairing
      */
     Map<String, RetrievedQuiz> getAllUserQuizzes(String username);

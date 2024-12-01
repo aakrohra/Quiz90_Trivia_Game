@@ -30,6 +30,13 @@ public interface Database<T> {
     Map<String, T> getAll();
 
     /**
+     *
+     * @param key
+     * @return
+     */
+    Map<String, String> getTitleByKey();
+
+    /**
      * Returns number of items in database.
      * @return integer of items
      */

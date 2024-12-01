@@ -31,43 +31,24 @@ public class PlayerQuizDatabase implements Database {
      * @return quiz object
      */
     @Override
-    public Quiz getByKey(String key) {
-        final Quiz quiz = quizMap.get(key);
+    public RetrievedQuiz getByKey(String key) {
+        final RetrievedQuiz quiz = quizMap.get(key);
         return quiz;
     }
-
-    /**
-     * Returns a map of quizzes that contains a substring title in their titles.
-     * @param title substring to search for
-     * @return map of quizzes keyed to their key
-     */
-    //    private int getOrd(char chr) {
-    //        final int result;
-    //        if (97 <= chr && chr <= 122) {
-    //            result = chr - 97;
-    //        }
-    //        else if (65 <= chr && chr <= 90) {
-    //            result = chr - 65;
-    //        }
-    //        else if (48 <= chr && chr <= 57) {
-    //            result = chr - 22;
-    //        }
-    //        else {
-    //            result = 57 - 22;
-    //        }
-    //        return result;
-    //    }
 
     @Override
     public Map<String, RetrievedQuiz> getByTitle(String title) {
         final Map<String, RetrievedQuiz> quizzes = new HashMap<>();
         final String str = title.toLowerCase().replaceAll("\\s+", "");
+        int i = 0;
+        List<String> keys = new ArrayList<>(quizMap.keySet());
         for (RetrievedQuiz quiz : quizMap.values()) {
             final String quizTitle = quiz.getTitle().toLowerCase().replaceAll("\\s+", "");
             if (quizTitle.contains(str)) {
-                final String key = titleToKeyMap.get(quizTitle);
+                final String key = keys.get(i);
                 quizzes.put(key, quiz);
             }
+            i++;
         }
         return quizzes;
     }
@@ -79,6 +60,11 @@ public class PlayerQuizDatabase implements Database {
     @Override
     public Map<String, RetrievedQuiz> getAll() {
         return quizMap;
+    }
+
+    @Override
+    public Map<String, String> getTitleByKey() {
+        return titleToKeyMap;
     }
 
     /**

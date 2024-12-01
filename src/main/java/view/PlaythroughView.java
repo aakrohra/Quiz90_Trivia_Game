@@ -31,7 +31,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
     private final PlaythroughViewModel playthroughViewModel;
     private SummaryController summaryController;
 
-    private final JTextPane question;
+    private final JTextArea question;
     private final JButton button1;
     private final JButton button2;
     private final JButton button3;
@@ -54,18 +54,19 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         tempGbc.weighty = 1.0;
         tempGbc.anchor = GridBagConstraints.CENTER;
         tempGbc.fill = GridBagConstraints.NONE;
-        tempGbc.insets = new Insets(10, 10, 10, 10);
+        tempGbc.insets = new Insets(Constants.MARGINS, Constants.MARGINS, Constants.MARGINS, Constants.MARGINS);
 
         // Create the JTextField or JTextPane
-        question = new JTextPane();
+        question = new JTextArea();
         question.setEditable(false);
         question.setFocusable(false);
         question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
 
-        // TODO: Should this be removed?
-        question.setBackground(Color.red);
-        question.setText("By definition, where does an abyssopelagic animal live ahahahahahah adaaaaaaaaaaaadddddddddddddddddddddddddddddddddddddddddddd da aaaaaaaaaaaaaaaaaaaaaaaaaaaaa  dad ahah ah hah ah ahhahhahah haha hha?");
-        question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE)); // Maximum size
+        question.setBackground(Constants.LIGHTERBGCOLOUR);
+        question.setText("Question");
+        question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        question.setLineWrap(true);
+        question.setWrapStyleWord(true);
 
         // Wrap in a JPanel with BoxLayout for better size enforcement
         final JPanel questionPanel = new JPanel();
@@ -154,7 +155,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
             playerInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
         }
         else {
-            selectedButton.setBackground(Color.RED);
+            selectedButton.setBackground(Constants.INCORRECTREDBG);
 
             if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
                 button1.setBackground(Color.GREEN);
@@ -190,11 +191,7 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         final PlaythroughState state = this.playthroughViewModel.getState();
         nextButton.setVisible(false);
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
-            System.out.println("done");
-            // TODO: Work here
-            summaryController.prepareSummaryView(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerInfo);
-            System.out.println("Number of correct answers: " + state.getNumberOfCorrectAnswers());
-            // this is where you would call a controller for a summary use case and pass in the updated map of data
+            summaryController.execute(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerInfo);
         }
         else {
             state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
@@ -213,7 +210,6 @@ public class PlaythroughView extends JPanel implements PropertyChangeListener {
         button.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
-        button.setMaximumSize(new Dimension(10000, 1000));
         button.setMaximumSize(new Dimension(10000, 1000));
         return button;
     }
