@@ -24,8 +24,8 @@ public class SummaryController {
      * @param numOfCorrectAnswers The number of correct answers achieved by the user.
      * @param playerInfo A map of player information.
      */
-    public void prepareSummaryView(Quiz quiz, int numOfCorrectAnswers, Map<Integer, Pair<String, Boolean>> playerInfo) {
-        summaryInteractor.prepareSummaryView(quiz, numOfCorrectAnswers, playerInfo);
+    public void execute(Quiz quiz, int numOfCorrectAnswers, Map<Integer, Pair<String, Boolean>> playerInfo) {
+        summaryInteractor.execute(quiz, numOfCorrectAnswers, playerInfo);
     }
 
     /**

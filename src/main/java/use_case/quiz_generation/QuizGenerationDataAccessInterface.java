@@ -1,7 +1,6 @@
 package use_case.quiz_generation;
 
 import entity.TriviaQuiz;
-import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
  * DAO interface for the Quiz Generation Use Case.

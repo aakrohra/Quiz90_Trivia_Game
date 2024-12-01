@@ -12,10 +12,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import app.Constants;
-import entity.PlayerCreatedQuestion;
-import entity.PlayerCreatedQuiz;
-import entity.PlayerCreatedQuizFactory;
-import entity.User;
+import entity.*;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -23,14 +20,14 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 import use_case.access_database.AccessDatabaseUserDataAccessInterface;
 import use_case.access_quiz.AccessQuizDataAccessInterface;
-import use_case.create_quiz.CreateQuizUserDataAccessInterface;
+import use_case.create_quiz.CreateQuizDataAccessInterface;
 
 /**
  * The DAO for accessing custom quiz data.
  */
 public class DBCustomQuizDataAccessObject implements AccessQuizDataAccessInterface,
         AccessDatabaseUserDataAccessInterface,
-        CreateQuizUserDataAccessInterface {
+        CreateQuizDataAccessInterface {
 
     public static final String CORRECT = "correct";
     public static final String OPTIONS = "options";
@@ -154,12 +151,12 @@ public class DBCustomQuizDataAccessObject implements AccessQuizDataAccessInterfa
 
     /**
      * Returns all quiz objects associated with the given user mapped to their key.
-     * @param user the given user
+     * @param username the given username
      * @return map with key, quiz pairing
      * @throws RuntimeException if there is an issue
      */
     @Override
-    public Map<String, PlayerCreatedQuiz> getAllUserQuizzes(String username) throws RuntimeException {
+    public Map<String, RetrievedQuiz> getAllUserQuizzes(String username) throws RuntimeException {
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
                 .url(String.format(API_INFO_CALL,
@@ -172,13 +169,13 @@ public class DBCustomQuizDataAccessObject implements AccessQuizDataAccessInterfa
             final JSONObject responseBody = new JSONObject(response.body().string());
             final JSONObject userJSONObject = responseBody.getJSONObject(USER);
             final JSONObject data = userJSONObject.getJSONObject(INFO);
-            final Map<String, PlayerCreatedQuiz> userQuizzes = new HashMap<>();
-            final PlayerCreatedQuizFactory playerCreatedQuizFactory = new PlayerCreatedQuizFactory();
+            final Map<String, RetrievedQuiz> userQuizzes = new HashMap<>();
+            final RetrievedQuizFactory retrievedQuizFactory = new RetrievedQuizFactory();
             final Iterator<String> keys = data.keys();
             while (keys.hasNext()) {
                 final String key = keys.next();
                 final JSONObject quizData = data.getJSONObject(key);
-                final PlayerCreatedQuiz quiz = playerCreatedQuizFactory.create(quizData, key);
+                final RetrievedQuiz quiz = retrievedQuizFactory.create(quizData, key);
                 userQuizzes.put(key, quiz);
             }
             return userQuizzes;
@@ -243,23 +240,8 @@ public class DBCustomQuizDataAccessObject implements AccessQuizDataAccessInterfa
         }
     }
 
-    /**
-     * Returns a JSONObject representing a quiz given a player created quiz object.
-     * @param quiz the given quiz
-     * @return JSONObject of the quiz object in the following format:
-     *     {
-     *       "title": "title1",
-     *       "questions": [
-     *         {
-     *           "questionText": "qqqqq",
-     *           "options": ["o1", "o2", "o3", "o4"],
-     *           "correct": "o2"
-     *         },
-     *         ...
-     *       ]
-     *     }
-     */
-    public JSONObject quizObjectToJSONObject(PlayerCreatedQuiz quiz) {
+    @Override
+    public JSONObject quizObjectToJSONObject(CreatedQuiz quiz) {
         final JSONObject quizJSONObject = new JSONObject();
         quizJSONObject.put(TITLE, quiz.getTitle());
         final List<PlayerCreatedQuestion> questions = (List<PlayerCreatedQuestion>) quiz.getQuestions();

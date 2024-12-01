@@ -2,7 +2,6 @@ package use_case.change_password;
 
 import entity.User;
 import entity.UserFactory;
-import interface_adapter.change_password.ChangePasswordPresenter;
 
 /**
  * The Change Password Interactor.

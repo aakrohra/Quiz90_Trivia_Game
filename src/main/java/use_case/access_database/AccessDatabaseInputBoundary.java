@@ -23,4 +23,12 @@ public interface AccessDatabaseInputBoundary {
      * @param quiz selected quiz object
      */
     void switchToPlaythroughView(Quiz quiz);
+
+    /**
+     * Executes a switch to the created question view.
+     * @param username the currently logged in user's username
+     */
+    void switchToCreateQuestionView(String username);
+
+    void updateDatabase(String username);
 }

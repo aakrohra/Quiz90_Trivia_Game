@@ -5,12 +5,12 @@ import java.util.List;
 /**
  * Representation of a player created quiz.
  */
-public class PlayerCreatedQuiz implements Quiz {
+public class RetrievedQuiz implements Quiz {
     private final List<PlayerCreatedQuestion> listOfQuestions;
     private final String title;
     private final String author;
 
-    public PlayerCreatedQuiz(String title, List<PlayerCreatedQuestion> listOfQuestions, String author) {
+    public RetrievedQuiz(String title, List<PlayerCreatedQuestion> listOfQuestions, String author) {
         this.title = title;
         this.listOfQuestions = listOfQuestions;
         this.author = author;

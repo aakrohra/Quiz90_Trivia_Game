@@ -1,11 +1,8 @@
 package interface_adapter.access_database;
 
 import entity.Quiz;
-import entity.User;
-import org.json.JSONObject;
 import use_case.access_database.AccessDatabaseInputBoundary;
 import use_case.access_database.AccessDatabaseInputData;
-import use_case.access_database.AccessDatabaseInteractor;
 
 /**
  * The controller for handling the interaction between the Access Database use case
@@ -28,11 +25,30 @@ public class AccessDatabaseController {
         accessDatabaseInteractor.execute(accessDatabaseInputData);
     }
 
+    /**
+     * Executes the switch to logged in view use case.
+     */
     public void switchToMainMenuView() {
         accessDatabaseInteractor.switchToMainMenuView();
     }
 
+    /**
+     * Executes the switch to playthrough view use case for the selected quiz.
+     * @param quiz the selected quiz
+     */
     public void switchToPlaythroughView(Quiz quiz) {
         accessDatabaseInteractor.switchToPlaythroughView(quiz);
+    }
+
+    /**
+     * Switches to create question view.
+     * @param username the currently logged in user's username
+     */
+    public void switchToCreateQuestionView(String username) {
+        accessDatabaseInteractor.switchToCreateQuestionView(username);
+    }
+
+    public void updateDatabase(String username) {
+        accessDatabaseInteractor.updateDatabase(username);
     }
 }

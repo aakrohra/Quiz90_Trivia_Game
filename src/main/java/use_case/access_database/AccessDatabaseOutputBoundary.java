@@ -23,4 +23,10 @@ public interface AccessDatabaseOutputBoundary {
      * @param quiz the selected quiz
      */
     void preparePlaythroughView(Quiz quiz);
+
+    /**
+     * Executes the switch to create question view.
+     * @param username the user logged in's username
+     */
+    void switchToCreateQuestionView(String username);
 }

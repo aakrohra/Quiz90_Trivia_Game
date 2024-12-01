@@ -20,8 +20,8 @@ public class SummaryInteractor implements SummaryInputBoundary {
      * Executes the action to switch to the Summary view.
      */
     @Override
-    public void prepareSummaryView(Quiz quiz, int numOfCorrectAnswers, Map<Integer, Pair<String, Boolean>> playerInfo) {
-        summaryPresenter.prepareSummaryView(quiz, numOfCorrectAnswers, playerInfo);
+    public void execute(Quiz quiz, int numOfCorrectAnswers, Map<Integer, Pair<String, Boolean>> playerInfo) {
+        summaryPresenter.execute(quiz, numOfCorrectAnswers, playerInfo);
     }
 
     /**
