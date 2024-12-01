@@ -56,4 +56,13 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary {
     public void switchToCreateQuestionView(String username) {
         accessDatabasePresenter.switchToCreateQuestionView(username);
     }
+
+    /**
+     * Executes the logic to update the database.
+     */
+    @Override
+    public void updateDatabase(String username) {
+        final AccessDatabaseInputData accessDatabaseInputData = new AccessDatabaseInputData(username);
+        execute(accessDatabaseInputData);
+    }
 }

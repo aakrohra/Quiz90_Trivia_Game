@@ -107,6 +107,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
     private final JScrollPane scrollPanel = new JScrollPane();
     private AccessDatabaseController accessDatabaseController;
     private final JLabel empty = new JLabel();
+    private String username;
 
     public QuizDatabaseView(AccessedDatabaseInfoViewModel accessDatabaseViewModel) {
         this.accessedDatabaseInfoViewModel = accessDatabaseViewModel;
@@ -131,17 +132,27 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         searchPanelOrganisation();
 
         final JButton createQuizButton = new JButton(CREATE_QUIZ_BUTTON_PLACEHOLDER);
+        final JButton updateButton = new JButton("Update");
         final JPanel navigationPanel = new JPanel();
         navigationPanel.setLayout(new FlowLayout());
 
         bottomPanel.setLayout(new BorderLayout());
         bottomPanel.add(createQuizButton, BorderLayout.WEST);
+        bottomPanel.add(updateButton, BorderLayout.EAST);
 
         createQuizButton.addActionListener(
                 evt -> {
                     if (evt.getSource().equals(createQuizButton)) {
                         final AccessedDatabaseInfoState currentState = accessDatabaseViewModel.getState();
                         accessDatabaseController.switchToCreateQuestionView(currentState.getUsername());
+                    }
+                }
+        );
+
+        updateButton.addActionListener(
+                evt -> {
+                    if (evt.getSource().equals(updateButton)) {
+                        update();
                     }
                 }
         );
@@ -221,7 +232,9 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         System.out.println("got here again");
         final AccessedDatabaseInfoState state = (AccessedDatabaseInfoState) evt.getNewValue();
+        this.username = state.getUsername();
         this.removeAll();
+        this.revalidate();
         this.database = state.getDatabase();
         this.quizMap = this.database.getAll();
         this.quizMapSize = this.database.getNumberOfItems();
@@ -293,6 +306,9 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         final JButton copyButton = new JButton(COPY_PLACEHOLDER);
         final JButton playButton = new JButton(PLAY_PLACEHOLDER);
         row.setPreferredSize(new Dimension((int) (windowWidth * QUIZ_PANEL_SIZE_MODIFIER), GENERAL_ELEMENT_HEIGHT));
+        System.out.println(quizString[0]);
+        System.out.println(quizString[1]);
+        System.out.println(quizString[2]);
 
         c.gridheight = 1;
         c.weighty = 2;
@@ -337,6 +353,9 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         row.add(playButton, c);
 
         final String message = quizString[2];
+
+        System.out.println(quizMap.get(message).getNumQuestions());
+        System.out.println(quizMap.get(message).getListOfQuestions());
 
         copyButton.addActionListener(event -> {
             final String textToCopy = message;
@@ -385,7 +404,11 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         defaultDatabaseView();
         searchKeyField.setText(SEARCH_KEY_PLACEHOLDER);
         searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
-}
+    }
+
+    private void update() {
+        accessDatabaseController.updateDatabase(username);
+    }
 
 //    public static void main(String[] args) {
 //        final JFrame frame = new JFrame("test");
