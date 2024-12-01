@@ -27,6 +27,7 @@ public class QuizCreationPresenter implements QuizCreationOutputBoundary {
         quizCreationViewModel.setState(currentState);
         quizCreationViewModel.firePropertyChanged();
 
+        accessedDatabaseInfoViewModel.firePropertyChanged();
         viewManagerModel.setState(accessedDatabaseInfoViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }

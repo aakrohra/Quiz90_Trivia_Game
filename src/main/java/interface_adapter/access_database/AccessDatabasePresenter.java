@@ -23,9 +23,7 @@ public class AccessDatabasePresenter implements AccessDatabaseOutputBoundary {
     public AccessDatabasePresenter(ViewManagerModel viewManagerModel,
                                    LoggedInViewModel loggedInViewModel,
                                    AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel,
-                                   PlaythroughViewModel playthroughViewModel) {
-    public AccessDatabasePresenter(ViewManagerModel viewManagerModel, LoggedInViewModel loggedInViewModel,
-                                   AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel,
+                                   PlaythroughViewModel playthroughViewModel,
                                    QuestionCreationViewModel questionCreationViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.loggedInViewModel = loggedInViewModel;

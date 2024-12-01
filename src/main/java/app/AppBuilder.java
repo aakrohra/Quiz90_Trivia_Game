@@ -382,8 +382,8 @@ public class AppBuilder {
     public AppBuilder addAccessQuizDatabaseUseCase() {
 
         final AccessDatabaseOutputBoundary accessDatabaseOutputBoundary = new AccessDatabasePresenter(
-                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel, playthroughViewModel);
-                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel, questionCreationViewModel);
+                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel,
+                playthroughViewModel, questionCreationViewModel);
 
         final AccessDatabaseInputBoundary accessDatabaseInteractor =
                 new AccessDatabaseInteractor(customQuizDataAccessObject, accessDatabaseOutputBoundary);

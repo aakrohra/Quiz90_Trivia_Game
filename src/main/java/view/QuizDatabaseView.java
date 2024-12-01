@@ -8,8 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Toolkit;
 import app.Constants;
-import entity.Database;
-import entity.Quiz;
+import entity.*;
 import interface_adapter.access_database.AccessDatabaseController;
 import interface_adapter.access_database.AccessedDatabaseInfoState;
 import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
@@ -46,12 +45,7 @@ import org.json.JSONObject;
 
 import app.Constants;
 import data_access.DBCustomQuizDataAccessObject;
-import entity.CommonUserFactory;
-import entity.PlayerCreatedQuestion;
-import entity.PlayerCreatedQuiz;
-import entity.PlayerQuizDatabase;
 import entity.Quiz;
-import entity.User;
 import interface_adapter.access_database.AccessDatabaseController;
 import interface_adapter.access_database.AccessedDatabaseInfoState;
 import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
@@ -96,7 +90,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private final AccessedDatabaseInfoViewModel accessedDatabaseInfoViewModel;
     private int quizMapSize;
-    private Map<String, PlayerCreatedQuiz> quizMap;
+    private Map<String, RetrievedQuiz> quizMap;
     private PlayerQuizDatabase database;
     private final GridBagConstraints c = new GridBagConstraints();
     private final JPanel searchPanel = new JPanel();
@@ -223,6 +217,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        System.out.println("got here again");
         final AccessedDatabaseInfoState state = (AccessedDatabaseInfoState) evt.getNewValue();
         this.removeAll();
         this.database = state.getDatabase();
@@ -231,18 +226,19 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         this.add(searchPanel, BorderLayout.NORTH);
         defaultDatabaseView();
         this.add(bottomPanel, BorderLayout.SOUTH);
+        System.out.println(quizMapSize);
     }
 
     private void defaultDatabaseView() {
         createDatabaseView(quizMap);
     }
 
-    private void createDatabaseView(Map<String, PlayerCreatedQuiz> quizToKeyMap) {
+    private void createDatabaseView(Map<String, RetrievedQuiz> quizToKeyMap) {
         final int mapSize = quizToKeyMap.size();
         final String[][] quizzes = new String[mapSize][GRIDX_MAX];
         int temp = 0;
         final List<String> keys = new ArrayList<>(quizToKeyMap.keySet());
-        for (PlayerCreatedQuiz quiz : quizToKeyMap.values()) {
+        for (RetrievedQuiz quiz : quizToKeyMap.values()) {
             quizzes[temp][0] = quiz.getTitle();
             quizzes[temp][1] = "Questions: " + quiz.getNumQuestions();
             quizzes[temp][2] = keys.get(temp);
@@ -359,7 +355,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private void searchByKey() {
         final String key = searchKeyField.getText();
-        PlayerCreatedQuiz quiz = database.getByKey(key);
+        RetrievedQuiz quiz = database.getByKey(key);
         if (quiz != null) {
             final String[] quizString = new String[GRIDX_MAX];
             quizString[0] = quiz.getTitle();
@@ -378,7 +374,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
     private void searchByTitle() {
         final String title = searchTitleField.getText();
-        final Map<String, PlayerCreatedQuiz> titleMap = database.getByTitle(title);
+        final Map<String, RetrievedQuiz> titleMap = database.getByTitle(title);
         if (titleMap != null) {
             createDatabaseView(titleMap);
         }
@@ -390,51 +386,51 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         searchTitleField.setText(SEARCH_QUIZ_PLACEHOLDER);
 }
 
-    public static void main(String[] args) {
-        final JFrame frame = new JFrame("test");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
-        frame.setLocationRelativeTo(null);
-
-        final Dimension windowSize = frame.getSize();
-
-//        final QuizDatabaseView quizDatabaseView = new QuizDatabaseView(new AccessedDatabaseInfoViewModel());
-//        frame.add(quizDatabaseView);
-//        frame.setVisible(true);
-
-        DBCustomQuizDataAccessObject quizDataAccessObject = new DBCustomQuizDataAccessObject();
-        CommonUserFactory commonUserFactory = new CommonUserFactory();
-        User user = commonUserFactory.create("loop2", "loop2");
-        String quizTitle = "snoopysnoopy";
-        List<PlayerCreatedQuestion> listOfQuestions = new ArrayList<>();
-        List<String> answerOptions = new ArrayList<>();
-        answerOptions.add("Yes");
-        answerOptions.add("No");
-        answerOptions.add("Yes1");
-        answerOptions.add("No1");
-        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
-        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
-        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
-        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
-        String author = "loop2";
-        PlayerCreatedQuiz quizz = new PlayerCreatedQuiz(quizTitle, listOfQuestions, author);
-        JSONObject jsonQuiz = quizDataAccessObject.quizObjectToJSONObject(quizz);
-        quizDataAccessObject.addQuiz(jsonQuiz, user);
-
-        final String username = user.getName();
-        final OkHttpClient client = new OkHttpClient().newBuilder().build();
-        final Request request = new Request.Builder()
-                .url(String.format(API_INFO_CALL, username))
-                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
-                .build();
-        try {
-            final Response response = client.newCall(request).execute();
-            final String responseBody = response.body().string();
-
-            System.out.println(responseBody);
-        }
-        catch (IOException e) {
-            throw new RuntimeException();
-        }
-    }
+//    public static void main(String[] args) {
+//        final JFrame frame = new JFrame("test");
+//        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setSize(new Dimension(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT));
+//        frame.setLocationRelativeTo(null);
+//
+//        final Dimension windowSize = frame.getSize();
+//
+////        final QuizDatabaseView quizDatabaseView = new QuizDatabaseView(new AccessedDatabaseInfoViewModel());
+////        frame.add(quizDatabaseView);
+////        frame.setVisible(true);
+//
+//        DBCustomQuizDataAccessObject quizDataAccessObject = new DBCustomQuizDataAccessObject();
+//        CommonUserFactory commonUserFactory = new CommonUserFactory();
+//        User user = commonUserFactory.create("loop2", "loop2");
+//        String quizTitle = "snoopysnoopy";
+//        List<PlayerCreatedQuestion> listOfQuestions = new ArrayList<>();
+//        List<String> answerOptions = new ArrayList<>();
+//        answerOptions.add("Yes");
+//        answerOptions.add("No");
+//        answerOptions.add("Yes1");
+//        answerOptions.add("No1");
+//        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
+//        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
+//        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
+//        listOfQuestions.add(new PlayerCreatedQuestion("Question", answerOptions, "Yes"));
+//        String author = "loop2";
+//        RetrievedQuiz quizz = new RetrievedQuiz(quizTitle, listOfQuestions, author);
+//        JSONObject jsonQuiz = quizDataAccessObject.quizObjectToJSONObject(quizz);
+//        quizDataAccessObject.addQuiz(jsonQuiz, user);
+//
+//        final String username = user.getName();
+//        final OkHttpClient client = new OkHttpClient().newBuilder().build();
+//        final Request request = new Request.Builder()
+//                .url(String.format(API_INFO_CALL, username))
+//                .addHeader(CONTENT_TYPE_LABEL, CONTENT_TYPE_JSON)
+//                .build();
+//        try {
+//            final Response response = client.newCall(request).execute();
+//            final String responseBody = response.body().string();
+//
+//            System.out.println(responseBody);
+//        }
+//        catch (IOException e) {
+//            throw new RuntimeException();
+//        }
+//    }
 }

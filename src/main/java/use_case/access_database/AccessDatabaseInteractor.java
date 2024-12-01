@@ -39,9 +39,6 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary {
         }
     }
 
-    /**
-     * Executes the logic to return to the logged in view use case.
-     */
     @Override
     public void switchToMainMenuView() {
         accessDatabasePresenter.switchToMainMenuView();
