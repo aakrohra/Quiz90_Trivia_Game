@@ -26,7 +26,7 @@ public class SummaryPresenter implements SummaryOutputBoundary {
      * Prepares the view to display the summary screen.
      */
     @Override
-    public void prepareSummaryView(Quiz quiz, int numOfCorrectAnswers, Map<Integer, Pair<String, Boolean>> playerInfo) {
+    public void execute(Quiz quiz, int numOfCorrectAnswers, Map<Integer, Pair<String, Boolean>> playerInfo) {
         final SummaryState summaryState = summaryViewModel.getState();
         summaryState.setQuiz(quiz);
         summaryState.setPlayerInfo(playerInfo);

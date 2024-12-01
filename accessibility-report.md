@@ -37,11 +37,11 @@ The buttons and components of the program are organized in a logical order, ensu
 
 - This principle does not apply to Quiz 90 since it is designed to work within a standard screen size, and no extreme physical space or special accommodations are required. The interface elements like buttons are sized for typical interactions, and users can use the program on any device with basic screen resolution.
 
-## Target Market
+## Target Audience
 
 - If we were to market our Quiz 90, it would be aimed at students, educators, and people who games and are interested in improving their knowledge in specific subjects. This group includes students who use quizzes as part of their study routines or want to create/share a quiz related to one of their courses as a fun way to review for tests. Furthermore, teachers can use Quiz90 as a tool to test and assess their students’ knowledge. Additionally, the program could appeal to anyone looking for a fun, interactive way to learn new things.
 
-## Demographics and Usage
+## Excluded Audience
 
 - Quiz 90 may have limited use among certain demographics, such as older adults who may not be as familiar with digital learning tools or those who are not as comfortable using technology. Additionally, users with disabilities, particularly those who require screen readers or other accessibility tools, might find it challenging if the program’s interface does not support those technologies. Moving forward, we can focus on improving accessibility features to ensure that our program is usable by a broader audience.
 
