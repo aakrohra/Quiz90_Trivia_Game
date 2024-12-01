@@ -19,6 +19,12 @@ import interface_adapter.access_quiz.AccessedQuizInfoViewModel;
 import interface_adapter.change_password.ChangePasswordController;
 import interface_adapter.change_password.ChangePasswordPresenter;
 import interface_adapter.change_password.ChangePasswordViewModel;
+import interface_adapter.create_question.QuestionCreationController;
+import interface_adapter.create_question.QuestionCreationPresenter;
+import interface_adapter.create_question.QuestionCreationViewModel;
+import interface_adapter.create_quiz.QuizCreationController;
+import interface_adapter.create_quiz.QuizCreationPresenter;
+import interface_adapter.create_quiz.QuizCreationViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.local_multiplayer.LocalMultiplayerPresenter;
 import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
@@ -47,6 +53,12 @@ import use_case.access_quiz.AccessQuizOutputBoundary;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.create_question.QuestionCreationInputBoundary;
+import use_case.create_question.QuestionCreationInteractor;
+import use_case.create_question.QuestionCreationOutputBoundary;
+import use_case.create_quiz.QuizCreationInputBoundary;
+import use_case.create_quiz.QuizCreationInteractor;
+import use_case.create_quiz.QuizCreationOutputBoundary;
 import use_case.local_multiplayer.LocalMultiplayerInputBoundary;
 import use_case.local_multiplayer.LocalMultiplayerInteractor;
 import use_case.local_multiplayer.LocalMultiplayerOutputBoundary;
@@ -81,12 +93,10 @@ import view.*;
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
-    // thought question: is the hard dependency below a problem?
     private final UserFactory userFactory = new CommonUserFactory();
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // thought question: is the hard dependency below a problem?
     private final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
     private final DBTriviaDataAccessObject triviaDataAccessObject = new DBTriviaDataAccessObject();
     private final DBCustomQuizDataAccessObject customQuizDataAccessObject = new DBCustomQuizDataAccessObject();
@@ -111,6 +121,10 @@ public class AppBuilder {
     private ChangePasswordView changePasswordView;
     private SummaryViewModel summaryViewModel;
     private SummaryView summaryView;
+    private QuestionCreationViewModel questionCreationViewModel;
+    private QuestionCreationView questionCreationView;
+    private QuizCreationViewModel quizCreationViewModel;
+    private CreatedQuizView createdQuizView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -193,10 +207,66 @@ public class AppBuilder {
         return this;
     }
 
+    /**
+     * Adds the database view to the app.
+     * @return this builder
+     */
     public AppBuilder addDatabaseView() {
         accessedDatabaseInfoViewModel = new AccessedDatabaseInfoViewModel();
         quizDatabaseView = new QuizDatabaseView(accessedDatabaseInfoViewModel);
         cardPanel.add(quizDatabaseView, quizDatabaseView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Question Creation View to the app.
+     * @return this builder
+     */
+    public AppBuilder addQuestionCreationView() {
+        questionCreationViewModel = new QuestionCreationViewModel();
+        questionCreationView = new QuestionCreationView(questionCreationViewModel);
+        cardPanel.add(questionCreationView, questionCreationView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the created quiz summary view to the app.
+     * @return this builder
+     */
+    public AppBuilder addCreatedQuizView() {
+        quizCreationViewModel = new QuizCreationViewModel();
+        createdQuizView = new CreatedQuizView(quizCreationViewModel);
+        cardPanel.add(createdQuizView, createdQuizView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Question Creation Use Case to the app.
+     * @return this builder
+     */
+    public AppBuilder addQuestionCreationUseCase() {
+        final QuestionCreationOutputBoundary questionCreationOutputBoundary = new QuestionCreationPresenter(
+                questionCreationViewModel);
+        final QuestionCreationInputBoundary questionCreationInputBoundary = new QuestionCreationInteractor(
+                questionCreationOutputBoundary);
+        final QuestionCreationController questionCreationController = new QuestionCreationController(
+                questionCreationInputBoundary);
+        questionCreationView.setQuestionCreationController(questionCreationController);
+        return this;
+    }
+
+    /**
+     * Adds the quiz creation use case to the app.
+     * @return this builder
+     */
+    public AppBuilder addQuizCreationUseCase() {
+        final QuizCreationOutputBoundary quizCreationOutputBoundary = new QuizCreationPresenter(
+                viewManagerModel, quizCreationViewModel, accessedDatabaseInfoViewModel);
+        final QuizCreationInputBoundary quizCreationInputBoundary = new QuizCreationInteractor(
+                customQuizDataAccessObject, userDataAccessObject, quizCreationOutputBoundary);
+        final QuizCreationController quizCreationController = new QuizCreationController(
+                quizCreationInputBoundary);
+        questionCreationView.setQuizCreationController(quizCreationController);
         return this;
     }
 
@@ -209,7 +279,6 @@ public class AppBuilder {
      *
      * @return the current instance of {@code AppBuilder} for method chaining.
      */
-
     public AppBuilder addLocalMultiplayerUseCase() {
         final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
                 viewManagerModel, localMultiplayerViewModel, loggedInViewModel, playthroughViewModel);
@@ -313,7 +382,8 @@ public class AppBuilder {
     public AppBuilder addAccessQuizDatabaseUseCase() {
 
         final AccessDatabaseOutputBoundary accessDatabaseOutputBoundary = new AccessDatabasePresenter(
-                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel, playthroughViewModel);
+                viewManagerModel, loggedInViewModel, accessedDatabaseInfoViewModel,
+                playthroughViewModel, questionCreationViewModel);
 
         final AccessDatabaseInputBoundary accessDatabaseInteractor =
                 new AccessDatabaseInteractor(customQuizDataAccessObject, accessDatabaseOutputBoundary);

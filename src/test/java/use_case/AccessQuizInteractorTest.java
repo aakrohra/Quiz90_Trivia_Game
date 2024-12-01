@@ -1,8 +1,7 @@
 package use_case;
 
-import data_access.DBCustomQuizDataAccessObject;
-import entity.PlayerCreatedQuiz;
-import entity.PlayerCreatedQuizFactory;
+import entity.RetrievedQuiz;
+import entity.RetrievedQuizFactory;
 import org.json.JSONObject;
 import org.junit.Test;
 import use_case.access_quiz.*;
@@ -31,8 +30,8 @@ public class AccessQuizInteractorTest {
         AccessQuizOutputBoundary accessQuizOB = new AccessQuizOutputBoundary() {
             @Override
             public void prepareSuccessView(AccessQuizOutputData outputData) {
-                PlayerCreatedQuizFactory quizFac = new PlayerCreatedQuizFactory();
-                PlayerCreatedQuiz quizObject = quizFac.create(new JSONObject("{\"title\": \"titleTest\", \"questions\": [{\"questionText\": \"questionText1\", \"options\": [\"o1\", \"o2\", \"o3\", \"o4\"], \"correct\": \"o2\"}, {\"questionText\": \"question222!!!\", \"options\": [\"oo1\", \"oo2\", \"oo3\", \"oo4\"], \"correct\": \"oo4\"}]}"), "0123456789aak");
+                RetrievedQuizFactory quizFac = new RetrievedQuizFactory();
+                RetrievedQuiz quizObject = quizFac.create(new JSONObject("{\"title\": \"titleTest\", \"questions\": [{\"questionText\": \"questionText1\", \"options\": [\"o1\", \"o2\", \"o3\", \"o4\"], \"correct\": \"o2\"}, {\"questionText\": \"question222!!!\", \"options\": [\"oo1\", \"oo2\", \"oo3\", \"oo4\"], \"correct\": \"oo4\"}]}"), "0123456789aak");
                 AccessQuizOutputData correctOD = new AccessQuizOutputData(false, quizObject);
                 assertEquals(correctOD.getQuizName(), outputData.getQuizName());
                 assertEquals(correctOD.getAuthor(), outputData.getAuthor());
@@ -50,7 +49,7 @@ public class AccessQuizInteractorTest {
             }
 
             @Override
-            public void playAccessedQuiz(PlayerCreatedQuiz quizObject) {
+            public void playAccessedQuiz(RetrievedQuiz quizObject) {
 
             }
         };

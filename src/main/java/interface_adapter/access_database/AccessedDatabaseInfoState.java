@@ -7,6 +7,7 @@ import entity.PlayerQuizDatabase;
  */
 public class AccessedDatabaseInfoState {
     private PlayerQuizDatabase database;
+    private String username;
 
     public PlayerQuizDatabase getDatabase() {
         return database;
@@ -15,4 +16,13 @@ public class AccessedDatabaseInfoState {
     public void setDatabase(PlayerQuizDatabase database) {
         this.database = database;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
 }

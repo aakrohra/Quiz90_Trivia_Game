@@ -2,7 +2,7 @@ package use_case.access_database;
 
 import java.util.Map;
 
-import entity.PlayerCreatedQuiz;
+import entity.RetrievedQuiz;
 import entity.PlayerQuizDatabase;
 import entity.Quiz;
 
@@ -30,17 +30,16 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary {
         final String username = accessDatabaseInputData.getUsername();
 
         if (customQuizDataAccessObject.existsByName(username)) {
-            final Map<String, PlayerCreatedQuiz> quizMap = customQuizDataAccessObject.getAllUserQuizzes(username);
+            final Map<String, RetrievedQuiz> quizMap = customQuizDataAccessObject.getAllUserQuizzes(username);
             final PlayerQuizDatabase database = new PlayerQuizDatabase(quizMap);
-            final AccessDatabaseOutputData accessDatabaseOutputData = new AccessDatabaseOutputData(false, database);
+            final AccessDatabaseOutputData accessDatabaseOutputData =
+                    new AccessDatabaseOutputData(false, database, username);
 
             accessDatabasePresenter.prepareSuccessView(accessDatabaseOutputData);
         }
     }
 
-    /**
-     * Executes the logic to return to the logged in view use case.
-     */
+    @Override
     public void switchToMainMenuView() {
         accessDatabasePresenter.switchToMainMenuView();
     }
@@ -51,5 +50,10 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary {
      */
     public void switchToPlaythroughView(Quiz quiz) {
         accessDatabasePresenter.preparePlaythroughView(quiz);
+    }
+
+    @Override
+    public void switchToCreateQuestionView(String username) {
+        accessDatabasePresenter.switchToCreateQuestionView(username);
     }
 }

@@ -11,12 +11,12 @@ import app.Constants;
 /**
  * Creates a new PlayerCreatedQuiz object.
  */
-public class PlayerCreatedQuizFactory implements QuizFactory {
+public class RetrievedQuizFactory implements QuizFactory {
 
     private final PlayerCreatedQuestionFactory questionFactory = new PlayerCreatedQuestionFactory();
 
     @Override
-    public PlayerCreatedQuiz create(JSONObject quizData, String key) {
+    public RetrievedQuiz create(JSONObject quizData, String key) {
 
         // stores all questions into a JSON Array
         final JSONArray questionsJSONArray = quizData.getJSONArray("questions");
@@ -36,7 +36,7 @@ public class PlayerCreatedQuizFactory implements QuizFactory {
         }
 
         // return quiz object with title from JSON input, list of questions generated, and author derived from key
-        return new PlayerCreatedQuiz(quizData.getString("title"), questionsList, author.toString());
+        return new RetrievedQuiz(quizData.getString("title"), questionsList, author.toString());
 
     }
 }

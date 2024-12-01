@@ -1,6 +1,6 @@
 package use_case.access_quiz;
 
-import entity.PlayerCreatedQuiz;
+import entity.RetrievedQuiz;
 
 /**
  * Input Boundary for actions which are related to accessing a quiz.
@@ -22,5 +22,5 @@ public interface AccessQuizInputBoundary {
      * Play Accessed Quiz use case.
      * @param quizObject the quiz object
      */
-    void playAccessedQuiz(PlayerCreatedQuiz quizObject);
+    void playAccessedQuiz(RetrievedQuiz quizObject);
 }
