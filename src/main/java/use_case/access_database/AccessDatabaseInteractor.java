@@ -2,9 +2,9 @@ package use_case.access_database;
 
 import java.util.Map;
 
-import entity.RetrievedQuiz;
 import entity.PlayerQuizDatabase;
 import entity.Quiz;
+import entity.RetrievedQuiz;
 
 /**
  * The interactor class for accessing a user's quiz data from the database.
