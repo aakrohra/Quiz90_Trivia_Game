@@ -67,7 +67,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
         this.setLayout(new GridBagLayout());
         currentPlayer = new JLabel("temp");
-        this.add(currentPlayer);
+        final CurrentPlayerPanel currentPlayerPanel = new CurrentPlayerPanel(currentPlayer);
         final GridBagConstraints gbc = createGbc();
 
         GridBagConstraints tempGbc = new GridBagConstraints();
@@ -85,7 +85,6 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         question.setFocusable(false);
         question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
 
-        // TODO: Should this be removed?
         question.setBackground(Constants.LIGHTERBGCOLOUR);
         question.setText("placeholder text");
         question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
@@ -123,9 +122,10 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
         // Add components to the panel
         this.addComp(questionPanel, 0, 0, 3, GridBagConstraints.CENTER, gbc);
-        this.addComp(buttonRow1, 1, 1, 2, GridBagConstraints.CENTER, gbc);
-        this.addComp(buttonRow2, 1, 2, 2, GridBagConstraints.CENTER, gbc);
-        this.addComp(nextButton, 2, 3, 3, GridBagConstraints.CENTER, gbc);
+        this.addComp(currentPlayerPanel, 1, 1, 2, GridBagConstraints.CENTER, gbc);
+        this.addComp(buttonRow1, 1, 2, 2, GridBagConstraints.CENTER, gbc);
+        this.addComp(buttonRow2, 1, 3, 2, GridBagConstraints.CENTER, gbc);
+        this.addComp(nextButton, 2, 4, 3, GridBagConstraints.CENTER, gbc);
     }
 
     private GridBagConstraints createGbc() {
@@ -175,7 +175,6 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
             // update state and playerInfo
             selectedButton.setBackground(Color.GREEN);
-//            state.updateNumberOfCorrectAnswers();  // TODO implement
             if (state.getCurrentPlayerIsOne()) {
                 playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
                 numMapCorrect[0] += 1;
@@ -240,7 +239,6 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
                 // disable the selected button
                 selectedButton.setBackground(Color.RED);
                 selectedButton.setEnabled(false);
-                // TODO enable "steal available" text
 
                 // Change the border color of selected button to blue
                 final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
@@ -255,11 +253,11 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
                 }
                 showNext = false;
                 stealTurn = true;
-                if (currentPlayer.getText().equals("true")) {
-                    currentPlayer.setText("false");
+                if (currentPlayer.getText().equals("Player One's Turn!")) {
+                    currentPlayer.setText("Player Two's Turn!");
                 }
                 else {
-                    currentPlayer.setText("true");
+                    currentPlayer.setText("Player One's Turn!");
                 }
             }
         }
@@ -321,9 +319,12 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
     public void propertyChange(PropertyChangeEvent evt) {
         final LocalMultiplayerPlaythroughState state = (LocalMultiplayerPlaythroughState) evt.getNewValue();
 
-        //TODO do this properly
-        //update current player in the box
-        currentPlayer.setText(state.getCurrentPlayerIsOne().toString());
+        if (state.getCurrentPlayerIsOne()) {
+            currentPlayer.setText("Player One's Turn!");
+        }
+        else {
+            currentPlayer.setText("Player Two's Turn!");
+        }
 
         final Quiz quiz = state.getQuiz();
         final Question question1 = quiz.getQuestions().get(state.getCurrentQuestionIndex());
