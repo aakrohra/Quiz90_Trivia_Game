@@ -48,7 +48,7 @@ public class AccessDatabaseInteractorTest {
             @Override
             public void prepareSuccessView(AccessDatabaseOutputData data) {
                 RetrievedQuizFactory retrievedQuizFactory = new RetrievedQuizFactory();
-                RetrievedQuiz quizObject = retrievedQuizFactory.create(new )
+                // RetrievedQuiz quizObject = retrievedQuizFactory.create(new )
             }
 
             @Override
