@@ -11,8 +11,7 @@ public class LocalMultiplayerPlaythroughState {
     private int currentQuestionIndex;
     private int numberOfCorrectAnswers;
     private String selectedAnswer = "";
-
-
+    private Boolean currentPlayerIsOne = true;
 
     /**
      * Sets the current quiz and resets the state for a new quiz.
@@ -88,5 +87,13 @@ public class LocalMultiplayerPlaythroughState {
                 + ", currentQuestionIndex=" + currentQuestionIndex
                 + ", selectedAnswer='" + selectedAnswer + '\''
                 + '}';
+    }
+
+    public Boolean getCurrentPlayerIsOne() {
+        return currentPlayerIsOne;
+    }
+
+    public void setCurrentPlayerIsOne(boolean currentPlayerIsOne) {
+        this.currentPlayerIsOne = currentPlayerIsOne;
     }
 }

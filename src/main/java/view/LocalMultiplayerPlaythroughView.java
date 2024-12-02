@@ -1,22 +1,38 @@
 package view;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.border.Border;
+
+import org.jetbrains.annotations.NotNull;
+
 import app.Constants;
 import entity.Question;
 import entity.Quiz;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
-import interface_adapter.playthrough.PlaythroughState;
-import interface_adapter.playthrough.PlaythroughViewModel;
-import interface_adapter.summary.SummaryController;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughViewModel;
 import kotlin.Pair;
-import org.jetbrains.annotations.NotNull;
-
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.List;
-import java.util.*;
 
 /**
  * The PlaythroughView class creates a simple quiz interface extending JPanel.
@@ -29,8 +45,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
     private static final int OPTION_THREE_INDEX = 2;
     private static final int OPTION_FOUR_INDEX = 3;
 
-    private final PlaythroughViewModel playthroughViewModel;
-    private SummaryController summaryController;
+    private final LocalMultiplayerPlaythroughViewModel localMultiplayerPlaythroughViewModel;
     private LocalMultiplayerController localMultiplayerController;
 
     private final JTextPane question;
@@ -41,15 +56,18 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
     private final JButton nextButton;
 
     private Boolean stealTurn = false;
-    private Boolean currentPlayerIsOne = true;
+    private JLabel currentPlayer;
     private Map<Integer, Pair<String, Boolean>> playerOneInfo = new HashMap<>();
+    private Integer[] numMapCorrect = {0, 0};
     private Map<Integer, Pair<String, Boolean>> playerTwoInfo = new HashMap<>();
 
-    public LocalMultiplayerPlaythroughView(PlaythroughViewModel playthroughViewModel) {
-        this.playthroughViewModel = playthroughViewModel;
-        this.playthroughViewModel.addPropertyChangeListener(this);
+    public LocalMultiplayerPlaythroughView(LocalMultiplayerPlaythroughViewModel localMultiplayerPlaythroughViewModel) {
+        this.localMultiplayerPlaythroughViewModel = localMultiplayerPlaythroughViewModel;
+        this.localMultiplayerPlaythroughViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new GridBagLayout());
+        currentPlayer = new JLabel("temp");
+        this.add(currentPlayer);
         final GridBagConstraints gbc = createGbc();
 
         GridBagConstraints tempGbc = new GridBagConstraints();
@@ -69,7 +87,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
         // TODO: Should this be removed?
         question.setBackground(Constants.LIGHTERBGCOLOUR);
-        question.setText("By definition, where does an abyssopelagic animal live ahahahahahah adaaaaaaaaaaaadddddddddddddddddddddddddddddddddddddddddddd da aaaaaaaaaaaaaaaaaaaaaaaaaaaaa  dad ahah ah hah ah ahhahhahah haha hha?");
+        question.setText("placeholder text");
         question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
 
         // Wrap in a JPanel with BoxLayout for better size enforcement
@@ -108,10 +126,6 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         this.addComp(buttonRow1, 1, 1, 2, GridBagConstraints.CENTER, gbc);
         this.addComp(buttonRow2, 1, 2, 2, GridBagConstraints.CENTER, gbc);
         this.addComp(nextButton, 2, 3, 3, GridBagConstraints.CENTER, gbc);
-
-
-        this.setBackground(Color.green);
-
     }
 
     private GridBagConstraints createGbc() {
@@ -148,25 +162,9 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
      * @param selectedButton the button that was clicked
      */
     private void handleButtonClick(JButton selectedButton) {
-        final PlaythroughState state = this.playthroughViewModel.getState();
+        final LocalMultiplayerPlaythroughState state = this.localMultiplayerPlaythroughViewModel.getState();
 
-//        // Disable all buttons after one of them has been clicked
-//        button1.setEnabled(false);
-//        button2.setEnabled(false);
-//        button3.setEnabled(false);
-//        button4.setEnabled(false);
-
-        Boolean showNext = true;
-
-        // determine which playerInfo to update
-        final Map<Integer, Pair<String, Boolean>> playerInfo;
-        if (currentPlayerIsOne) {
-            playerInfo = playerOneInfo;
-        }
-        else {
-            playerInfo = playerTwoInfo;
-        }
-
+        boolean showNext = true;
         // correct answer
         if (state.getCurrentQuestion().getCorrectAnswer().equals(selectedButton.getText())) {
             // disable all buttons
@@ -177,12 +175,14 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
             // update state and playerInfo
             selectedButton.setBackground(Color.GREEN);
-            state.updateNumberOfCorrectAnswers();
-            if (currentPlayerIsOne) {
+//            state.updateNumberOfCorrectAnswers();  // TODO implement
+            if (state.getCurrentPlayerIsOne()) {
                 playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+                numMapCorrect[0] += 1;
             }
             else {
                 playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+                numMapCorrect[1] += 1;
             }
             // Change the border color of selected button to blue
             final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
@@ -217,7 +217,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
                 }
 
                 // save who got it wrong
-                if (currentPlayerIsOne) {
+                if (!state.getCurrentPlayerIsOne()) {
                     playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
                 }
                 else {
@@ -226,6 +226,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
                 // Change the border color of selected button to blue
                 final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
                 selectedButton.setBorder(blueBorder);
+                selectedButton.setBackground(Color.RED);
 
                 // stealTurn is false
                 stealTurn = false;
@@ -246,14 +247,20 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
                 selectedButton.setBorder(blueBorder);
 
                 // set + update player that got wrong answer
-                if (currentPlayerIsOne) {
+                if (state.getCurrentPlayerIsOne()) {
                     playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
                 }
                 else {
                     playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
                 }
                 showNext = false;
-                stealTurn = true;   // TODO integrate into state so it updates and saves correctly
+                stealTurn = true;
+                if (currentPlayer.getText().equals("true")) {
+                    currentPlayer.setText("false");
+                }
+                else {
+                    currentPlayer.setText("true");
+                }
             }
         }
 
@@ -267,26 +274,23 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
      * Handles clicking next button to go to next question.
      */
     private void handleNextClick() {
-        final PlaythroughState state = this.playthroughViewModel.getState();
+        final LocalMultiplayerPlaythroughState state = this.localMultiplayerPlaythroughViewModel.getState();
         nextButton.setVisible(false);
 
         // finished last question
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
-
-            // TODO need different view probably
-//            summaryController.prepareSummaryView(state.getQuiz(), state.getNumberOfCorrectAnswers(), playerOneInfo, playerTwoInfo);
+            localMultiplayerController.prepareLocalMultiplayerSummaryView(state.getQuiz(),
+                    playerOneInfo, playerTwoInfo, numMapCorrect);
         }
+
+        // continue to next question
         else {
             state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
-            this.playthroughViewModel.firePropertyChanged();
+            state.setCurrentPlayerIsOne(!state.getCurrentPlayerIsOne());
+            this.localMultiplayerPlaythroughViewModel.firePropertyChanged();
+            stealTurn = false;
         }
 
-        if (currentPlayerIsOne) {
-            currentPlayerIsOne = false;
-        }
-        else {
-            currentPlayerIsOne = true;
-        }
     }
 
     /**
@@ -309,17 +313,18 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         return "local multiplayer playthrough";
     }
 
-    public void setSummaryController(SummaryController summaryController) {
-        this.summaryController = summaryController;
-    }
-
     /**
      * Property change handler.
      * Prints a message when the state changes.
      */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final PlaythroughState state = (PlaythroughState) evt.getNewValue();
+        final LocalMultiplayerPlaythroughState state = (LocalMultiplayerPlaythroughState) evt.getNewValue();
+
+        //TODO do this properly
+        //update current player in the box
+        currentPlayer.setText(state.getCurrentPlayerIsOne().toString());
+
         final Quiz quiz = state.getQuiz();
         final Question question1 = quiz.getQuestions().get(state.getCurrentQuestionIndex());
 
@@ -351,12 +356,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         button4.setBorder(BorderFactory.createEmptyBorder());
     }
 
-    public static void main(String[] args) {
-        final JFrame frame = new JFrame("Quiz90");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(Constants.FRAMEWIDTH, Constants.FRAMEHEIGHT);
-        frame.setLocationRelativeTo(null);
-        frame.setContentPane(new LocalMultiplayerPlaythroughView(new PlaythroughViewModel()));
-        frame.setVisible(true);
+    public void setLocalMultiplayerController(LocalMultiplayerController localMultiplayerController) {
+        this.localMultiplayerController = localMultiplayerController;
     }
 }

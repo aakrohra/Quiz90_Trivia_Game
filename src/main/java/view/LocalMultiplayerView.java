@@ -5,7 +5,9 @@ import app.Constants;
 //import entity.TriviaQuestion;
 //import entity.TriviaResponse;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
+import interface_adapter.local_multiplayer.LocalMultiplayerState;
 import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
+import interface_adapter.quiz_generation.QuizGenerationState;
 import interface_adapter.quiz_generation.QuizGenerationViewModel;
 
 import javax.swing.*;
@@ -148,10 +150,6 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
         return comboBox;
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        System.out.println("hi");
-    }
 
     public String getViewName() {
         return "local multiplayer";
@@ -159,6 +157,15 @@ public class LocalMultiplayerView extends JPanel implements PropertyChangeListen
 
     public void setLocalMultiplayerController(LocalMultiplayerController localMultiplayerController) {
         this.localMultiplayerController = localMultiplayerController;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        final LocalMultiplayerState state = (LocalMultiplayerState) evt.getNewValue();
+        if (state.getError() != null) {
+            JOptionPane.showMessageDialog(this, state.getError(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     public static void main(String[] args) {

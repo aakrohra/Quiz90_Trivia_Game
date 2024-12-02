@@ -55,7 +55,7 @@ public class SummaryState {
 
     @Override
     public String toString() {
-        return "SummaryState{"
+        return "LocalMultiplayerSummaryState{"
                 + "quiz=" + quiz
                 + ", numberOfCorrectAnswers=" + numberOfCorrectAnswers
                 + ", playerInfo=" + playerInfo
