@@ -41,6 +41,7 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
      */
     @Override
     public void prepareQuiz(TriviaQuiz triviaQuiz) {
+        localMultiplayerViewModel.getState().setError(null);
         final LocalMultiplayerPlaythroughState localMultiplayerPlaythroughState =
                 localMultiplayerPlaythroughViewModel.getState();
         localMultiplayerPlaythroughState.setQuiz(triviaQuiz);

@@ -283,8 +283,16 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
         // finished last question
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
+
             localMultiplayerController.prepareLocalMultiplayerSummaryView(state.getQuiz(),
                     playerOneInfo, playerTwoInfo, numMapCorrect);
+            state.setCurrentPlayerIsOne(true);
+            state.setCurrentQuestionIndex(0);
+            stealTurn = false;
+            playerOneInfo.clear();
+            playerTwoInfo.clear();
+            numMapCorrect[0] = 0;
+            numMapCorrect[1] = 0;
         }
 
         // continue to next question
