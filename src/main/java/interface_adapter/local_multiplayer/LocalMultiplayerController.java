@@ -1,11 +1,11 @@
 package interface_adapter.local_multiplayer;
 
+import java.util.Map;
+
 import entity.Quiz;
 import kotlin.Pair;
 import use_case.local_multiplayer.LocalMultiplayerInputBoundary;
 import use_case.quiz_generation.QuizGenerationInputData;
-
-import java.util.Map;
 
 /**
  * Controller for the Local Multiplayer Use Case.

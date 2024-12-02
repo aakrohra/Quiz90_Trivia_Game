@@ -1,10 +1,10 @@
 package use_case.local_multiplayer;
 
+import java.util.Map;
+
 import entity.Quiz;
 import kotlin.Pair;
 import use_case.quiz_generation.QuizGenerationInputData;
-
-import java.util.Map;
 
 /**
  * Input Boundary for actions related to local multiplayer.

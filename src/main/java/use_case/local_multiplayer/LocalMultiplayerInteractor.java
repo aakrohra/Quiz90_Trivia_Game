@@ -1,12 +1,12 @@
 package use_case.local_multiplayer;
 
+import java.util.Map;
+
 import entity.Quiz;
 import entity.TriviaQuiz;
 import kotlin.Pair;
 import use_case.quiz_generation.QuizGenerationDataAccessInterface;
 import use_case.quiz_generation.QuizGenerationInputData;
-
-import java.util.Map;
 
 /**
  * Interactor for Local Multiplayer Use Case.
@@ -16,7 +16,8 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
     private final LocalMultiplayerOutputBoundary localMultiplayerPresenter;
     private final QuizGenerationDataAccessInterface triviaDataAccessObject;
 
-    public LocalMultiplayerInteractor(LocalMultiplayerOutputBoundary localMultiplayerPresenter, QuizGenerationDataAccessInterface triviaDataAccessObject) {
+    public LocalMultiplayerInteractor(LocalMultiplayerOutputBoundary localMultiplayerPresenter,
+                                      QuizGenerationDataAccessInterface triviaDataAccessObject) {
         this.localMultiplayerPresenter = localMultiplayerPresenter;
         this.triviaDataAccessObject = triviaDataAccessObject;
     }

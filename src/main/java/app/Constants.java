@@ -54,7 +54,6 @@ public class Constants {
     // UI Colours
     public static final Color BGCOLOUR = new Color(56, 113, 194);
     public static final Color LIGHTERBGCOLOUR = new Color(111, 161, 232);
-    public static final int MAGICTHREE = 3;
     public static final Color CORRECTGREENBG = new Color(102, 191, 57);
     public static final Color INCORRECTREDBG = new Color(255, 51, 85);
 

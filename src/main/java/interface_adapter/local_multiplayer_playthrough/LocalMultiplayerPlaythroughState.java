@@ -9,7 +9,6 @@ import entity.Quiz;
 public class LocalMultiplayerPlaythroughState {
     private Quiz quiz;
     private int currentQuestionIndex;
-    private int numberOfCorrectAnswers;
     private String selectedAnswer = "";
     private Boolean currentPlayerIsOne = true;
 
@@ -22,7 +21,6 @@ public class LocalMultiplayerPlaythroughState {
         this.quiz = quiz;
         // Reset the state for a new quiz
         this.currentQuestionIndex = 0;
-        this.numberOfCorrectAnswers = 0;
         this.selectedAnswer = "";
     }
 
@@ -34,28 +32,8 @@ public class LocalMultiplayerPlaythroughState {
         return currentQuestionIndex;
     }
 
-    /**
-     * Adds one two the total number of correct answers.
-     * Should be used each time a question is answers correctly
-     */
-    public void updateNumberOfCorrectAnswers() {
-        this.numberOfCorrectAnswers++;
-    }
-
-    public int getNumberOfCorrectAnswers() {
-        return numberOfCorrectAnswers;
-    }
-
     public void setCurrentQuestionIndex(int currentQuestionIndex) {
         this.currentQuestionIndex = currentQuestionIndex;
-    }
-
-    public String getSelectedAnswer() {
-        return selectedAnswer;
-    }
-
-    public void setSelectedAnswer(String selectedAnswer) {
-        this.selectedAnswer = selectedAnswer;
     }
 
     /**
@@ -68,16 +46,6 @@ public class LocalMultiplayerPlaythroughState {
             System.out.println("Error index out of bounds.");
         }
         return quiz.getQuestions().get(currentQuestionIndex);
-    }
-
-    /**
-     * Advances to the next question in the quiz, if available.
-     */
-    public void advanceToNextQuestion() {
-        if (quiz != null && currentQuestionIndex < quiz.getQuestions().size() - 1) {
-            currentQuestionIndex++;
-            selectedAnswer = "";
-        }
     }
 
     @Override
