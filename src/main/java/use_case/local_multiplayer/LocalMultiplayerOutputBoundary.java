@@ -1,17 +1,15 @@
 package use_case.local_multiplayer;
 
+import java.util.Map;
+
 import entity.Quiz;
 import entity.TriviaQuiz;
 import kotlin.Pair;
-
-import java.util.Map;
 
 /**
  * Output Boundary interface for the Local Multiplayer Use Case.
  */
 public interface LocalMultiplayerOutputBoundary {
-
-    // TODO all use cases need both success and fail views
 
     /**
      * Prepares trivia quiz.

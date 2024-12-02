@@ -1,18 +1,17 @@
 package interface_adapter.local_multiplayer;
 
+import java.util.Map;
+
 import entity.Quiz;
 import entity.TriviaQuiz;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
 import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughViewModel;
 import interface_adapter.local_multiplayer_summary.LocalMultiplayerSummaryState;
 import interface_adapter.local_multiplayer_summary.LocalMultiplayerSummaryViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
-import interface_adapter.summary.SummaryState;
 import kotlin.Pair;
 import use_case.local_multiplayer.LocalMultiplayerOutputBoundary;
-
-import java.util.Map;
 
 /**
  * Presenter for switching to Local Multiplayer View.
@@ -42,6 +41,7 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
      */
     @Override
     public void prepareQuiz(TriviaQuiz triviaQuiz) {
+        localMultiplayerViewModel.getState().setError(null);
         final LocalMultiplayerPlaythroughState localMultiplayerPlaythroughState =
                 localMultiplayerPlaythroughViewModel.getState();
         localMultiplayerPlaythroughState.setQuiz(triviaQuiz);

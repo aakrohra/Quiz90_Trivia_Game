@@ -1,10 +1,10 @@
 package interface_adapter.local_multiplayer_summary;
 
-import entity.Quiz;
-import kotlin.Pair;
-
 import java.util.HashMap;
 import java.util.Map;
+
+import entity.Quiz;
+import kotlin.Pair;
 
 /**
  * The state for the Summary View Model.

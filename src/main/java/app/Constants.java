@@ -19,7 +19,6 @@ public class Constants {
     // Button constants
     public static final int BUTTONWIDTH = FRAMEWIDTH / 3;
     public static final int BUTTONHEIGHT = BUTTONWIDTH / 3;
-    public static final int BUTTONMARGIN = BUTTONHEIGHT / 5;
     public static final int BUTTONFONTSIZE = QUESTIONFONTSIZE * 2 / 3;
     public static final int MARGINS = 10;
 
@@ -43,6 +42,7 @@ public class Constants {
     
     // Font
     public static final String FONTSTYLE = "Tahoma";
+    public static final Font FONTPARAMETERS = new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE);
 
     // UI Spacers
     public static final int STRUTSMALLSPACER = 20;
@@ -54,13 +54,13 @@ public class Constants {
     // UI Colours
     public static final Color BGCOLOUR = new Color(56, 113, 194);
     public static final Color LIGHTERBGCOLOUR = new Color(111, 161, 232);
-    public static final int MAGICTHREE = 3;
     public static final Color CORRECTGREENBG = new Color(102, 191, 57);
     public static final Color INCORRECTREDBG = new Color(255, 51, 85);
 
     // Grid Coordinates
     public static final int THREE = 3;
     public static final int FOUR = 4;
+    public static final int FIVE = 5;
 
     // Normal Play
     public static final String[] CATEGORIES = {

@@ -48,6 +48,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
     private final LocalMultiplayerPlaythroughViewModel localMultiplayerPlaythroughViewModel;
     private LocalMultiplayerController localMultiplayerController;
 
+    private final JLabel currentPlayer;
     private final JTextPane question;
     private final JButton button1;
     private final JButton button2;
@@ -55,91 +56,98 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
     private final JButton button4;
     private final JButton nextButton;
 
+    private final String currentPlayerOneText = "Player One's Turn!";
+    private final String currentPlayerTwoText = "Player Two's Turn!";
+
     private Boolean stealTurn = false;
-    private JLabel currentPlayer;
-    private Map<Integer, Pair<String, Boolean>> playerOneInfo = new HashMap<>();
-    private Integer[] numMapCorrect = {0, 0};
-    private Map<Integer, Pair<String, Boolean>> playerTwoInfo = new HashMap<>();
+    private final Map<Integer, Pair<String, Boolean>> playerOneInfo = new HashMap<>();
+    private final Integer[] numMapCorrect = {0, 0};
+    private final Map<Integer, Pair<String, Boolean>> playerTwoInfo = new HashMap<>();
 
     public LocalMultiplayerPlaythroughView(LocalMultiplayerPlaythroughViewModel localMultiplayerPlaythroughViewModel) {
         this.localMultiplayerPlaythroughViewModel = localMultiplayerPlaythroughViewModel;
         this.localMultiplayerPlaythroughViewModel.addPropertyChangeListener(this);
 
         this.setLayout(new GridBagLayout());
-        currentPlayer = new JLabel("temp");
-        final CurrentPlayerPanel currentPlayerPanel = new CurrentPlayerPanel(currentPlayer);
+        this.setBackground(Constants.BGCOLOUR);
         final GridBagConstraints gbc = createGbc();
 
-        GridBagConstraints tempGbc = new GridBagConstraints();
-        tempGbc.gridx = 0;
-        tempGbc.gridy = 0;
-        tempGbc.weightx = 1.0;  // Allow horizontal growth
-        tempGbc.weighty = 1.0;  // Center vertically
-        tempGbc.anchor = GridBagConstraints.CENTER;  // Center the component
-        tempGbc.fill = GridBagConstraints.NONE;  // Don't stretch
-        tempGbc.insets = new Insets(10, 10, 10, 10);
+        currentPlayer = new JLabel("temp");
+        final CurrentPlayerPanel currentPlayerPanel = new CurrentPlayerPanel(currentPlayer);
 
-        // Create the JTextField or JTextPane
-        question = new JTextPane();
-        question.setEditable(false);
-        question.setFocusable(false);
-        question.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
-
-        question.setBackground(Constants.LIGHTERBGCOLOUR);
-        question.setText("placeholder text");
-        question.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
-
-        // Wrap in a JPanel with BoxLayout for better size enforcement
         final JPanel questionPanel = new JPanel();
         questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
-        questionPanel.add(question);
-
-        this.setBackground(Constants.BGCOLOUR);
-
-        final ButtonPanel buttonRow1 = new ButtonPanel();
-
-        final ButtonPanel buttonRow2 = new ButtonPanel();
+        question = questionTextPaneHelper(questionPanel);
 
         // Create answer buttons
+        final ButtonPanel buttonRow1 = new ButtonPanel();
         button1 = createButton("Option 1");
         button2 = createButton("Option 2");
+
+        final ButtonPanel buttonRow2 = new ButtonPanel();
         button3 = createButton("Option 3");
         button4 = createButton("Option 4");
 
         assemble2Buttons(buttonRow1, button1, button2);
         assemble2Buttons(buttonRow2, button3, button4);
 
+        nextButton = new JButton("Next");
+        nextButton.setVisible(false);
+
         // Add ActionListeners to buttons
+        addActionListeners();
+
+        // Add components to the panel
+        this.addComp(questionPanel, 0, 0, Constants.THREE, gbc);
+        this.addComp(currentPlayerPanel, 1, 1, 2, gbc);
+        this.addComp(buttonRow1, 1, 2, 2, gbc);
+        this.addComp(buttonRow2, 1, Constants.THREE, 2, gbc);
+        this.addComp(nextButton, 2, Constants.FOUR, Constants.THREE, gbc);
+    }
+
+    private void addActionListeners() {
+        buttonActionListeners();
+        nextButtonActionListener();
+    }
+
+    private void nextButtonActionListener() {
+        nextButton.addActionListener(evt -> handleNextClick());
+    }
+
+    private void buttonActionListeners() {
         button1.addActionListener(evt -> handleButtonClick(button1));
         button2.addActionListener(evt -> handleButtonClick(button2));
         button3.addActionListener(evt -> handleButtonClick(button3));
         button4.addActionListener(evt -> handleButtonClick(button4));
+    }
 
-        nextButton = new JButton("Next");
-        nextButton.setVisible(false);
-
-        nextButton.addActionListener(evt -> handleNextClick());
-
-        // Add components to the panel
-        this.addComp(questionPanel, 0, 0, 3, GridBagConstraints.CENTER, gbc);
-        this.addComp(currentPlayerPanel, 1, 1, 2, GridBagConstraints.CENTER, gbc);
-        this.addComp(buttonRow1, 1, 2, 2, GridBagConstraints.CENTER, gbc);
-        this.addComp(buttonRow2, 1, 3, 2, GridBagConstraints.CENTER, gbc);
-        this.addComp(nextButton, 2, 4, 3, GridBagConstraints.CENTER, gbc);
+    @NotNull
+    private JTextPane questionTextPaneHelper(JPanel questionPanel) {
+        final JTextPane questionTemp;
+        questionTemp = new JTextPane();
+        questionTemp.setEditable(false);
+        questionTemp.setFocusable(false);
+        questionTemp.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
+        questionTemp.setBackground(Constants.LIGHTERBGCOLOUR);
+        questionTemp.setText("placeholder text");
+        questionTemp.setMaximumSize(new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE));
+        questionPanel.add(questionTemp);
+        return questionTemp;
     }
 
     private GridBagConstraints createGbc() {
         final GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(10, 10, 10, 10);
+        final int magicTen = 10;
+        gbc.insets = new Insets(magicTen, magicTen, magicTen, magicTen);
         gbc.fill = GridBagConstraints.HORIZONTAL;
         return gbc;
     }
 
-    private void addComp(Component comp, int x_axis, int y_axis, int width, int anchor, GridBagConstraints gbc) {
-        gbc.gridx = x_axis;
-        gbc.gridy = y_axis;
+    private void addComp(Component comp, int xAxis, int yAxis, int width, GridBagConstraints gbc) {
+        gbc.gridx = xAxis;
+        gbc.gridy = yAxis;
         gbc.gridwidth = width;
-        gbc.anchor = anchor;
+        gbc.anchor = GridBagConstraints.CENTER;
         this.add(comp, gbc);
     }
 
@@ -153,7 +161,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
     @NotNull
     private static Component horizontalSpacer() {
-        return Box.createHorizontalStrut(Constants.STRUTSMALLSPACER * 3);
+        return Box.createHorizontalStrut(Constants.STRUTSMALLSPACER * Constants.THREE);
     }
 
     /**
@@ -163,109 +171,123 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
      */
     private void handleButtonClick(JButton selectedButton) {
         final LocalMultiplayerPlaythroughState state = this.localMultiplayerPlaythroughViewModel.getState();
-
         boolean showNext = true;
+
         // correct answer
         if (state.getCurrentQuestion().getCorrectAnswer().equals(selectedButton.getText())) {
-            // disable all buttons
-            button1.setEnabled(false);
-            button2.setEnabled(false);
-            button3.setEnabled(false);
-            button4.setEnabled(false);
-
-            // update state and playerInfo
-            selectedButton.setBackground(Color.GREEN);
-            if (state.getCurrentPlayerIsOne()) {
-                playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
-                numMapCorrect[0] += 1;
+            disableAllButtons(false);
+            correctSelectedButton(selectedButton, Color.GREEN);
+            if (stealTurn) {
+                updateCorrectStolenAnswer(selectedButton, state);
             }
             else {
-                playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
-                numMapCorrect[1] += 1;
+                updateCorrectAnswer(selectedButton, state);
             }
-            // Change the border color of selected button to blue
-            final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
-            selectedButton.setBorder(blueBorder);
-
-            // shows next button
-            showNext = true;
         }
 
         // incorrect answer
         else {
+
             // if wrong answer on stolen turn
             if (stealTurn) {
-                // disable all buttons
-                button1.setEnabled(false);
-                button2.setEnabled(false);
-                button3.setEnabled(false);
-                button4.setEnabled(false);
-
-                // show correct button
-                if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
-                    button1.setBackground(Color.GREEN);
-                }
-                else if (button2.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
-                    button2.setBackground(Color.GREEN);
-                }
-                else if (button3.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
-                    button3.setBackground(Color.GREEN);
-                }
-                else if (button4.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
-                    button4.setBackground(Color.GREEN);
-                }
-
-                // save who got it wrong
-                if (!state.getCurrentPlayerIsOne()) {
-                    playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
-                }
-                else {
-                    playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
-                }
-                // Change the border color of selected button to blue
-                final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
-                selectedButton.setBorder(blueBorder);
-                selectedButton.setBackground(Color.RED);
-
-                // stealTurn is false
+                disableAllButtons(false);
+                showCorrectButton(state);
+                correctSelectedButton(selectedButton, Color.RED);
+                updateIncorrectAnswer(!state.getCurrentPlayerIsOne(), state, selectedButton);
                 stealTurn = false;
-
-                // show next button
-                showNext = true;
             }
 
             // wrong answer on regular turn
             else {
-                // disable the selected button
-                selectedButton.setBackground(Color.RED);
                 selectedButton.setEnabled(false);
-
-                // Change the border color of selected button to blue
-                final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
-                selectedButton.setBorder(blueBorder);
-
-                // set + update player that got wrong answer
-                if (state.getCurrentPlayerIsOne()) {
-                    playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
-                }
-                else {
-                    playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
-                }
+                incorrectSelectedButton(selectedButton, Color.RED);
+                updateIncorrectAnswer(state.getCurrentPlayerIsOne(), state, selectedButton);
                 showNext = false;
                 stealTurn = true;
-                if (currentPlayer.getText().equals("Player One's Turn!")) {
-                    currentPlayer.setText("Player Two's Turn!");
-                }
-                else {
-                    currentPlayer.setText("Player One's Turn!");
-                }
+                updateCurrentPlayerText();
             }
         }
 
+        showNextButton(showNext);
+
+    }
+
+    private void showNextButton(boolean showNext) {
         if (showNext) {
             nextButton.setVisible(true);
         }
+    }
 
+    private void updateCurrentPlayerText() {
+        if (currentPlayer.getText().equals(currentPlayerOneText)) {
+            currentPlayer.setText(currentPlayerTwoText);
+        }
+        else {
+            currentPlayer.setText(currentPlayerOneText);
+        }
+    }
+
+    private static void incorrectSelectedButton(JButton selectedButton, Color red) {
+        final Border blueBorder = BorderFactory.createLineBorder(new Color(79, 165, 226), 5);
+        selectedButton.setBorder(blueBorder);
+        selectedButton.setBackground(red);
+    }
+
+    private void updateIncorrectAnswer(boolean state, LocalMultiplayerPlaythroughState state1, JButton selectedButton) {
+        if (state) {
+            playerOneInfo.put(state1.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+        }
+        else {
+            playerTwoInfo.put(state1.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+        }
+    }
+
+    private void showCorrectButton(LocalMultiplayerPlaythroughState state) {
+        if (button1.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+            button1.setBackground(Color.GREEN);
+        }
+        else if (button2.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+            button2.setBackground(Color.GREEN);
+        }
+        else if (button3.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+            button3.setBackground(Color.GREEN);
+        }
+        else if (button4.getText().equals(state.getCurrentQuestion().getCorrectAnswer())) {
+            button4.setBackground(Color.GREEN);
+        }
+    }
+
+    private void updateCorrectAnswer(JButton selectedButton, LocalMultiplayerPlaythroughState state) {
+        if (state.getCurrentPlayerIsOne()) {
+            playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+            numMapCorrect[0] += 1;
+        }
+        else {
+            playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+            numMapCorrect[1] += 1;
+        }
+    }
+
+    private void updateCorrectStolenAnswer(JButton selectedButton, LocalMultiplayerPlaythroughState state) {
+        if (state.getCurrentPlayerIsOne()) {
+            playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+            numMapCorrect[1] += 1;
+        }
+        else {
+            playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+            numMapCorrect[0] += 1;
+        }
+    }
+
+    private static void correctSelectedButton(JButton selectedButton, Color green) {
+        incorrectSelectedButton(selectedButton, green);
+    }
+
+    private void disableAllButtons(boolean temporary) {
+        button1.setEnabled(temporary);
+        button2.setEnabled(temporary);
+        button3.setEnabled(temporary);
+        button4.setEnabled(temporary);
     }
 
     /**
@@ -277,8 +299,20 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
         // finished last question
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
+
+            System.out.println(playerOneInfo);
+            System.out.println(playerTwoInfo);
+            System.out.println(numMapCorrect);
+
             localMultiplayerController.prepareLocalMultiplayerSummaryView(state.getQuiz(),
                     playerOneInfo, playerTwoInfo, numMapCorrect);
+            state.setCurrentPlayerIsOne(true);
+            state.setCurrentQuestionIndex(0);
+            stealTurn = false;
+            playerOneInfo.clear();
+            playerTwoInfo.clear();
+            numMapCorrect[0] = 0;
+            numMapCorrect[1] = 0;
         }
 
         // continue to next question
@@ -302,8 +336,6 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         button.setFont(new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE));
         button.setBackground(Color.WHITE);
         button.setForeground(Color.BLACK);
-        button.setMaximumSize(new Dimension(10000, 1000));
-        button.setMaximumSize(new Dimension(10000, 1000));
         return button;
     }
 
@@ -320,10 +352,10 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         final LocalMultiplayerPlaythroughState state = (LocalMultiplayerPlaythroughState) evt.getNewValue();
 
         if (state.getCurrentPlayerIsOne()) {
-            currentPlayer.setText("Player One's Turn!");
+            currentPlayer.setText(currentPlayerOneText);
         }
         else {
-            currentPlayer.setText("Player Two's Turn!");
+            currentPlayer.setText(currentPlayerTwoText);
         }
 
         final Quiz quiz = state.getQuiz();
@@ -343,10 +375,7 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         button3.setText(options.get(OPTION_THREE_INDEX));
         button4.setText(options.get(OPTION_FOUR_INDEX));
 
-        button1.setEnabled(true);
-        button2.setEnabled(true);
-        button3.setEnabled(true);
-        button4.setEnabled(true);
+        disableAllButtons(true);
         button1.setBackground(Color.WHITE);
         button2.setBackground(Color.WHITE);
         button3.setBackground(Color.WHITE);

@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -17,6 +18,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
+
+import org.jetbrains.annotations.NotNull;
 
 import app.Constants;
 import entity.Question;
@@ -30,7 +33,6 @@ import kotlin.Pair;
  */
 public class LocalMultiplayerSummaryView extends JPanel implements PropertyChangeListener {
 
-    private LocalMultiplayerSummaryViewModel localMultiplayerSummaryViewModel;
     private LocalMultiplayerController localMultiplayerController;
 
     private final JLabel resultText;
@@ -40,7 +42,6 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
     private final JPanel questionsPanel;
 
     public LocalMultiplayerSummaryView(LocalMultiplayerSummaryViewModel localMultiplayerSummaryViewModel) {
-        this.localMultiplayerSummaryViewModel = localMultiplayerSummaryViewModel;
         localMultiplayerSummaryViewModel.addPropertyChangeListener(this);
 
         // Set layout and background color
@@ -48,6 +49,89 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
         this.setLayout(new BorderLayout());
 
         // Title Panel and Text
+        final JPanel headerPanel = titlePanelHelper();
+        // Vertical strut to add space between title and resultText
+        headerPanel.add(Box.createVerticalStrut(Constants.MARGINS));
+        this.add(headerPanel, BorderLayout.NORTH);
+
+        // Results centered under the title
+        resultText = resultTextHelper(headerPanel);
+        playerOneResultText = playerOneResultHelper(headerPanel);
+        playerTwoResultText = playerTwoResultHelper(headerPanel);
+        
+        // Scrollable Questions + Results Panel
+        questionsPanel = questionsPanelHelper();
+
+        // Buttons
+        final JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Constants.BGCOLOUR);
+        returnButton = returnButtonHelper();
+        buttonPanel.add(returnButton);
+        actionListenersHelper();
+        this.add(buttonPanel, BorderLayout.SOUTH);
+    }
+
+    private void actionListenersHelper() {
+        returnButton.addActionListener(evt -> localMultiplayerController.switchToMainMenuView());
+    }
+
+    @NotNull
+    private JButton returnButtonHelper() {
+        final JButton tempReturnButton;
+        tempReturnButton = new JButton("Return To Main Menu");
+        tempReturnButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH,
+                Constants.BUTTONHEIGHT / 2));
+        tempReturnButton.setFont(new Font(Constants.FONTSTYLE, Font.BOLD,
+                Constants.BUTTONFONTSIZE * 2 / Constants.THREE));
+        return tempReturnButton;
+    }
+
+    @NotNull
+    private JPanel questionsPanelHelper() {
+        final JPanel tempQuestionsPanel;
+        tempQuestionsPanel = new JPanel();
+        tempQuestionsPanel.setLayout(new BoxLayout(tempQuestionsPanel, BoxLayout.Y_AXIS));
+        tempQuestionsPanel.setBackground(Constants.BGCOLOUR);
+
+        final JScrollPane scrollPane = new JScrollPane(tempQuestionsPanel);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.add(scrollPane, BorderLayout.CENTER);
+        return tempQuestionsPanel;
+    }
+
+    @NotNull
+    private JLabel resultTextHelper(JPanel headerPanel) {
+        final JLabel tempResultText = createLabel("You got: ",
+                Constants.FONTPARAMETERS,
+                SwingConstants.CENTER);
+        tempResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(tempResultText);
+        return tempResultText;
+    }
+
+    @NotNull
+    private JLabel playerTwoResultHelper(JPanel headerPanel) {
+        final JLabel tempPlayerTwoResultText = createLabel("Player Two got: ",
+                Constants.FONTPARAMETERS,
+                SwingConstants.CENTER);
+        tempPlayerTwoResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(tempPlayerTwoResultText);
+        return tempPlayerTwoResultText;
+    }
+
+    @NotNull
+    private JLabel playerOneResultHelper(JPanel headerPanel) {
+        final JLabel tempPlayerOneResultText = createLabel("Player One got: ",
+                Constants.FONTPARAMETERS,
+                SwingConstants.CENTER);
+        tempPlayerOneResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(tempPlayerOneResultText);
+        return tempPlayerOneResultText;
+    }
+
+    @NotNull
+    private JPanel titlePanelHelper() {
         final JPanel headerPanel = new JPanel();
         headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
         headerPanel.setBackground(Constants.BGCOLOUR);
@@ -55,55 +139,10 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
         // Title centered
         final JLabel title = createLabel("Summary View",
                 new Font(Constants.FONTSTYLE, Font.BOLD, Constants.TITLEFONTSIZE),
-                SwingConstants.CENTER, Color.WHITE);
+                SwingConstants.CENTER);
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         headerPanel.add(title);
-
-        // Vertical strut to add space between title and resultText
-        headerPanel.add(Box.createVerticalStrut(Constants.MARGINS));
-
-        // Result Text centered under the title
-        resultText = createLabel("You got: ",
-                new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                SwingConstants.CENTER, Color.WHITE);
-        resultText.setAlignmentX(Component.CENTER_ALIGNMENT);
-        headerPanel.add(resultText);
-
-        playerOneResultText = createLabel("You got: ",
-                new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                SwingConstants.CENTER, Color.WHITE);
-        playerTwoResultText = createLabel("You got: ",
-                new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                SwingConstants.CENTER, Color.WHITE);
-
-        headerPanel.add(playerOneResultText);
-        headerPanel.add(playerOneResultText);
-
-        this.add(headerPanel, BorderLayout.NORTH);
-
-        // Scrollable Panel
-        questionsPanel = new JPanel();
-        questionsPanel.setLayout(new BoxLayout(questionsPanel, BoxLayout.Y_AXIS));
-        questionsPanel.setBackground(Constants.BGCOLOUR);
-
-        final JScrollPane scrollPane = new JScrollPane(questionsPanel);
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        this.add(scrollPane, BorderLayout.CENTER);
-
-        // Buttons
-        final JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(Constants.BGCOLOUR);
-
-        returnButton = new JButton("Return To Main Menu");
-        returnButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH / 2,
-                Constants.BUTTONHEIGHT / 2));
-        returnButton.setFont(new Font(Constants.FONTSTYLE, Font.BOLD,
-                Constants.BUTTONFONTSIZE * 2 / Constants.THREE));
-        returnButton.addActionListener(evt -> localMultiplayerController.switchToMainMenuView());
-
-        buttonPanel.add(returnButton);
-        this.add(buttonPanel, BorderLayout.SOUTH);
+        return headerPanel;
     }
 
     /**
@@ -112,15 +151,8 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         final LocalMultiplayerSummaryState state = (LocalMultiplayerSummaryState) evt.getNewValue();
-        final String magicBackslash = " / ";
-        resultText.setText("You got: " + (state.getNumMapCorrect()[0] + state.getNumMapCorrect()[1])
-                + magicBackslash + state.getNumberOfQuestions());
-        playerOneResultText.setText("You got: " + (state.getNumMapCorrect()[0])
-                + magicBackslash + state.getNumberOfQuestions());
-        playerTwoResultText.setText("You got: " + (state.getNumMapCorrect()[1])
-                + magicBackslash + state.getNumberOfQuestions());
+        setResultTextHelper(state);
 
-        // TODO: Clear the questions panel for replay? Not sure yet
         questionsPanel.removeAll();
 
         for (int i = 0; i < state.getNumberOfQuestions(); i++) {
@@ -129,120 +161,186 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
 
             // get who answered the question, correct answer, and each person's answer
             final String correctAnswer = question.getCorrectAnswer();
-            final Pair<String, Boolean> playerOneAnswer;
-            final Pair<String, Boolean> playerTwoAnswer;
             String playerOneCurrentAnswer = "";
             String playerTwoCurrentAnswer = "";
             final Boolean[] playerOneAnswered = {false, false};
             final Boolean[] playerTwoAnswered = {false, false};
             if (state.getPlayerOneInfo().get(i) != null) {
-                playerOneAnswer = state.getPlayerOneInfo().get(i);
-                playerOneCurrentAnswer = playerOneAnswer.getFirst();
-                playerOneAnswered[0] = true;
-                if (playerOneCurrentAnswer.equals(correctAnswer)) {
-                    playerOneAnswered[1] = true;
-                }
+                playerOneCurrentAnswer = getPlayerOneInfoForQuestion(state, i, playerOneAnswered, correctAnswer);
             }
             if (state.getPlayerTwoInfo().get(i) != null) {
-                playerTwoAnswer = state.getPlayerTwoInfo().get(i);
-                playerTwoCurrentAnswer = playerTwoAnswer.getFirst();
-                playerTwoAnswered[0] = true;
-                if (playerTwoCurrentAnswer.equals(correctAnswer)) {
-                    playerTwoAnswered[1] = true;
-                }
+                playerTwoCurrentAnswer = getPlayerTwoInfoForQuestion(state, i, playerTwoAnswered, correctAnswer);
             }
 
             // set if someone got the question correct
-            final boolean isCorrect;
-            isCorrect = playerOneAnswered[1] || playerTwoAnswered[1];
+            final boolean isCorrect = playerOneAnswered[1] || playerTwoAnswered[1];
 
             // display panel for question
-            final JPanel questionPanel = new JPanel();
-            questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
-            questionPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-            if (isCorrect) {
-                questionPanel.setBackground(Constants.CORRECTGREENBG);
-            }
-            else {
-                questionPanel.setBackground(Constants.INCORRECTREDBG);
-            }
+            final JPanel questionPanel = questionPanelUpdateHelper();
             final JLabel questionText = createLabel("Q" + (i + 1) + ": " + question.getQuestionText(),
-                    new Font(Constants.FONTSTYLE, Font.BOLD, Constants.BUTTONFONTSIZE),
-                    SwingConstants.LEFT, Color.WHITE);
-            questionPanel.add(questionText);
+                    Constants.FONTPARAMETERS,
+                    SwingConstants.LEFT);
+
+            final ArrayList<Boolean[]> playersAnswered = new ArrayList<>();
+            playersAnswered.add(playerOneAnswered);
+            playersAnswered.add(playerTwoAnswered);
 
             // if correct, someone answered correctly so display just both answers
-            final String correctAnswerTextPrompt = "Correct Answer: ";
-            if (isCorrect) {
-                final JLabel correct;
-                final JLabel correctText;
-                final JLabel userText = new JLabel();
-                userText.setFont(new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE));
-                userText.setForeground(Color.WHITE);
-                userText.setAlignmentX(SwingConstants.LEFT);
+            questionScrollPanelHelper(isCorrect, questionPanel, questionText,
+                    correctAnswer, playersAnswered,
+                    playerTwoCurrentAnswer, playerOneCurrentAnswer);
 
-                // player one was correct
-                if (playerOneAnswered[0] && playerOneAnswered[1]) {
-                    correct = createLabel("Player One was correct!",
-                            new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                            SwingConstants.LEFT, Color.WHITE);
-
-                    correctText = createLabel(correctAnswerTextPrompt + correctAnswer,
-                            new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                            SwingConstants.LEFT, Color.WHITE);
-
-                    // player two was incorrect
-                    if (playerTwoAnswered[0]) {
-                        userText.setText("Player Two's Answer: " + playerTwoCurrentAnswer);
-                    }
-                }
-
-                // player two was correct
-                else {
-                    correct = createLabel("Player Two was correct!",
-                            new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                            SwingConstants.LEFT, Color.WHITE);
-
-                    correctText = createLabel(correctAnswerTextPrompt + correctAnswer,
-                            new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                            SwingConstants.LEFT, Color.WHITE);
-
-                    // player one was incorrect
-                    if (playerOneAnswered[0]) {
-                        userText.setText("Player One's Answer: " + playerOneCurrentAnswer);
-                    }
-                }
-
-                questionPanel.add(correct);
-                questionPanel.add(correctText);
-                questionPanel.add(userText);
-
-            }
-            else {
-                final JLabel correctText = createLabel(correctAnswerTextPrompt + correctAnswer,
-                        new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                        SwingConstants.LEFT, Color.WHITE);
-                final JLabel playerOneText = createLabel("Player One's Answer: " + playerOneCurrentAnswer,
-                        new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                        SwingConstants.LEFT, Color.WHITE);
-                final JLabel playerTwoText = createLabel("Player Two's answer: " + playerTwoCurrentAnswer,
-                        new Font(Constants.FONTSTYLE, Font.PLAIN, Constants.BUTTONFONTSIZE),
-                        SwingConstants.LEFT, Color.WHITE);
-
-                questionPanel.add(correctText);
-                questionPanel.add(playerOneText);
-                questionPanel.add(playerTwoText);
-            }
-
-            questionsPanel.add(questionPanel);
-            questionsPanel.add(Box.createVerticalStrut(Constants.MARGINS));
+            questionScrollPaneAssembly(questionPanel);
         }
     }
 
-    private JLabel createLabel(String text, Font font, int alignment, Color color) {
+    private void questionScrollPanelHelper(boolean isCorrect, JPanel questionPanel, JLabel questionText,
+                                           String correctAnswer, ArrayList<Boolean[]> playersAnswered,
+                                           String playerTwoCurrentAnswer, String playerOneCurrentAnswer) {
+        final String correctAnswerText = "Correct Answer: ";
+        if (isCorrect) {
+            questionPanelHelper(questionPanel, questionText, Constants.CORRECTGREENBG);
+            final JLabel correct;
+            final JLabel correctText;
+            final JLabel userText = userTextHelper();
+
+            // player one was correct
+            if (playersAnswered.get(0)[0] && playersAnswered.get(0)[1]) {
+                correct = createLabel("Player One was correct!",
+                        Constants.FONTPARAMETERS,
+                        SwingConstants.LEFT);
+
+                correctText = createLabel(correctAnswerText + correctAnswer,
+                        Constants.FONTPARAMETERS,
+                        SwingConstants.LEFT);
+
+                // player two was incorrect
+                bothAnswerOneCorrect(playersAnswered.get(1), userText, playerTwoCurrentAnswer);
+            }
+
+            // player two was correct
+            else {
+                correct = createLabel("Player Two was correct!",
+                        Constants.FONTPARAMETERS,
+                        SwingConstants.LEFT);
+
+                correctText = createLabel(correctAnswerText + correctAnswer,
+                        Constants.FONTPARAMETERS,
+                        SwingConstants.LEFT);
+
+                // player one was incorrect
+                bothAnswerTwoCorrect(playersAnswered.get(0), userText, playerOneCurrentAnswer);
+            }
+
+            questionPanelAssembly(questionPanel, correct, correctText, userText);
+        }
+        else {
+            questionPanelHelper(questionPanel, questionText, Constants.INCORRECTREDBG);
+            final JLabel correctText = createLabel(correctAnswerText + correctAnswer,
+                    Constants.FONTPARAMETERS,
+                    SwingConstants.LEFT);
+            final JLabel playerOneText = createLabel("Player One's Answer: " + playerOneCurrentAnswer,
+                    Constants.FONTPARAMETERS,
+                    SwingConstants.LEFT);
+            final JLabel playerTwoText = createLabel("Player Two's answer: " + playerTwoCurrentAnswer,
+                    Constants.FONTPARAMETERS,
+                    SwingConstants.LEFT);
+
+            questionPanelAssembly(questionPanel, correctText, playerOneText, playerTwoText);
+        }
+    }
+
+    private static void bothAnswerTwoCorrect(Boolean[] playerOneAnswered, JLabel userText,
+                                             String playerOneCurrentAnswer) {
+        if (Boolean.TRUE.equals(playerOneAnswered[0])) {
+            userText.setText("Player One's Answer: " + playerOneCurrentAnswer);
+        }
+    }
+
+    private static void bothAnswerOneCorrect(Boolean[] playerTwoAnswered, JLabel userText,
+                                             String playerTwoCurrentAnswer) {
+        if (Boolean.TRUE.equals(playerTwoAnswered[0])) {
+            userText.setText("Player Two's Answer: " + playerTwoCurrentAnswer);
+        }
+    }
+
+    private static void questionPanelHelper(JPanel questionPanel, JLabel questionText, Color color) {
+        questionPanel.setBackground(color);
+        questionPanel.add(questionText);
+    }
+
+    private void questionScrollPaneAssembly(JPanel questionPanel) {
+        questionsPanel.add(questionPanel);
+        questionsPanel.add(Box.createVerticalStrut(Constants.MARGINS));
+    }
+
+    private static void questionPanelAssembly(JPanel questionPanel, JLabel correct,
+                                              JLabel correctText, JLabel userText) {
+        questionPanel.add(correct);
+        questionPanel.add(correctText);
+        questionPanel.add(userText);
+    }
+
+    @NotNull
+    private static JLabel userTextHelper() {
+        final JLabel userText = new JLabel();
+        userText.setFont(Constants.FONTPARAMETERS);
+        userText.setForeground(Color.WHITE);
+        userText.setHorizontalAlignment(SwingConstants.LEFT);
+        return userText;
+    }
+
+    @NotNull
+    private static JPanel questionPanelUpdateHelper() {
+        final JPanel questionPanel = new JPanel();
+        questionPanel.setLayout(new BoxLayout(questionPanel, BoxLayout.Y_AXIS));
+        questionPanel.setBorder(BorderFactory.createEmptyBorder(Constants.MARGINS, Constants.MARGINS,
+                Constants.MARGINS, Constants.MARGINS));
+        return questionPanel;
+    }
+
+    @NotNull
+    private static String getPlayerTwoInfoForQuestion(LocalMultiplayerSummaryState state, int iterator,
+                                                      Boolean[] playerTwoAnswered, String correctAnswer) {
+        final Pair<String, Boolean> playerTwoAnswer;
+        final String playerTwoCurrentAnswer;
+        playerTwoAnswer = state.getPlayerTwoInfo().get(iterator);
+        playerTwoCurrentAnswer = playerTwoAnswer.getFirst();
+        playerTwoAnswered[0] = true;
+        if (playerTwoCurrentAnswer.equals(correctAnswer)) {
+            playerTwoAnswered[1] = true;
+        }
+        return playerTwoCurrentAnswer;
+    }
+
+    @NotNull
+    private static String getPlayerOneInfoForQuestion(LocalMultiplayerSummaryState state, int iterator,
+                                                      Boolean[] playerOneAnswered, String correctAnswer) {
+        final Pair<String, Boolean> playerOneAnswer;
+        final String playerOneCurrentAnswer;
+        playerOneAnswer = state.getPlayerOneInfo().get(iterator);
+        playerOneCurrentAnswer = playerOneAnswer.getFirst();
+        playerOneAnswered[0] = true;
+        if (playerOneCurrentAnswer.equals(correctAnswer)) {
+            playerOneAnswered[1] = true;
+        }
+        return playerOneCurrentAnswer;
+    }
+
+    private void setResultTextHelper(LocalMultiplayerSummaryState state) {
+        final String magicBackslash = " / ";
+        resultText.setText("You got: " + (state.getNumMapCorrect()[0] + state.getNumMapCorrect()[1])
+                + magicBackslash + state.getNumberOfQuestions());
+        playerOneResultText.setText("Player One got: " + (state.getNumMapCorrect()[0])
+                + magicBackslash + state.getNumberOfQuestions());
+        playerTwoResultText.setText("Player Two got: " + (state.getNumMapCorrect()[1])
+                + magicBackslash + state.getNumberOfQuestions());
+    }
+
+    private JLabel createLabel(String text, Font font, int alignment) {
         final JLabel label = new JLabel(text, alignment);
         label.setFont(font);
-        label.setForeground(color);
+        label.setForeground(Color.WHITE);
         return label;
     }
 
