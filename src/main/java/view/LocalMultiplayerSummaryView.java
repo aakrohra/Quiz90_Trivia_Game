@@ -48,9 +48,8 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
         this.setBackground(Constants.BGCOLOUR);
         this.setLayout(new BorderLayout());
 
-        // Title Panel and Text
+        // Title Panel
         final JPanel headerPanel = titlePanelHelper();
-        // Vertical strut to add space between title and resultText
         headerPanel.add(Box.createVerticalStrut(Constants.MARGINS));
         this.add(headerPanel, BorderLayout.NORTH);
 
@@ -59,10 +58,10 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
         playerOneResultText = playerOneResultHelper(headerPanel);
         playerTwoResultText = playerTwoResultHelper(headerPanel);
         
-        // Scrollable Questions + Results Panel
+        // Scrollable Questions + Answers Panel
         questionsPanel = questionsPanelHelper();
 
-        // Buttons
+        // Return Button
         final JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(Constants.BGCOLOUR);
         returnButton = returnButtonHelper();
@@ -71,19 +70,49 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
         this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private void actionListenersHelper() {
-        returnButton.addActionListener(evt -> localMultiplayerController.switchToMainMenuView());
+    @NotNull
+    private JPanel titlePanelHelper() {
+        final JPanel headerPanel = new JPanel();
+        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
+        headerPanel.setBackground(Constants.BGCOLOUR);
+
+        // Title centered
+        final JLabel title = createLabel("Summary View",
+                new Font(Constants.FONTSTYLE, Font.BOLD, Constants.TITLEFONTSIZE),
+                SwingConstants.CENTER);
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(title);
+        return headerPanel;
     }
 
     @NotNull
-    private JButton returnButtonHelper() {
-        final JButton tempReturnButton;
-        tempReturnButton = new JButton("Return To Main Menu");
-        tempReturnButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH,
-                Constants.BUTTONHEIGHT / 2));
-        tempReturnButton.setFont(new Font(Constants.FONTSTYLE, Font.BOLD,
-                Constants.BUTTONFONTSIZE * 2 / Constants.THREE));
-        return tempReturnButton;
+    private JLabel resultTextHelper(JPanel headerPanel) {
+        final JLabel tempResultText = createLabel("You got: ",
+                Constants.FONTPARAMETERS,
+                SwingConstants.CENTER);
+        tempResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(tempResultText);
+        return tempResultText;
+    }
+
+    @NotNull
+    private JLabel playerOneResultHelper(JPanel headerPanel) {
+        final JLabel tempPlayerOneResultText = createLabel("Player One got: ",
+                Constants.FONTPARAMETERS,
+                SwingConstants.CENTER);
+        tempPlayerOneResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(tempPlayerOneResultText);
+        return tempPlayerOneResultText;
+    }
+
+    @NotNull
+    private JLabel playerTwoResultHelper(JPanel headerPanel) {
+        final JLabel tempPlayerTwoResultText = createLabel("Player Two got: ",
+                Constants.FONTPARAMETERS,
+                SwingConstants.CENTER);
+        tempPlayerTwoResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
+        headerPanel.add(tempPlayerTwoResultText);
+        return tempPlayerTwoResultText;
     }
 
     @NotNull
@@ -101,48 +130,18 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
     }
 
     @NotNull
-    private JLabel resultTextHelper(JPanel headerPanel) {
-        final JLabel tempResultText = createLabel("You got: ",
-                Constants.FONTPARAMETERS,
-                SwingConstants.CENTER);
-        tempResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
-        headerPanel.add(tempResultText);
-        return tempResultText;
+    private JButton returnButtonHelper() {
+        final JButton tempReturnButton;
+        tempReturnButton = new JButton("Return To Main Menu");
+        tempReturnButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH,
+                Constants.BUTTONHEIGHT / 2));
+        tempReturnButton.setFont(new Font(Constants.FONTSTYLE, Font.BOLD,
+                Constants.BUTTONFONTSIZE * 2 / Constants.THREE));
+        return tempReturnButton;
     }
 
-    @NotNull
-    private JLabel playerTwoResultHelper(JPanel headerPanel) {
-        final JLabel tempPlayerTwoResultText = createLabel("Player Two got: ",
-                Constants.FONTPARAMETERS,
-                SwingConstants.CENTER);
-        tempPlayerTwoResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
-        headerPanel.add(tempPlayerTwoResultText);
-        return tempPlayerTwoResultText;
-    }
-
-    @NotNull
-    private JLabel playerOneResultHelper(JPanel headerPanel) {
-        final JLabel tempPlayerOneResultText = createLabel("Player One got: ",
-                Constants.FONTPARAMETERS,
-                SwingConstants.CENTER);
-        tempPlayerOneResultText.setAlignmentX(Component.CENTER_ALIGNMENT);
-        headerPanel.add(tempPlayerOneResultText);
-        return tempPlayerOneResultText;
-    }
-
-    @NotNull
-    private JPanel titlePanelHelper() {
-        final JPanel headerPanel = new JPanel();
-        headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
-        headerPanel.setBackground(Constants.BGCOLOUR);
-
-        // Title centered
-        final JLabel title = createLabel("Summary View",
-                new Font(Constants.FONTSTYLE, Font.BOLD, Constants.TITLEFONTSIZE),
-                SwingConstants.CENTER);
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
-        headerPanel.add(title);
-        return headerPanel;
+    private void actionListenersHelper() {
+        returnButton.addActionListener(evt -> localMultiplayerController.switchToMainMenuView());
     }
 
     /**
