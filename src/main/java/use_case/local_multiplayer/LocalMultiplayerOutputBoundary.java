@@ -1,10 +1,7 @@
 package use_case.local_multiplayer;
 
-import java.util.Map;
-
-import entity.Quiz;
 import entity.TriviaQuiz;
-import kotlin.Pair;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
 
 /**
  * Output Boundary interface for the Local Multiplayer Use Case.
@@ -34,14 +31,9 @@ public interface LocalMultiplayerOutputBoundary {
     void prepareFailView(String errorMessage);
 
     /**
-     * Executes action to switch to Local Multiplayer Summary view.
-     * @param quiz The completed quiz containing the questions and answers.
-     * @param playerOneInfo A map of player one information.
-     * @param playerTwoInfo A map of player two information.
-     * @param numMapCorrect Array of correct answers.
+     * Executes the action to go to the next question in the quiz.
+     * @param state The local multiplayer playthrough state.
      */
-    void prepareLocalMultiplayerSummaryView(Quiz quiz,
-                                            Map<Integer, Pair<String, Boolean>> playerOneInfo,
-                                            Map<Integer, Pair<String, Boolean>> playerTwoInfo,
-                                            Integer[] numMapCorrect);
+    void nextQuestion(LocalMultiplayerPlaythroughState state);
+
 }
