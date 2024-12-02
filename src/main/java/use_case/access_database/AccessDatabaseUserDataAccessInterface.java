@@ -27,5 +27,10 @@ public interface AccessDatabaseUserDataAccessInterface {
      */
     JSONObject getUserInfo(User user);
 
+    /**
+     * Checks if user exists by username.
+     * @param username the given username
+     * @return true if user does exist, false otherwise
+     */
     boolean existsByName(String username);
 }
