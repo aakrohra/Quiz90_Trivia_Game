@@ -1,11 +1,7 @@
 package use_case.local_multiplayer;
 
-import java.util.Map;
-
-import entity.Quiz;
 import entity.TriviaQuiz;
 import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
-import kotlin.Pair;
 import use_case.quiz_generation.QuizGenerationDataAccessInterface;
 import use_case.quiz_generation.QuizGenerationInputData;
 
