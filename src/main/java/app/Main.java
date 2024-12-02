@@ -28,6 +28,8 @@ public class Main {
                                             .addLoggedInView()
                                             .addQuizGenerationView()
                                             .addLocalMultiplayerView()
+                                            .addLocalMultiplayerPlaythroughView()
+                                            .addLocalMultiplayerSummaryView()
                                             .addAccessedQuizInfoView()
                                             .addPlaythroughView()
                                             .addSummaryView()

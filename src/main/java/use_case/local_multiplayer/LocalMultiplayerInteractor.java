@@ -1,8 +1,12 @@
 package use_case.local_multiplayer;
 
+import entity.Quiz;
 import entity.TriviaQuiz;
+import kotlin.Pair;
 import use_case.quiz_generation.QuizGenerationDataAccessInterface;
 import use_case.quiz_generation.QuizGenerationInputData;
+
+import java.util.Map;
 
 /**
  * Interactor for Local Multiplayer Use Case.
@@ -25,9 +29,10 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
         try {
             final TriviaQuiz trivia = triviaDataAccessObject.getTrivia(localMultiplayerInputData);
             localMultiplayerPresenter.prepareQuiz(trivia);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex) {
             // Log the exception or handle it based on your use case
-            localMultiplayerPresenter.prepareFailView();
+            localMultiplayerPresenter.prepareFailView(ex.getMessage());
         }
     }
 
@@ -45,5 +50,20 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
     @Override
     public void switchToMainMenuView() {
         localMultiplayerPresenter.switchToMainMenuView();
+    }
+
+    /**
+     * Executes action to switch to Local Multiplayer Summary view.
+     * @param quiz The completed quiz containing the questions and answers.
+     * @param playerOneInfo A map of player one information.
+     * @param playerTwoInfo A map of player two information.
+     * @param numMapCorrect Array of correct answers.
+     */
+    @Override
+    public void prepareLocalMultiplayerSummaryView(Quiz quiz, Map<Integer,
+            Pair<String, Boolean>> playerOneInfo, Map<Integer, Pair<String, Boolean>> playerTwoInfo,
+                                                   Integer[] numMapCorrect) {
+        localMultiplayerPresenter.prepareLocalMultiplayerSummaryView(quiz,
+                playerOneInfo, playerTwoInfo, numMapCorrect);
     }
 }

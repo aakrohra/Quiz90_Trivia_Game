@@ -1,18 +1,17 @@
-package interface_adapter.playthrough;
+package interface_adapter.local_multiplayer_playthrough;
 
 import entity.Question;
 import entity.Quiz;
 
 /**
- * The state for the Playthrough View Model.
+ * The state for the LocalMultiplayerPlaythrough View Model.
  */
-public class PlaythroughState {
+public class LocalMultiplayerPlaythroughState {
     private Quiz quiz;
     private int currentQuestionIndex;
     private int numberOfCorrectAnswers;
     private String selectedAnswer = "";
-
-
+    private Boolean currentPlayerIsOne = true;
 
     /**
      * Sets the current quiz and resets the state for a new quiz.
@@ -88,5 +87,13 @@ public class PlaythroughState {
                 + ", currentQuestionIndex=" + currentQuestionIndex
                 + ", selectedAnswer='" + selectedAnswer + '\''
                 + '}';
+    }
+
+    public Boolean getCurrentPlayerIsOne() {
+        return currentPlayerIsOne;
+    }
+
+    public void setCurrentPlayerIsOne(boolean currentPlayerIsOne) {
+        this.currentPlayerIsOne = currentPlayerIsOne;
     }
 }

@@ -1,8 +1,11 @@
 package interface_adapter.local_multiplayer;
 
+import entity.Quiz;
+import kotlin.Pair;
 import use_case.local_multiplayer.LocalMultiplayerInputBoundary;
-import use_case.local_multiplayer.LocalMultiplayerInputData;
 import use_case.quiz_generation.QuizGenerationInputData;
+
+import java.util.Map;
 
 /**
  * Controller for the Local Multiplayer Use Case.
@@ -40,5 +43,19 @@ public class LocalMultiplayerController {
      */
     public void switchToMainMenuView() {
         localMultiplayerInputBoundary.switchToMainMenuView();
+    }
+
+    /**
+     * Executes action to switch to Local Multiplayer Summary view.
+     * @param quiz The completed quiz containing the questions and answers.
+     * @param playerOneInfo A map of player one information.
+     * @param playerTwoInfo A map of player two information.
+     * @param numMapCorrect Array of correct answers.
+     */
+    public void prepareLocalMultiplayerSummaryView(Quiz quiz, Map<Integer,
+            Pair<String, Boolean>> playerOneInfo, Map<Integer, Pair<String, Boolean>> playerTwoInfo,
+                                                   Integer[] numMapCorrect) {
+        localMultiplayerInputBoundary.prepareLocalMultiplayerSummaryView(quiz,
+                playerOneInfo, playerTwoInfo, numMapCorrect);
     }
 }

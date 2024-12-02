@@ -1,8 +1,10 @@
 package app;
 
-import java.awt.*;
+import java.awt.CardLayout;
 
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import data_access.DBCustomQuizDataAccessObject;
 import data_access.DBTriviaDataAccessObject;
@@ -28,6 +30,8 @@ import interface_adapter.create_quiz.QuizCreationViewModel;
 import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.local_multiplayer.LocalMultiplayerPresenter;
 import interface_adapter.local_multiplayer.LocalMultiplayerViewModel;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughViewModel;
+import interface_adapter.local_multiplayer_summary.LocalMultiplayerSummaryViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.login.LoginController;
 import interface_adapter.login.LoginPresenter;
@@ -77,7 +81,20 @@ import use_case.signup.SignupOutputBoundary;
 import use_case.summary.SummaryInputBoundary;
 import use_case.summary.SummaryInteractor;
 import use_case.summary.SummaryOutputBoundary;
-import view.*;
+import view.AccessedQuizInfoView;
+import view.ChangePasswordView;
+import view.LocalMultiplayerPlaythroughView;
+import view.LocalMultiplayerSummaryView;
+import view.LocalMultiplayerView;
+import view.LoggedInView;
+import view.LoginView;
+import view.PlaythroughView;
+import view.QuestionCreationView;
+import view.QuizDatabaseView;
+import view.QuizGenerationView;
+import view.SignupView;
+import view.SummaryView;
+import view.ViewManager;
 
 /**
  * The AppBuilder class is responsible for putting together the pieces of
@@ -124,6 +141,10 @@ public class AppBuilder {
     private QuestionCreationViewModel questionCreationViewModel;
     private QuestionCreationView questionCreationView;
     private QuizCreationViewModel quizCreationViewModel;
+    private LocalMultiplayerPlaythroughViewModel localMultiplayerPlaythroughViewModel;
+    private LocalMultiplayerPlaythroughView localMultiplayerPlaythroughView;
+    private LocalMultiplayerSummaryViewModel localMultiplayerSummaryViewModel;
+    private LocalMultiplayerSummaryView localMultiplayerSummaryView;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -196,6 +217,17 @@ public class AppBuilder {
     }
 
     /**
+     * Adds the Local Multiplayer Summary View to the application.
+     * @return this builder
+     */
+    public AppBuilder addLocalMultiplayerSummaryView() {
+        localMultiplayerSummaryViewModel = new LocalMultiplayerSummaryViewModel();
+        localMultiplayerSummaryView = new LocalMultiplayerSummaryView(localMultiplayerSummaryViewModel);
+        cardPanel.add(localMultiplayerSummaryView, localMultiplayerSummaryView.getViewName());
+        return this;
+    }
+
+    /**
      * Adds the Playthrough View to the application.
      * @return this builder
      */
@@ -203,6 +235,17 @@ public class AppBuilder {
         playthroughViewModel = new PlaythroughViewModel();
         playthroughView = new PlaythroughView(playthroughViewModel);
         cardPanel.add(playthroughView, playthroughView.getViewName());
+        return this;
+    }
+
+    /**
+     * Adds the Local Multiplayer View to the application.
+     * @return this builder
+     */
+    public AppBuilder addLocalMultiplayerPlaythroughView() {
+        localMultiplayerPlaythroughViewModel = new LocalMultiplayerPlaythroughViewModel();
+        localMultiplayerPlaythroughView = new LocalMultiplayerPlaythroughView(localMultiplayerPlaythroughViewModel);
+        cardPanel.add(localMultiplayerPlaythroughView, localMultiplayerPlaythroughView.getViewName());
         return this;
     }
 
@@ -269,7 +312,8 @@ public class AppBuilder {
      */
     public AppBuilder addLocalMultiplayerUseCase() {
         final LocalMultiplayerOutputBoundary localMultiplayerPresenter = new LocalMultiplayerPresenter(
-                viewManagerModel, localMultiplayerViewModel, loggedInViewModel, playthroughViewModel);
+                viewManagerModel, localMultiplayerViewModel, loggedInViewModel, localMultiplayerPlaythroughViewModel,
+                localMultiplayerSummaryViewModel);
 
         final LocalMultiplayerInputBoundary localMultiplayerInteractor =
                 new LocalMultiplayerInteractor(localMultiplayerPresenter, triviaDataAccessObject);
@@ -278,6 +322,8 @@ public class AppBuilder {
                 new LocalMultiplayerController(localMultiplayerInteractor);
         loggedInView.setLocalMultiplayerController(localMultiplayerController);
         localMultiplayerView.setLocalMultiplayerController(localMultiplayerController);
+        localMultiplayerSummaryView.setLocalMultiplayerController(localMultiplayerController);
+        localMultiplayerPlaythroughView.setLocalMultiplayerController(localMultiplayerController);
         return this;
     }
 
@@ -400,7 +446,6 @@ public class AppBuilder {
         return this;
     }
 
-    // TODO: Add instance variable for PlaythroughViewModel
     /**
      * Adds the Quiz Generation Use Case to the application.
      * @return this builder

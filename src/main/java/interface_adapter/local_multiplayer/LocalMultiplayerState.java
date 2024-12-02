@@ -7,6 +7,15 @@ public class LocalMultiplayerState {
     private String selectedCategory = "";
     private String selectedNumberOfQuestions = "";
     private String selectedDifficulty = "";
+    private String error;
+
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
 
     // Getters
     public String getSelectedCategory() {
@@ -34,12 +43,4 @@ public class LocalMultiplayerState {
         this.selectedDifficulty = selectedDifficulty;
     }
 
-    @Override
-    public String toString() {
-        return "LocalMultiplayerState{"
-                + "selectedCategory='" + selectedCategory + '\''
-                + ", selectedNumberOfQuestions='" + selectedNumberOfQuestions + '\''
-                + ", selectedDifficulty='" + selectedDifficulty + '\''
-                + '}';
-    }
 }

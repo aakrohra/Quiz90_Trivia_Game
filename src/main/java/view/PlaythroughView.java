@@ -3,6 +3,7 @@ package view;
 import app.Constants;
 import entity.Question;
 import entity.Quiz;
+import interface_adapter.local_multiplayer.LocalMultiplayerController;
 import interface_adapter.playthrough.PlaythroughState;
 import interface_adapter.playthrough.PlaythroughViewModel;
 import interface_adapter.summary.SummaryController;
