@@ -44,9 +44,17 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
         localMultiplayerViewModel.getState().setError(null);
         final LocalMultiplayerPlaythroughState localMultiplayerPlaythroughState =
                 localMultiplayerPlaythroughViewModel.getState();
-        localMultiplayerPlaythroughState.setQuiz(triviaQuiz);
-        localMultiplayerPlaythroughViewModel.setState(localMultiplayerPlaythroughState);
 
+        // initialize the playthrough state
+        localMultiplayerPlaythroughState.clearPlayerOneInfo();
+        localMultiplayerPlaythroughState.clearPlayerTwoInfo();
+        localMultiplayerPlaythroughState.setCurrentPlayerIsOne(true);
+        localMultiplayerPlaythroughState.setCurrentQuestionIndex(0);
+        final Integer[] tempNumMap = {0, 0};
+        localMultiplayerPlaythroughState.setNumMapCorrect(tempNumMap);
+        localMultiplayerPlaythroughState.setQuiz(triviaQuiz);
+
+        localMultiplayerPlaythroughViewModel.setState(localMultiplayerPlaythroughState);
         localMultiplayerPlaythroughViewModel.firePropertyChanged();
 
         // Switch to the Playthrough View
@@ -83,26 +91,35 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
     }
 
     /**
-     * Executes action to switch to Local Multiplayer Summary view.
-     * @param quiz The completed quiz containing the questions and answers.
-     * @param playerOneInfo A map of player one information.
-     * @param playerTwoInfo A map of player two information.
-     * @param numMapCorrect Array of correct answers.
+     * Executes the action to go to the next question in the quiz.
+     * @param state The local multiplayer playthrough state.
      */
     @Override
-    public void prepareLocalMultiplayerSummaryView(Quiz quiz, Map<Integer,
-            Pair<String, Boolean>> playerOneInfo, Map<Integer, Pair<String, Boolean>> playerTwoInfo,
-                                                   Integer[] numMapCorrect) {
-        final LocalMultiplayerSummaryState localMultiplayerSummaryState = localMultiplayerSummaryViewModel.getState();
-        localMultiplayerSummaryState.setQuiz(quiz);
-        localMultiplayerSummaryState.setPlayerOneInfo(playerOneInfo);
-        localMultiplayerSummaryState.setPlayerTwoInfo(playerTwoInfo);
-        localMultiplayerSummaryState.setNumMapCorrect(numMapCorrect);
-        localMultiplayerSummaryViewModel.setState(localMultiplayerSummaryState);
-        localMultiplayerSummaryViewModel.firePropertyChanged();
+    public void nextQuestion(LocalMultiplayerPlaythroughState state) {
+        if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
+            final LocalMultiplayerSummaryState localMultiplayerSummaryState =
+                    localMultiplayerSummaryViewModel.getState();
 
-        // Switch to Summary View
-        viewManagerModel.setState(localMultiplayerSummaryViewModel.getViewName());
-        viewManagerModel.firePropertyChanged();
+            // update summary state
+            localMultiplayerSummaryState.setQuiz(state.getQuiz());
+            localMultiplayerSummaryState.setPlayerOneInfo(state.getPlayerOneInfo());
+            localMultiplayerSummaryState.setPlayerTwoInfo(state.getPlayerTwoInfo());
+            localMultiplayerSummaryState.setNumMapCorrect(state.getNumMapCorrect());
+
+            localMultiplayerSummaryViewModel.setState(localMultiplayerSummaryState);
+            localMultiplayerSummaryViewModel.firePropertyChanged();
+
+            // Switch to Summary View
+            viewManagerModel.setState(localMultiplayerSummaryViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+        }
+
+        // continue to next question
+        else {
+            state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
+            state.setCurrentPlayerIsOne(!state.getCurrentPlayerIsOne());
+            this.localMultiplayerPlaythroughViewModel.firePropertyChanged();
+        }
     }
+
 }

@@ -11,9 +11,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -60,9 +58,6 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
     private final String currentPlayerTwoText = "Player Two's Turn!";
 
     private Boolean stealTurn = false;
-    private final Map<Integer, Pair<String, Boolean>> playerOneInfo = new HashMap<>();
-    private final Integer[] numMapCorrect = {0, 0};
-    private final Map<Integer, Pair<String, Boolean>> playerTwoInfo = new HashMap<>();
 
     public LocalMultiplayerPlaythroughView(LocalMultiplayerPlaythroughViewModel localMultiplayerPlaythroughViewModel) {
         this.localMultiplayerPlaythroughViewModel = localMultiplayerPlaythroughViewModel;
@@ -235,10 +230,12 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
     private void updateIncorrectAnswer(boolean state, LocalMultiplayerPlaythroughState state1, JButton selectedButton) {
         if (state) {
-            playerOneInfo.put(state1.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+            state1.setPlayerOneInfo(state1.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(),
+                    false));
         }
         else {
-            playerTwoInfo.put(state1.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), false));
+            state1.setPlayerTwoInfo(state1.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(),
+                    false));
         }
     }
 
@@ -259,23 +256,27 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
     private void updateCorrectAnswer(JButton selectedButton, LocalMultiplayerPlaythroughState state) {
         if (state.getCurrentPlayerIsOne()) {
-            playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
-            numMapCorrect[0] += 1;
+            state.setPlayerOneInfo(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(),
+                    true));
+            state.getNumMapCorrect()[0] += 1;
         }
         else {
-            playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
-            numMapCorrect[1] += 1;
+            state.setPlayerTwoInfo(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(),
+                    true));
+            state.getNumMapCorrect()[1] += 1;
         }
     }
 
     private void updateCorrectStolenAnswer(JButton selectedButton, LocalMultiplayerPlaythroughState state) {
         if (state.getCurrentPlayerIsOne()) {
-            playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
-            numMapCorrect[1] += 1;
+            state.setPlayerTwoInfo(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(),
+                    true));
+            state.getNumMapCorrect()[1] += 1;
         }
         else {
-            playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
-            numMapCorrect[0] += 1;
+            state.setPlayerOneInfo(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(),
+                    true));
+            state.getNumMapCorrect()[0] += 1;
         }
     }
 
@@ -296,33 +297,8 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
     private void handleNextClick() {
         final LocalMultiplayerPlaythroughState state = this.localMultiplayerPlaythroughViewModel.getState();
         nextButton.setVisible(false);
-
-        // finished last question
-        if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
-
-            System.out.println(playerOneInfo);
-            System.out.println(playerTwoInfo);
-            System.out.println(numMapCorrect);
-
-            localMultiplayerController.prepareLocalMultiplayerSummaryView(state.getQuiz(),
-                    playerOneInfo, playerTwoInfo, numMapCorrect);
-            state.setCurrentPlayerIsOne(true);
-            state.setCurrentQuestionIndex(0);
-            stealTurn = false;
-            playerOneInfo.clear();
-            playerTwoInfo.clear();
-            numMapCorrect[0] = 0;
-            numMapCorrect[1] = 0;
-        }
-
-        // continue to next question
-        else {
-            state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
-            state.setCurrentPlayerIsOne(!state.getCurrentPlayerIsOne());
-            this.localMultiplayerPlaythroughViewModel.firePropertyChanged();
-            stealTurn = false;
-        }
-
+        stealTurn = false;
+        localMultiplayerController.nextQuestion(state);
     }
 
     /**
