@@ -13,7 +13,6 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -28,23 +27,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import app.Constants;
-import data_access.DBCustomQuizDataAccessObject;
-import entity.*;
+import entity.PlayerQuizDatabase;
+import entity.Quiz;
+import entity.RetrievedQuiz;
 import interface_adapter.access_database.AccessDatabaseController;
 import interface_adapter.access_database.AccessedDatabaseInfoState;
 import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
-import org.json.JSONObject;
 
 /**
  * The View for when the user is accessing their database.
  */
 public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
-    private static final String API_INFO_CALL = "http://vm003.teach.cs.toronto.edu:20112/user?username=%s";
-    private static final String CONTENT_TYPE_LABEL = "Content-Type";
-    private static final String CONTENT_TYPE_JSON = "application/json";
     private static final int QUIZ_ROW_HEIGHT = 60;
     private static final double QUIZ_PANEL_SIZE_MODIFIER = 0.9;
     private static final double SEARCH_FIELDS_WIDTH_MODIFIER = 0.6;
