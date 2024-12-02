@@ -176,8 +176,13 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         // correct answer
         if (state.getCurrentQuestion().getCorrectAnswer().equals(selectedButton.getText())) {
             disableAllButtons(false);
-            updateCorrectAnswer(selectedButton, state);
             correctSelectedButton(selectedButton, Color.GREEN);
+            if (stealTurn) {
+                updateCorrectStolenAnswer(selectedButton, state);
+            }
+            else {
+                updateCorrectAnswer(selectedButton, state);
+            }
         }
 
         // incorrect answer
@@ -263,6 +268,17 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
         }
     }
 
+    private void updateCorrectStolenAnswer(JButton selectedButton, LocalMultiplayerPlaythroughState state) {
+        if (state.getCurrentPlayerIsOne()) {
+            playerTwoInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+            numMapCorrect[1] += 1;
+        }
+        else {
+            playerOneInfo.put(state.getCurrentQuestionIndex(), new Pair<>(selectedButton.getText(), true));
+            numMapCorrect[0] += 1;
+        }
+    }
+
     private static void correctSelectedButton(JButton selectedButton, Color green) {
         incorrectSelectedButton(selectedButton, green);
     }
@@ -283,6 +299,10 @@ public class LocalMultiplayerPlaythroughView extends JPanel implements PropertyC
 
         // finished last question
         if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
+
+            System.out.println(playerOneInfo);
+            System.out.println(playerTwoInfo);
+            System.out.println(numMapCorrect);
 
             localMultiplayerController.prepareLocalMultiplayerSummaryView(state.getQuiz(),
                     playerOneInfo, playerTwoInfo, numMapCorrect);

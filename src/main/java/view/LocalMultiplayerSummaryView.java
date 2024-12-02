@@ -79,7 +79,7 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
     private JButton returnButtonHelper() {
         final JButton tempReturnButton;
         tempReturnButton = new JButton("Return To Main Menu");
-        tempReturnButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH / 2,
+        tempReturnButton.setPreferredSize(new Dimension(Constants.BUTTONWIDTH,
                 Constants.BUTTONHEIGHT / 2));
         tempReturnButton.setFont(new Font(Constants.FONTSTYLE, Font.BOLD,
                 Constants.BUTTONFONTSIZE * 2 / Constants.THREE));
@@ -252,14 +252,14 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
 
     private static void bothAnswerTwoCorrect(Boolean[] playerOneAnswered, JLabel userText,
                                              String playerOneCurrentAnswer) {
-        if (playerOneAnswered[0]) {
+        if (Boolean.TRUE.equals(playerOneAnswered[0])) {
             userText.setText("Player One's Answer: " + playerOneCurrentAnswer);
         }
     }
 
     private static void bothAnswerOneCorrect(Boolean[] playerTwoAnswered, JLabel userText,
                                              String playerTwoCurrentAnswer) {
-        if (playerTwoAnswered[0]) {
+        if (Boolean.TRUE.equals(playerTwoAnswered[0])) {
             userText.setText("Player Two's Answer: " + playerTwoCurrentAnswer);
         }
     }
@@ -286,7 +286,7 @@ public class LocalMultiplayerSummaryView extends JPanel implements PropertyChang
         final JLabel userText = new JLabel();
         userText.setFont(Constants.FONTPARAMETERS);
         userText.setForeground(Color.WHITE);
-        userText.setAlignmentX(SwingConstants.LEFT);
+        userText.setHorizontalAlignment(SwingConstants.LEFT);
         return userText;
     }
 
