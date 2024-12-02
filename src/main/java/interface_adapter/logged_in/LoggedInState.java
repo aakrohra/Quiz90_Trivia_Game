@@ -8,6 +8,7 @@ public class LoggedInState {
     private String password = "";
     private String quizKey = "";
     private String quizKeyError;
+    private String databaseError;
 
     public String getUsername() {
         return username;
@@ -39,5 +40,13 @@ public class LoggedInState {
 
     public String getQuizKeyError() {
         return this.quizKeyError;
+    }
+
+    public String getDatabaseError() {
+        return databaseError;
+    }
+
+    public void setDatabaseError(String databaseError) {
+        this.databaseError = databaseError;
     }
 }
