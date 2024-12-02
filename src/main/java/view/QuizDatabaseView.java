@@ -13,6 +13,7 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -27,10 +28,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import app.Constants;
+import data_access.DBCustomQuizDataAccessObject;
 import entity.*;
 import interface_adapter.access_database.AccessDatabaseController;
 import interface_adapter.access_database.AccessedDatabaseInfoState;
 import interface_adapter.access_database.AccessedDatabaseInfoViewModel;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import org.json.JSONObject;
 
 /**
  * The View for when the user is accessing their database.
@@ -253,9 +259,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
         if (mapSize == 0) {
             empty.setText(EMPTY_DATABASE_PLACEHOLDER);
             this.add(empty, BorderLayout.CENTER);
-        }
-
-        else {
+        } else {
             scrollPanel.setViewportView(quizListPanel);
             quizListPanel.setAutoscrolls(true);
             scrollPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
