@@ -4,6 +4,7 @@ import entity.Quiz;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_question.QuestionCreationState;
 import interface_adapter.create_question.QuestionCreationViewModel;
+import interface_adapter.logged_in.LoggedInState;
 import interface_adapter.logged_in.LoggedInViewModel;
 import interface_adapter.playthrough.PlaythroughState;
 import use_case.access_database.AccessDatabaseOutputBoundary;
@@ -70,5 +71,12 @@ public class AccessDatabasePresenter implements AccessDatabaseOutputBoundary {
         questionCreationViewModel.setState(questionCreationState);
         viewManagerModel.setState(questionCreationViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
+    }
+
+    @Override
+    public void prepareFailView(String error) {
+        final LoggedInState loggedInState = loggedInViewModel.getState();
+        loggedInState.setDatabaseError(error);
+        loggedInViewModel.firePropertyChanged();
     }
 }

@@ -29,4 +29,6 @@ public interface AccessDatabaseOutputBoundary {
      * @param username the user logged in's username
      */
     void switchToCreateQuestionView(String username);
+
+    void prepareFailView(String error);
 }

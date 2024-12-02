@@ -277,6 +277,10 @@ public class LoggedInView extends JPanel implements PropertyChangeListener {
         if (state.getQuizKeyError() != null) {
             JOptionPane.showMessageDialog(this, state.getQuizKeyError());
         }
+
+        if (state.getDatabaseError() != null) {
+            JOptionPane.showMessageDialog(this, state.getDatabaseError());
+        }
     }
 
     public String getViewName() {

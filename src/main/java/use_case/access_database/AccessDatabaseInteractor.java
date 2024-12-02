@@ -37,6 +37,9 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary {
 
             accessDatabasePresenter.prepareSuccessView(accessDatabaseOutputData);
         }
+        else {
+            accessDatabasePresenter.prepareFailView("There is no user named: " + username);
+        }
     }
 
     @Override
