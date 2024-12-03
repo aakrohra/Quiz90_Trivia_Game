@@ -9,6 +9,7 @@ import use_case.quiz_generation.QuizGenerationInputData;
 import java.util.ArrayList;
 import java.util.List;
 
+import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertEquals;
 
 public class LocalMultiplayerInteractorTest {
@@ -34,39 +35,58 @@ public class LocalMultiplayerInteractorTest {
         LocalMultiplayerOutputBoundary localMultiplayerOB = new LocalMultiplayerOutputBoundary() {
             @Override
             public void prepareQuiz(TriviaQuiz triviaQuiz) {
-                TriviaQuiz triviaQuiz1;
+                TriviaQuiz correctOutputTriviaQuiz;
                 try {
-                    QuizGenerationInputData quizGenerationInputData = new QuizGenerationInputData(5, "Animals", "Easy");
-                    triviaQuiz1 = generatedQuizDAO.getTrivia(quizGenerationInputData);
+                    List<TriviaQuestion> listOfTriviaQuestions = new ArrayList<>();
+                    for (int i = 1; i <= 5; i++) {
+                        List<String> incorrectAnswers = new ArrayList<>();
+                        for (int j = 2; j < 5; j++) {
+                            incorrectAnswers.add("Question0");
+                        }
+                        listOfTriviaQuestions.add(new TriviaQuestion("Question" + i, "Answer" + i, incorrectAnswers));
+                    }
+                    correctOutputTriviaQuiz = new TriviaQuiz(listOfTriviaQuestions);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
 
-                assertEquals(triviaQuiz.getListOfQuestions(), triviaQuiz1.getListOfQuestions());
-                assertEquals(triviaQuiz.getQuestions(), triviaQuiz1.getQuestions());
+                for (int i = 0; i < triviaQuiz.getQuestions().size(); i++) {
+                    assertEquals(triviaQuiz.getQuestions().get(i).getQuestionText(),
+                            correctOutputTriviaQuiz.getQuestions().get(i).getQuestionText());
+                    assertEquals(triviaQuiz.getQuestions().get(i).getCorrectAnswer(),
+                            correctOutputTriviaQuiz.getQuestions().get(i).getCorrectAnswer());
+                    assertEquals(triviaQuiz.getQuestions().get(i).getAnswerOptions(),
+                            correctOutputTriviaQuiz.getQuestions().get(i).getAnswerOptions());
+                    assertEquals(triviaQuiz.getQuestions().get(i).getIncorrectAnswers().get(0),
+                            correctOutputTriviaQuiz.getQuestions().get(i).getIncorrectAnswers().get(0));
+                    assertEquals(triviaQuiz.getQuestions().get(i).getIncorrectAnswers().get(1),
+                            correctOutputTriviaQuiz.getQuestions().get(i).getIncorrectAnswers().get(1));
+                    assertEquals(triviaQuiz.getQuestions().get(i).getIncorrectAnswers().get(2),
+                            correctOutputTriviaQuiz.getQuestions().get(i).getIncorrectAnswers().get(2));
+                }
             }
 
             @Override
             public void switchToLocalMultiplayerView() {
-                // not needed for this test
+                fail("Not expected.");
 
             }
 
             @Override
             public void switchToMainMenuView() {
-                // not needed for this test
+                fail("Not expected.");
 
             }
 
             @Override
             public void prepareFailView(String errorMessage) {
-                // not needed for this test
+                fail("Not expected.");
 
             }
 
             @Override
             public void nextQuestion(LocalMultiplayerPlaythroughState state) {
-                // not needed for this test
+                fail("Not expected.");
             }
 
         };
@@ -75,4 +95,166 @@ public class LocalMultiplayerInteractorTest {
         localMultiplayerInteractor.execute(new QuizGenerationInputData(5, "Animals", "Easy"));
     }
 
+    @Test
+    public void testExecuteGenerateQuizFailure() {
+        QuizGenerationDataAccessInterface generatedQuizDAO = new QuizGenerationDataAccessInterface() {
+            @Override
+            public TriviaQuiz getTrivia(QuizGenerationInputData quizData) throws Exception {
+                throw new Exception("Fail view preparing");
+            }
+        };
+
+        LocalMultiplayerOutputBoundary localMultiplayerOB = new LocalMultiplayerOutputBoundary() {
+            @Override
+            public void prepareQuiz(TriviaQuiz triviaQuiz) {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void switchToLocalMultiplayerView() {
+                fail("Not expected.");
+
+            }
+
+            @Override
+            public void switchToMainMenuView() {
+                fail("Not expected.");
+
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                assertEquals("Fail view preparing", errorMessage);
+            }
+
+            @Override
+            public void nextQuestion(LocalMultiplayerPlaythroughState state) {
+                fail("Not expected.");
+            }
+        };
+
+        LocalMultiplayerInteractor localMultiplayerInteractor = new LocalMultiplayerInteractor(localMultiplayerOB, generatedQuizDAO);
+        localMultiplayerInteractor.execute(new QuizGenerationInputData(5, "Animals", "Easy"));
+    }
+
+    @Test
+    public void testSwitchToLocalMultiplayerView() {
+        QuizGenerationDataAccessInterface generatedQuizDAO = new QuizGenerationDataAccessInterface() {
+            @Override
+            public TriviaQuiz getTrivia(QuizGenerationInputData quizData) throws Exception {
+                return null;
+            }
+        };
+
+        LocalMultiplayerOutputBoundary localMultiplayerOB = new LocalMultiplayerOutputBoundary() {
+            @Override
+            public void prepareQuiz(TriviaQuiz triviaQuiz) {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void switchToLocalMultiplayerView() {
+                // This runs
+            }
+
+            @Override
+            public void switchToMainMenuView() {
+                fail("Not expected.");
+
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void nextQuestion(LocalMultiplayerPlaythroughState state) {
+                fail("Not expected.");
+            }
+        };
+
+        LocalMultiplayerInteractor localMultiplayerInteractor = new LocalMultiplayerInteractor(localMultiplayerOB, generatedQuizDAO);
+        localMultiplayerInteractor.switchToLocalMultiplayerView();
+    }
+
+    @Test
+    public void testSwitchToMainMenuView() {
+        QuizGenerationDataAccessInterface generatedQuizDAO = new QuizGenerationDataAccessInterface() {
+            @Override
+            public TriviaQuiz getTrivia(QuizGenerationInputData quizData) throws Exception {
+                return null;
+            }
+        };
+
+        LocalMultiplayerOutputBoundary localMultiplayerOB = new LocalMultiplayerOutputBoundary() {
+            @Override
+            public void prepareQuiz(TriviaQuiz triviaQuiz) {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void switchToLocalMultiplayerView() {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void switchToMainMenuView() {
+                // this runs
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void nextQuestion(LocalMultiplayerPlaythroughState state) {
+                fail("Not expected.");
+            }
+        };
+
+        LocalMultiplayerInteractor localMultiplayerInteractor = new LocalMultiplayerInteractor(localMultiplayerOB, generatedQuizDAO);
+        localMultiplayerInteractor.switchToMainMenuView();
+    }
+
+    @Test
+    public void testNextQuestion() {
+        QuizGenerationDataAccessInterface generatedQuizDAO = new QuizGenerationDataAccessInterface() {
+            @Override
+            public TriviaQuiz getTrivia(QuizGenerationInputData quizData) throws Exception {
+                return null;
+            }
+        };
+
+        LocalMultiplayerOutputBoundary localMultiplayerOB = new LocalMultiplayerOutputBoundary() {
+            @Override
+            public void prepareQuiz(TriviaQuiz triviaQuiz) {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void switchToLocalMultiplayerView() {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void switchToMainMenuView() {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void prepareFailView(String errorMessage) {
+                fail("Not expected.");
+            }
+
+            @Override
+            public void nextQuestion(LocalMultiplayerPlaythroughState state) {
+                // this runs
+            }
+        };
+
+        LocalMultiplayerInteractor localMultiplayerInteractor = new LocalMultiplayerInteractor(localMultiplayerOB, generatedQuizDAO);
+        localMultiplayerInteractor.nextQuestion(new LocalMultiplayerPlaythroughState());
+    }
 }
