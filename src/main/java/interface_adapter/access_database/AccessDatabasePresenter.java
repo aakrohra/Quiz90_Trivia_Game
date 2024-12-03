@@ -1,6 +1,7 @@
 package interface_adapter.access_database;
 
 import entity.Quiz;
+import entity.RetrievedQuiz;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.create_question.QuestionCreationState;
 import interface_adapter.create_question.QuestionCreationViewModel;
@@ -40,7 +41,7 @@ public class AccessDatabasePresenter implements AccessDatabaseOutputBoundary {
     }
 
     @Override
-    public void preparePlaythroughView(Quiz quiz) {
+    public void preparePlaythroughView(RetrievedQuiz quiz) {
         final PlaythroughState playthroughState = playthroughViewModel.getState();
         playthroughState.setQuiz(quiz);
         playthroughViewModel.setState(playthroughState);

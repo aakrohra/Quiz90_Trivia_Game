@@ -1,6 +1,7 @@
 package interface_adapter.access_database;
 
 import entity.Quiz;
+import entity.RetrievedQuiz;
 import use_case.access_database.AccessDatabaseInputBoundary;
 import use_case.access_database.AccessDatabaseInputData;
 
@@ -36,7 +37,7 @@ public class AccessDatabaseController {
      * Executes the switch to playthrough view use case for the selected quiz.
      * @param quiz the selected quiz
      */
-    public void switchToPlaythroughView(Quiz quiz) {
+    public void switchToPlaythroughView(RetrievedQuiz quiz) {
         accessDatabaseInteractor.switchToPlaythroughView(quiz);
     }
 

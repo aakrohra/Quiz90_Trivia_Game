@@ -1,8 +1,10 @@
-package use_case.local_multiplayer;
+package use_case;
 
 import entity.*;
 import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
 import org.junit.Test;
+import use_case.local_multiplayer.LocalMultiplayerInteractor;
+import use_case.local_multiplayer.LocalMultiplayerOutputBoundary;
 import use_case.quiz_generation.QuizGenerationDataAccessInterface;
 import use_case.quiz_generation.QuizGenerationInputData;
 

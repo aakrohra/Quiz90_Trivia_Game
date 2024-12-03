@@ -335,7 +335,7 @@ public class QuizDatabaseView extends JPanel implements PropertyChangeListener {
 
         playButton.addActionListener(event -> {
             final String key = message;
-            final Quiz quiz = quizMap.get(key);
+            final RetrievedQuiz quiz = quizMap.get(key);
             accessDatabaseController.switchToPlaythroughView(quiz);
         });
         return row;
