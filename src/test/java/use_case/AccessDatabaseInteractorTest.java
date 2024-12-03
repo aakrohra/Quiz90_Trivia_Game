@@ -2,6 +2,7 @@ package use_case;
 
 import data_access.DBCustomQuizDataAccessObject;
 import entity.*;
+import interface_adapter.access_database.AccessDatabasePresenter;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +59,34 @@ public class AccessDatabaseInteractorTest {
         accessDatabasePresenter = new AccessDatabaseOutputBoundary() {
             @Override
             public void prepareSuccessView(AccessDatabaseOutputData data) {
-                data.getQuizDatabase();
+                getQuizDatabase(data);
+            }
+
+            @Override
+            public void switchToMainMenuView() {
+
+            }
+
+            @Override
+            public void preparePlaythroughView(Quiz quiz) {
+
+            }
+
+            @Override
+            public void switchToCreateQuestionView(String username) {
+
+            }
+
+            @Override
+            public void prepareFailView(String error) {
+            }
+        };
+    }
+
+    public AccessDatabasePresenter setUpAccessDatabasePresenter() {
+        return new new AccessDatabasePresenter() {
+            @Override
+            public void prepareSuccessView(AccessDatabaseOutputData data) {
             }
 
             @Override
@@ -88,6 +116,6 @@ public class AccessDatabaseInteractorTest {
         AccessDatabaseInputData testID = new AccessDatabaseInputData("testDatabase");
         AccessDatabaseInteractor accessDatabaseInteractor = new AccessDatabaseInteractor(testDAO, accessDatabasePresenter);
         accessDatabaseInteractor.execute(testID);
-
+        accessDatabasePresenter.
     }
 }
