@@ -1,6 +1,7 @@
 package use_case.access_database;
 
 import entity.Quiz;
+import entity.RetrievedQuiz;
 
 /**
  * The output boundary for the Access database use case.
@@ -22,7 +23,7 @@ public interface AccessDatabaseOutputBoundary {
      * Prepares the playthrough view for playing a selected quiz.
      * @param quiz the selected quiz
      */
-    void preparePlaythroughView(Quiz quiz);
+    void preparePlaythroughView(RetrievedQuiz quiz);
 
     /**
      * Executes the switch to create question view.

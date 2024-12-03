@@ -51,7 +51,7 @@ public class AccessDatabaseInteractor implements AccessDatabaseInputBoundary {
      * Executes the logic to playthrough use case view using the selected quiz object.
      * @param quiz selected quiz object
      */
-    public void switchToPlaythroughView(Quiz quiz) {
+    public void switchToPlaythroughView(RetrievedQuiz quiz) {
         accessDatabasePresenter.preparePlaythroughView(quiz);
     }
 

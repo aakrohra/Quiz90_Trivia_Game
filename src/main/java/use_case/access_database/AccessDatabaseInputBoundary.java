@@ -1,6 +1,7 @@
 package use_case.access_database;
 
 import entity.Quiz;
+import entity.RetrievedQuiz;
 
 /**
  * Input Boundary for actions which are related to the database.
@@ -22,7 +23,7 @@ public interface AccessDatabaseInputBoundary {
      * Play the selected quiz through the playthrough quiz use case.
      * @param quiz selected quiz object
      */
-    void switchToPlaythroughView(Quiz quiz);
+    void switchToPlaythroughView(RetrievedQuiz quiz);
 
     /**
      * Executes a switch to the created question view.
