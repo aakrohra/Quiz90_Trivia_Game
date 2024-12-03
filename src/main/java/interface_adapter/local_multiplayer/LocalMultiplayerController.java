@@ -1,7 +1,7 @@
 package interface_adapter.local_multiplayer;
 
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
 import use_case.local_multiplayer.LocalMultiplayerInputBoundary;
-import use_case.local_multiplayer.LocalMultiplayerInputData;
 import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
@@ -41,4 +41,13 @@ public class LocalMultiplayerController {
     public void switchToMainMenuView() {
         localMultiplayerInputBoundary.switchToMainMenuView();
     }
+
+    /**
+     * Executes the action to go to the next question in the quiz.
+     * @param state The local multiplayer playthrough state.
+     */
+    public void nextQuestion(LocalMultiplayerPlaythroughState state) {
+        localMultiplayerInputBoundary.nextQuestion(state);
+    }
+
 }

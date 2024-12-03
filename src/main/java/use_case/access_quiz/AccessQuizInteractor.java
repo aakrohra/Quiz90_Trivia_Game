@@ -28,6 +28,7 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
 
         final String key = accessQuizInputData.getKey();
 
+        // only attempt to get a quiz if it exists, otherwise prepare a fail view with an error message
         if (customQuizDataAccessObject.existsByKey(key)) {
             final RetrievedQuizFactory quizFactory = new RetrievedQuizFactory();
             final JSONObject quizData = customQuizDataAccessObject.getQuizFromKey(key);
@@ -35,15 +36,6 @@ public class AccessQuizInteractor implements AccessQuizInputBoundary {
 
             final AccessQuizOutputData accessQuizOutputData = new AccessQuizOutputData(
                     false, quizObject);
-
-            accessQuizPresenter.prepareSuccessView(accessQuizOutputData);
-        }
-        // this is here for easy testing and can be removed later if wanted
-        else if ("testing".equals(key)) {
-            final List<PlayerCreatedQuestion> temp2 = new ArrayList<>();
-            final RetrievedQuiz temp = new RetrievedQuiz("title", temp2, "author");
-            final AccessQuizOutputData accessQuizOutputData = new AccessQuizOutputData(
-                    false, temp);
 
             accessQuizPresenter.prepareSuccessView(accessQuizOutputData);
         }

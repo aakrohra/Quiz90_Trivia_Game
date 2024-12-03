@@ -83,7 +83,7 @@ public class PlaythroughState {
 
     @Override
     public String toString() {
-        return "PlaythroughState{"
+        return "LocalMultiplayerPlaythroughState{"
                 + "quiz=" + quiz
                 + ", currentQuestionIndex=" + currentQuestionIndex
                 + ", selectedAnswer='" + selectedAnswer + '\''

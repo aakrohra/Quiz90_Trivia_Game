@@ -1,6 +1,7 @@
 package use_case.local_multiplayer;
 
 import entity.TriviaQuiz;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
 import use_case.quiz_generation.QuizGenerationDataAccessInterface;
 import use_case.quiz_generation.QuizGenerationInputData;
 
@@ -12,7 +13,8 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
     private final LocalMultiplayerOutputBoundary localMultiplayerPresenter;
     private final QuizGenerationDataAccessInterface triviaDataAccessObject;
 
-    public LocalMultiplayerInteractor(LocalMultiplayerOutputBoundary localMultiplayerPresenter, QuizGenerationDataAccessInterface triviaDataAccessObject) {
+    public LocalMultiplayerInteractor(LocalMultiplayerOutputBoundary localMultiplayerPresenter,
+                                      QuizGenerationDataAccessInterface triviaDataAccessObject) {
         this.localMultiplayerPresenter = localMultiplayerPresenter;
         this.triviaDataAccessObject = triviaDataAccessObject;
     }
@@ -25,9 +27,9 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
         try {
             final TriviaQuiz trivia = triviaDataAccessObject.getTrivia(localMultiplayerInputData);
             localMultiplayerPresenter.prepareQuiz(trivia);
-        } catch (Exception ex) {
-            // Log the exception or handle it based on your use case
-            localMultiplayerPresenter.prepareFailView();
+        }
+        catch (Exception ex) {
+            localMultiplayerPresenter.prepareFailView(ex.getMessage());
         }
     }
 
@@ -46,4 +48,13 @@ public class LocalMultiplayerInteractor implements LocalMultiplayerInputBoundary
     public void switchToMainMenuView() {
         localMultiplayerPresenter.switchToMainMenuView();
     }
+
+    /**
+     * Executes the action to go to the next question in the quiz.
+     */
+    @Override
+    public void nextQuestion(LocalMultiplayerPlaythroughState state) {
+        localMultiplayerPresenter.nextQuestion(state);
+    }
+
 }

@@ -1,13 +1,12 @@
 package use_case.local_multiplayer;
 
 import entity.TriviaQuiz;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
 
 /**
  * Output Boundary interface for the Local Multiplayer Use Case.
  */
 public interface LocalMultiplayerOutputBoundary {
-
-    // TODO all use cases need both success and fail views
 
     /**
      * Prepares trivia quiz.
@@ -26,7 +25,15 @@ public interface LocalMultiplayerOutputBoundary {
     void switchToMainMenuView();
 
     /**
-     * Prepares the fail view.
+     * Prepares the fail view for creating a quiz.
+     * @param errorMessage The error message that shows up on the fail view.
      */
-    void prepareFailView();
+    void prepareFailView(String errorMessage);
+
+    /**
+     * Executes the action to go to the next question in the quiz.
+     * @param state The local multiplayer playthrough state.
+     */
+    void nextQuestion(LocalMultiplayerPlaythroughState state);
+
 }

@@ -1,5 +1,6 @@
 package use_case.local_multiplayer;
 
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
 import use_case.quiz_generation.QuizGenerationInputData;
 
 /**
@@ -22,4 +23,11 @@ public interface LocalMultiplayerInputBoundary {
      * Executes the action to switch to the Main Menu view.
      */
     void switchToMainMenuView();
+
+    /**
+     * Executes the action to go to the next question in the quiz.
+     * @param state The local multiplayer playthrough state.
+     */
+    void nextQuestion(LocalMultiplayerPlaythroughState state);
+
 }

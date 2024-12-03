@@ -2,9 +2,11 @@ package interface_adapter.local_multiplayer;
 
 import entity.TriviaQuiz;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughState;
+import interface_adapter.local_multiplayer_playthrough.LocalMultiplayerPlaythroughViewModel;
+import interface_adapter.local_multiplayer_summary.LocalMultiplayerSummaryState;
+import interface_adapter.local_multiplayer_summary.LocalMultiplayerSummaryViewModel;
 import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.playthrough.PlaythroughState;
-import interface_adapter.playthrough.PlaythroughViewModel;
 import use_case.local_multiplayer.LocalMultiplayerOutputBoundary;
 
 /**
@@ -15,16 +17,19 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
     private final ViewManagerModel viewManagerModel;
     private final LocalMultiplayerViewModel localMultiplayerViewModel;
     private final LoggedInViewModel loggedInViewModel;
-    private final PlaythroughViewModel playthroughViewModel;
+    private final LocalMultiplayerPlaythroughViewModel localMultiplayerPlaythroughViewModel;
+    private final LocalMultiplayerSummaryViewModel localMultiplayerSummaryViewModel;
 
     public LocalMultiplayerPresenter(ViewManagerModel viewManagerModel,
                                      LocalMultiplayerViewModel localMultiplayerViewModel,
                                      LoggedInViewModel loggedInViewModel,
-                                     PlaythroughViewModel playthroughViewModel) {
+                                     LocalMultiplayerPlaythroughViewModel localMultiplayerPlaythroughViewModel,
+                                     LocalMultiplayerSummaryViewModel localMultiplayerSummaryViewModel) {
         this.viewManagerModel = viewManagerModel;
         this.localMultiplayerViewModel = localMultiplayerViewModel;
         this.loggedInViewModel = loggedInViewModel;
-        this.playthroughViewModel = playthroughViewModel;
+        this.localMultiplayerPlaythroughViewModel = localMultiplayerPlaythroughViewModel;
+        this.localMultiplayerSummaryViewModel = localMultiplayerSummaryViewModel;
     }
 
     /**
@@ -32,14 +37,24 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
      */
     @Override
     public void prepareQuiz(TriviaQuiz triviaQuiz) {
-        final PlaythroughState playthroughState = playthroughViewModel.getState();
-        playthroughState.setQuiz(triviaQuiz);
-        playthroughViewModel.setState(playthroughState);
+        localMultiplayerViewModel.getState().setError(null);
+        final LocalMultiplayerPlaythroughState localMultiplayerPlaythroughState =
+                localMultiplayerPlaythroughViewModel.getState();
 
-        playthroughViewModel.firePropertyChanged();
+        // initialize the playthrough state
+        localMultiplayerPlaythroughState.clearPlayerOneInfo();
+        localMultiplayerPlaythroughState.clearPlayerTwoInfo();
+        localMultiplayerPlaythroughState.setCurrentPlayerIsOne(true);
+        localMultiplayerPlaythroughState.setCurrentQuestionIndex(0);
+        final Integer[] tempNumMap = {0, 0};
+        localMultiplayerPlaythroughState.setNumMapCorrect(tempNumMap);
+        localMultiplayerPlaythroughState.setQuiz(triviaQuiz);
+
+        localMultiplayerPlaythroughViewModel.setState(localMultiplayerPlaythroughState);
+        localMultiplayerPlaythroughViewModel.firePropertyChanged();
 
         // Switch to the Playthrough View
-        viewManagerModel.setState(playthroughViewModel.getViewName());
+        viewManagerModel.setState(localMultiplayerPlaythroughViewModel.getViewName());
         viewManagerModel.firePropertyChanged();
     }
 
@@ -66,10 +81,41 @@ public class LocalMultiplayerPresenter implements LocalMultiplayerOutputBoundary
      * Prepares the fail view.
      */
     @Override
-    public void prepareFailView() {
-        // TODO: implement prepareFailView similar to how its done for QuizGeneration
-        // Currently when the getTrivia method throws an exception prepareFailView just prints to the console
-        // Take a look at QuizGenerationPresenter and the PropertyChange method in the QuizGenerationView
-        System.out.println("Not enough questions");
+    public void prepareFailView(String errorMessage) {
+        localMultiplayerViewModel.getState().setError(errorMessage);
+        localMultiplayerViewModel.firePropertyChanged();
     }
+
+    /**
+     * Executes the action to go to the next question in the quiz.
+     * @param state The local multiplayer playthrough state.
+     */
+    @Override
+    public void nextQuestion(LocalMultiplayerPlaythroughState state) {
+        if (state.getCurrentQuestionIndex() == state.getQuiz().getQuestions().size() - 1) {
+            final LocalMultiplayerSummaryState localMultiplayerSummaryState =
+                    localMultiplayerSummaryViewModel.getState();
+
+            // update summary state
+            localMultiplayerSummaryState.setQuiz(state.getQuiz());
+            localMultiplayerSummaryState.setPlayerOneInfo(state.getPlayerOneInfo());
+            localMultiplayerSummaryState.setPlayerTwoInfo(state.getPlayerTwoInfo());
+            localMultiplayerSummaryState.setNumMapCorrect(state.getNumMapCorrect());
+
+            localMultiplayerSummaryViewModel.setState(localMultiplayerSummaryState);
+            localMultiplayerSummaryViewModel.firePropertyChanged();
+
+            // Switch to Summary View
+            viewManagerModel.setState(localMultiplayerSummaryViewModel.getViewName());
+            viewManagerModel.firePropertyChanged();
+        }
+
+        // continue to next question
+        else {
+            state.setCurrentQuestionIndex(state.getCurrentQuestionIndex() + 1);
+            state.setCurrentPlayerIsOne(!state.getCurrentPlayerIsOne());
+            this.localMultiplayerPlaythroughViewModel.firePropertyChanged();
+        }
+    }
+
 }

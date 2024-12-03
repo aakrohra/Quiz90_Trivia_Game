@@ -126,10 +126,10 @@ public class DBCustomQuizDataAccessObject implements AccessQuizDataAccessInterfa
     }
 
     @Override
-    public JSONObject getQuizFromKey(String key) {
+    public JSONObject getQuizFromKey(String key) throws RuntimeException {
         final String keyUser = this.getKeyUser(key);
 
-        // checks if user keyUser exists
+        // API call for keyUser's info
         final OkHttpClient client = new OkHttpClient().newBuilder().build();
         final Request request = new Request.Builder()
                 .url(String.format(API_INFO_CALL, keyUser))
