@@ -1,12 +1,11 @@
 package use_case;
 
+import data_access.DBCustomQuizDataAccessObject;
 import entity.*;
 import org.json.JSONObject;
 import org.junit.Test;
-import use_case.access_database.AccessDatabaseOutputBoundary;
-import use_case.access_database.AccessDatabaseOutputData;
-import use_case.access_database.AccessDatabaseUserDataAccessInterface;
-import use_case.access_quiz.AccessQuizDataAccessInterface;
+import org.junit.jupiter.api.BeforeEach;
+import use_case.access_database.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,10 +14,13 @@ import java.util.Map;
 
 public class AccessDatabaseInteractorTest {
 
-    @Test
-    public void testExecuteAccessDatabaseFromLoggedInUser() {
+    private AccessDatabaseInteractor accessDatabaseInteractor;
+    private AccessDatabaseOutputBoundary accessDatabasePresenter;
+    private AccessDatabaseUserDataAccessInterface accessDatabaseUserDataAccessInterface;
 
-        AccessDatabaseUserDataAccessInterface customQuizDAO = new AccessDatabaseUserDataAccessInterface() {
+    @BeforeEach
+    public void setup() {
+        accessDatabaseUserDataAccessInterface = new AccessDatabaseUserDataAccessInterface() {
             @Override
             public Map<String, RetrievedQuiz> getAllUserQuizzes(String username) {
                 Map<String, RetrievedQuiz> userQuizzes = new HashMap<>();
@@ -38,17 +40,25 @@ public class AccessDatabaseInteractorTest {
                 return userQuizzes;
             }
 
+            /**
+             * @param user the given user
+             * @return
+             */
+            @Override
+            public JSONObject getUserInfo(User user) {
+                return null;
+            }
+
             @Override
             public boolean existsByName(String username) {
                 return true;
             }
         };
 
-        AccessDatabaseOutputBoundary accessDatabaseOutputBoundary = new AccessDatabaseOutputBoundary() {
+        accessDatabasePresenter = new AccessDatabaseOutputBoundary() {
             @Override
             public void prepareSuccessView(AccessDatabaseOutputData data) {
-                RetrievedQuizFactory retrievedQuizFactory = new RetrievedQuizFactory();
-                // RetrievedQuiz quizObject = retrievedQuizFactory.create(new )
+                data.getQuizDatabase();
             }
 
             @Override
@@ -68,8 +78,16 @@ public class AccessDatabaseInteractorTest {
 
             @Override
             public void prepareFailView(String error) {
-
             }
-        }
+        };
+    }
+
+    @Test
+    public void testExecuteUserExists() {
+        AccessDatabaseUserDataAccessInterface testDAO = new DBCustomQuizDataAccessObject();
+        AccessDatabaseInputData testID = new AccessDatabaseInputData("testDatabase");
+        AccessDatabaseInteractor accessDatabaseInteractor = new AccessDatabaseInteractor(testDAO, accessDatabasePresenter);
+        accessDatabaseInteractor.execute(testID);
+
     }
 }
