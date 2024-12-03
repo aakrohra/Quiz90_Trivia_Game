@@ -13,6 +13,30 @@
 
  - A trivia quiz game where users can play pre-built quizzes or create and share their own trivia quizzes with a scoring system
 
+## Table of Contents
+<!-- TOC -->
+* [Quiz 90](#quiz-90-)
+  * [Contributors 👬](#contributors-)
+  * [Summary 📃](#summary-)
+  * [Table of Contents](#table-of-contents)
+  * [Key features 🔑](#key-features-)
+    * [Grade API (documentation)](#grade-api--documentation-)
+    * [Open TriviaDB (documentation)](#open-triviadb--documentation-)
+  * [Installation instructions 💠](#installation-instructions-)
+  * [Usage Guide 🦮](#usage-guide-)
+    * [Logging in & Signning up](#logging-in--signning-up)
+    * [Generating a random quiz via the Open TriviaDB API and playing it](#generating-a-random-quiz-via-the-open-triviadb-api-and-playing-it)
+    * [Playing a shared quiz using a key](#playing-a-shared-quiz-using-a-key)
+    * [Visting & using your quiz database](#visting--using-your-quiz-database)
+      * [Searching for a quiz via title](#searching-for-a-quiz-via-title)
+      * [Searching for a quiz via key](#searching-for-a-quiz-via-key)
+      * [Creating a quiz](#creating-a-quiz)
+      * [Local multiplayer](#local-multiplayer)
+  * [License 🪪](#license-)
+  * [How to give feedback 🗣️](#how-to-give-feedback-)
+  * [Contributions 🤝](#contributions-)
+<!-- TOC -->
+
 ## Key features 🔑
 - Create quizzes with multiple-choice questions
 - Share/access created quizzes via unique keys
