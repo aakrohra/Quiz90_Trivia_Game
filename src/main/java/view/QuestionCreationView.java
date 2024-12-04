@@ -5,6 +5,8 @@ import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+import java.util.Set;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -76,11 +78,19 @@ public class QuestionCreationView extends JPanel implements PropertyChangeListen
                 evt -> {
                     if (evt.getSource().equals(nextQuestion)) {
                         final QuestionCreationState currentState = questionCreationViewModel.getState();
-                        questionCreationController.executeCreateQuestion(currentState.getQuestionText(),
-                                currentState.getCorrectAnswer(),
-                                currentState.getWrongAnswer1(),
+                        if (Arrays.asList(currentState.getWrongAnswer1(),
                                 currentState.getWrongAnswer2(),
-                                currentState.getWrongAnswer3());
+                                currentState.getWrongAnswer3()).contains(currentState.getCorrectAnswer())) {
+                            JOptionPane.showMessageDialog(this,
+                                    "Sorry but you cannot have any of the wrong answers equal to the correct answer!");
+                        }
+                        else {
+                            questionCreationController.executeCreateQuestion(currentState.getQuestionText(),
+                                    currentState.getCorrectAnswer(),
+                                    currentState.getWrongAnswer1(),
+                                    currentState.getWrongAnswer2(),
+                                    currentState.getWrongAnswer3());
+                        }
                     }
                 }
         );
@@ -89,9 +99,16 @@ public class QuestionCreationView extends JPanel implements PropertyChangeListen
                 evt -> {
                     if (evt.getSource().equals(finish)) {
                         final QuestionCreationState currentState = questionCreationViewModel.getState();
-                        final String quizTitle = JOptionPane.showInputDialog("What would you like to title your quiz?");
-                        quizCreationController.executeCreateQuiz(
-                                currentState.getQuestionsSoFar(), quizTitle, currentState.getUsername());
+                        if (currentState.getQuestionsSoFar() == null) {
+                            JOptionPane.showMessageDialog(this,
+                                    "Sorry but you need at least one question!");
+                        }
+                        else {
+                            final String quizTitle = JOptionPane.showInputDialog("What would you like to title your quiz?");
+                            quizCreationController.executeCreateQuiz(
+                                    currentState.getQuestionsSoFar(), quizTitle, currentState.getUsername());
+                        }
+
                     }
                 }
         );
