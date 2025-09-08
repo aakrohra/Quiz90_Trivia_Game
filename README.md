@@ -1,4 +1,5 @@
-﻿
+This repository is a fork of https://github.com/Aref-Mal/Quiz90/ after completion. My individual contributions were key input functionality, quiz access from API, and custom quiz creation. My team contributions were assisting with quiz playthrough logic, the README, and UIs (creating views and connecting them to each other). Detailed contributions can be found in the commit history, and in the issues tab of the original repo.
+
 # Quiz 90 
 ![Quiz90](images/quiz90.png)
 ## Contributors 👬
@@ -60,7 +61,7 @@ Download project files and images
 ## Usage Guide 🦮
 To run the program, run the Main.java file. You can find this via src/main/java/app/Main.java.
 
-### Logging in & Signning up
+### Logging in & Signing up
 If you don’t have an account, input a username and password in the required fields, then press the “Sign up” button. This will take you to the login page, where you can follow the below actions to log in.
 
 If you have an account, navigate to the login page via the “Go to Login” button on the signup page. Input your username and password, then click “Log In”.
